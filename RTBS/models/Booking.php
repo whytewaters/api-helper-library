@@ -1,0 +1,456 @@
+<?php
+
+
+namespace RTBS\models;
+
+
+class Booking {
+    private $tour_key;
+    private $datetime;
+    private $first_name;
+    private $last_name;
+    private $email;
+    private $phone;
+    private $promo_key;
+    private $price_selections = [];
+    private $prices = [];
+
+    private $status;
+    private $booking_id;
+    private $id;
+    private $valid_until;
+    private $is_used;
+    private $supplier_key;
+    private $supplier_name;
+    private $tour_name;
+    private $promo_code;
+    private $pickup_time;
+    private $pickup_point;
+    private $comment;
+    private $total;
+    private $total_disc;
+    private $total_inc_disc;
+    private $fields;
+
+    /**
+     * @return mixed
+     */
+    public function get_status()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param mixed $status
+     */
+    protected function set_status($status)
+    {
+        $this->status = $status;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function get_booking_id()
+    {
+        return $this->booking_id;
+    }
+
+    /**
+     * @param mixed $booking_id
+     */
+    public function set_booking_id($booking_id)
+    {
+        $this->booking_id = $booking_id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function get_id()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    protected function set_id($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function get_valid_until()
+    {
+        return $this->valid_until;
+    }
+
+    /**
+     * @param mixed $valid_until
+     */
+    protected function set_valid_until($valid_until)
+    {
+        $this->valid_until = $valid_until;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function get_is_used()
+    {
+        return $this->is_used;
+    }
+
+    /**
+     * @param mixed $is_used
+     */
+    protected function set_is_used($is_used)
+    {
+        $this->is_used = $is_used;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function get_supplier_key()
+    {
+        return $this->supplier_key;
+    }
+
+    /**
+     * @param mixed $supplier_key
+     */
+    protected function set_supplier_key($supplier_key)
+    {
+        $this->supplier_key = $supplier_key;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function get_supplier_name()
+    {
+        return $this->supplier_name;
+    }
+
+    /**
+     * @param mixed $supplier_name
+     */
+    protected function set_supplier_name($supplier_name)
+    {
+        $this->supplier_name = $supplier_name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function get_tour_name()
+    {
+        return $this->tour_name;
+    }
+
+    /**
+     * @param mixed $tour_name
+     */
+    protected function set_tour_name($tour_name)
+    {
+        $this->tour_name = $tour_name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function get_promo_code()
+    {
+        return $this->promo_code;
+    }
+
+    /**
+     * @param mixed $promo_code
+     */
+    protected function set_promo_code($promo_code)
+    {
+        $this->promo_code = $promo_code;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function get_pickup_time()
+    {
+        return $this->pickup_time;
+    }
+
+    /**
+     * @param mixed $pickup_time
+     */
+    protected function set_pickup_time($pickup_time)
+    {
+        $this->pickup_time = $pickup_time;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function get_pickup_point()
+    {
+        return $this->pickup_point;
+    }
+
+    /**
+     * @param mixed $pickup_point
+     */
+    protected function set_pickup_point($pickup_point)
+    {
+        $this->pickup_point = $pickup_point;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function get_comment()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * @param mixed $comment
+     */
+    protected function set_comment($comment)
+    {
+        $this->comment = $comment;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function get_total()
+    {
+        return $this->total;
+    }
+
+    /**
+     * @param mixed $total
+     */
+    private function set_total($total)
+    {
+        $this->total = $total;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function get_total_disc()
+    {
+        return $this->total_disc;
+    }
+
+    /**
+     * @param mixed $total_disc
+     */
+    protected function set_total_disc($total_disc)
+    {
+        $this->total_disc = $total_disc;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function get_total_inc_disc()
+    {
+        return $this->total_inc_disc;
+    }
+
+    /**
+     * @param mixed $total_inc_disc
+     */
+    protected function set_total_inc_disc($total_inc_disc)
+    {
+        $this->total_inc_disc = $total_inc_disc;
+    }
+
+
+
+    /**
+     * @return mixed
+     */
+    public function get_tour_key()
+    {
+        return $this->tour_key;
+    }
+
+    /**
+     * @param mixed $tour_key
+     */
+    public function set_tour_key($tour_key)
+    {
+        $this->tour_key = $tour_key;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function get_datetime()
+    {
+        return $this->datetime;
+    }
+
+    /**
+     * @param mixed $datetime
+     */
+    public function set_datetime($datetime)
+    {
+        $this->datetime = $datetime;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function get_first_name()
+    {
+        return $this->first_name;
+    }
+
+    /**
+     * @param mixed $first_name
+     */
+    public function set_first_name($first_name)
+    {
+        $this->first_name = $first_name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function get_last_name()
+    {
+        return $this->last_name;
+    }
+
+    /**
+     * @param mixed $last_name
+     */
+    public function set_last_name($last_name)
+    {
+        $this->last_name = $last_name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function get_email()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function set_email($email)
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function get_phone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param mixed $phone
+     */
+    public function set_phone($phone)
+    {
+        $this->phone = $phone;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function get_promo_key()
+    {
+        return $this->promo_key;
+    }
+
+    /**
+     * @param mixed $promo_key
+     */
+    public function set_promo_key($promo_key)
+    {
+        $this->promo_key = $promo_key;
+    }
+
+    public function add_price_selection(Price $price, $quantity) {
+        $this->price_selections[] = [
+            'price_key' => $price->get_price_key(),
+            'qty' => $quantity
+        ];
+    }
+
+    protected function add_price(Price $price) {
+        $this->prices[] = $price;
+    }
+
+    public function get_prices() {
+        return $this->prices;
+    }
+
+    /**
+     * @return array
+     */
+    public function get_price_selections() {
+        return $this->price_selections;
+    }
+
+
+
+    public function to_raw_object() {
+        $raw_object = [
+            'tour_key' => $this->get_tour_key(),
+            'datetime' => $this->get_datetime(),
+            'fname' => $this->get_first_name(),
+            'lname' => $this->get_last_name(),
+            'email' => $this->get_email(),
+            'phone' => $this->get_phone(),
+            'prices' => $this->get_price_selections(),
+        ];
+
+        if(is_numeric($this->get_promo_key())) {
+            $raw_object['promo_key'] = $this->get_promo_key();
+        };
+
+        return $raw_object;
+    }
+
+    public function from_raw($raw_booking) {
+        $this->set_status($raw_booking->status);
+        $this->set_booking_id($raw_booking->booking_id);
+        $this->set_id($raw_booking->id);
+        $this->set_first_name($raw_booking->fname);
+        $this->set_last_name($raw_booking->lname);
+        $this->set_email($raw_booking->email);
+        $this->set_phone($raw_booking->phone);
+        $this->set_datetime($raw_booking->datetime);
+        $this->set_valid_until($raw_booking->valid_until);
+        $this->set_is_used($raw_booking->is_used);
+        $this->set_supplier_key($raw_booking->supplier_key);
+        $this->set_supplier_name($raw_booking->supplier_name);
+        $this->set_tour_key($raw_booking->tour_key);
+        $this->set_tour_name($raw_booking->tour_name);
+        $this->set_promo_code($raw_booking->promo_code);
+        $this->set_pickup_time($raw_booking->pickup_time);
+        $this->set_pickup_point($raw_booking->pickup_point);
+        $this->set_comment($raw_booking->comment);
+        $this->set_total($raw_booking->total);
+
+        foreach($raw_booking->prices as $raw_price) {
+            $this->add_price(Price::from_raw($raw_price));
+        }
+    }
+}
