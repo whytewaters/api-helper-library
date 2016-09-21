@@ -1,12 +1,10 @@
-<?php
-
-namespace RTBS\models;
+<?php namespace Rtbs\ApiHelper\Models;
 
 class Category {
     private $category_key;
     private $name;
     private $description;
-    private $sub_categories = [];
+    private $sub_categories = array();
 
     /**
      * @return mixed
@@ -30,7 +28,7 @@ class Category {
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      */
     public function set_name($name) {
         $this->name = $name;
@@ -44,7 +42,7 @@ class Category {
     }
 
     /**
-     * @param mixed $description
+     * @param string $description
      */
     public function set_description($description) {
         $this->description = $description;
@@ -57,20 +55,27 @@ class Category {
         return $this->sub_categories;
     }
 
+    /**
+     * @param array $sub_category
+     */
     public function add_sub_category($sub_category) {
         $this->sub_categories[] = $sub_category;
     }
 
-
-
+    /**
+     * @param $raw_category
+     * @return Category
+     */
     public static function fromRaw($raw_category) {
         $category = new Category();
         $category->set_name($raw_category->name);
         $category->set_category_key($raw_category->category_key);
         $category->set_description($raw_category->description);
 
-        foreach($raw_category->nodes as $node) {
-            $category->add_sub_category(Category::fromRaw($node));
+        if (property_exists($raw_category, 'nodes')) {
+            foreach ($raw_category->nodes as $node) {
+                $category->add_sub_category(Category::fromRaw($node));
+            }
         }
 
         return $category;

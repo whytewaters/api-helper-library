@@ -1,20 +1,17 @@
-<?php
-
-
-namespace RTBS\models;
+<?php namespace Rtbs\ApiHelper\Models;
 
 
 class Tour {
     private $tour_key;
     private $name;
-    private $info_date_range_notes = [];
+    private $info_date_range_notes = array();
     private $supplier_key;
     private $description;
     private $info_directions;
     private $info_bring;
     private $info_provided;
     private $info_transport;
-    private $prices = [];
+    private $prices = array();
 
     /**
      * @return mixed

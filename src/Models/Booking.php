@@ -1,7 +1,4 @@
-<?php
-
-
-namespace RTBS\models;
+<?php namespace Rtbs\ApiHelper\Models;
 
 
 class Booking {
@@ -12,8 +9,8 @@ class Booking {
     private $email;
     private $phone;
     private $promo_key;
-    private $price_selections = [];
-    private $prices = [];
+    private $price_selections = array();
+    private $prices = array();
 
     private $status;
     private $booking_id;
@@ -387,10 +384,10 @@ class Booking {
     }
 
     public function add_price_selection(Price $price, $quantity) {
-        $this->price_selections[] = [
+        $this->price_selections[] = array(
             'price_key' => $price->get_price_key(),
             'qty' => $quantity
-        ];
+        );
     }
 
     protected function add_price(Price $price) {
@@ -411,7 +408,7 @@ class Booking {
 
 
     public function to_raw_object() {
-        $raw_object = [
+        $raw_object = array(
             'tour_key' => $this->get_tour_key(),
             'datetime' => $this->get_datetime(),
             'fname' => $this->get_first_name(),
@@ -419,7 +416,7 @@ class Booking {
             'email' => $this->get_email(),
             'phone' => $this->get_phone(),
             'prices' => $this->get_price_selections(),
-        ];
+        );
 
         if(is_numeric($this->get_promo_key())) {
             $raw_object['promo_key'] = $this->get_promo_key();

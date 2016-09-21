@@ -1,14 +1,11 @@
-<?php
-
-
-namespace RTBS\models;
+<?php namespace Rtbs\ApiHelper\Models;
 
 
 class Session {
     private $datetime;
     private $tour_key;
     private $open;
-    private $prices = [];
+    private $prices = array();
     private $state;
     private $remaining;
 

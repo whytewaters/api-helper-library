@@ -1,7 +1,4 @@
-<?php
-
-
-namespace RTBS\models;
+<?php namespace Rtbs\ApiHelper\Models;
 
 
 class Price {

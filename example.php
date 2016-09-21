@@ -1,9 +1,9 @@
 <?php
 
-require_once("autoload.php");
+require_once("vendor/autoload.php");
 require_once("config.php");
 
-$booking_service = new \RTBS\BookingServiceImpl();
+$booking_service = new Rtbs\ApiHelper\BookingServiceImpl();
 
 $categories = $booking_service->get_categories();
 
@@ -11,7 +11,7 @@ echo PHP_EOL."Suppliers...";
 $suppliers = $booking_service->get_suppliers();
 echo count($suppliers);
 
-/* @var $supplier RTBS\models\Supplier */
+/* @var $supplier Rtbs\ApiHelper\Models\Supplier */
 $supplier = $suppliers[0];
 $supplier_name = $supplier->get_name();
 $supplier_key = $supplier->get_supplier_key();
@@ -50,15 +50,16 @@ echo PHP_EOL."Sessions for " . $tour->get_name() . "...";
 $tour_keys = array($tour->get_tour_key());
 $date = date('Y-m-d', strtotime('tomorrow +1 week'));
 $sessions_and_advanced_dates = $booking_service->get_sessions_and_advance_dates($supplier->get_supplier_key(), $tour_keys, $date);
+
+/** @var Rtbs\ApiHelper\Models\Session[] $sessions */
 $sessions = $sessions_and_advanced_dates['sessions'];
 echo count($sessions);
 foreach ($sessions as $session) {
     echo PHP_EOL.'SESSION: ' . $session->get_datetime() . ' ' . ($session->is_open() ? 'OPEN' : 'CLOSED');
 }
 
-$advance_dates = $sessions_and_advanced_dates->advance_dates;
-if (!empty($advance_dates)) {
-    echo PHP_EOL."Found " . count($advance_dates) . " advance dates.";
+if (!empty($sessions_and_advanced_dates['advance_dates'])) {
+    echo PHP_EOL."Found " . count($sessions_and_advanced_dates['advance_dates']) . " advance dates.";
 }
 
 $found = false;
@@ -81,7 +82,7 @@ echo count($pickups);
 
 
 echo PHP_EOL,"Booking " . $tour->get_name() . " at " . $session->get_datetime() . "...";
-$booking = new \RTBS\models\Booking();
+$booking = new Rtbs\ApiHelper\Models\Booking();
 $booking->set_tour_key($session->get_tour_key());
 $booking->set_datetime($session->get_datetime());
 $booking->set_first_name("Mark");

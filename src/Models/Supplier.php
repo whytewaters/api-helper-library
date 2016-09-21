@@ -1,7 +1,4 @@
-<?php
-
-
-namespace RTBS\models;
+<?php namespace Rtbs\ApiHelper\Models;
 
 
 class Supplier {
@@ -15,9 +12,9 @@ class Supplier {
     private $latlng;
     private $currency_code;
 
-    private $tours = [];
-    private $tour_locations = [];
-    private $media = [];
+    private $tours = array();
+    private $tour_locations = array();
+    private $media = array();
 
     /**
      * @return mixed

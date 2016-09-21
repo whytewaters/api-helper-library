@@ -1,20 +1,19 @@
-<?php
+<?php namespace Rtbs\ApiHelper;
 
-
-namespace RTBS;
-
-
-use RTBS\models\Booking;
+use Rtbs\ApiHelper\Models\Booking;
+use Rtbs\ApiHelper\Models\Category;
+use Rtbs\ApiHelper\Models\Pickup;
+use Rtbs\ApiHelper\Models\Supplier;
 
 interface BookingService
 {
     /**
-     * @return models\Category[]
+     * @return Category[]
      */
     public function get_categories();
 
     /**
-     * @return models\Supplier[]
+     * @return Supplier[]
      */
     public function get_suppliers();
 
@@ -22,19 +21,19 @@ interface BookingService
      * @param $supplier_key
      * @param $tour_keys
      * @param $date
-     * @return associative array with two keys: sessions => Session[] and advanced_dates => mixed
+     * @return array associative array with two keys: sessions => Session[] and advanced_dates => mixed
      */
     public function get_sessions_and_advance_dates($supplier_key, $tour_keys, $date);
 
     /**
      * @param $tour_key
-     * @return models\Pickup[]
+     * @return Pickup[]
      */
     public function get_pickups($tour_key);
 
     /**
-     * @param $booking models\Booking
-     * @return string url | models\Booking
+     * @param $booking Booking
+     * @return string url | Booking
      */
     public function make_booking(Booking $booking);
 }

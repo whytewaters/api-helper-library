@@ -1,6 +1,9 @@
-<?php
+<?php namespace Rtbs\ApiHelper;
 
-namespace RTBS;
+use Rtbs\ApiHelper\Exceptions\ApiClientException;
+use Rtbs\ApiHelper\Models\AccommodationBooking;
+use Rtbs\ApiHelper\Models\Booking;
+use Rtbs\ApiHelper\Models\Itinerary;
 
 class APIClient {
 
@@ -96,7 +99,7 @@ class APIClient {
     }
 
     //returns a payment URL for the booking
-    function api_booking(\RTBS\models\Booking $booking) {
+    function api_booking(Booking $booking) {
         $method = '/api/booking';
         $data = $booking->to_raw_object();
         $content = "data=".rawurlencode( json_encode($data) );
@@ -197,7 +200,7 @@ class APIClient {
     //Makes an api call.
     protected function call($request, $opts = null) {
         if (substr($request, 0,5) !== "/api/") {
-            throw new Exception("All API requests must begin with /api/");
+            throw new ApiClientException("All API requests must begin with /api/");
         }
 
         //add key
@@ -208,13 +211,13 @@ class APIClient {
         $is_signature_needed = strpos($request, "/api/signature_seed") === false;
         if ($is_signature_needed) {
             if (empty($this->seed)) {
-                throw new Exception("Did not sign request: no seed");
+                throw new ApiClientException("Did not sign request: no seed");
             }
             if (!isset($this->seed->expires) || !isset($this->seed->seed)) {
-                throw new Exception("Did not sign request: seed invalid");
+                throw new ApiClientException("Did not sign request: seed invalid");
             }
             if (strtotime($this->seed->expires) < time()) {
-                throw new Exception("Did not sign request: seed expired");
+                throw new ApiClientException("Did not sign request: seed expired");
             }
             $signature = sha1($request . $this->seed->seed . $this->pwd);
             $request.="&signature=".$signature;
@@ -232,10 +235,10 @@ class APIClient {
 
         $response = json_decode($response_raw);
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new Exception("Server response invalid JSON format: ". $response_raw);
+            throw new ApiClientException("Server response invalid JSON format: ". $response_raw);
         }
         if (isset($response->success) && $response->success == false) {
-            throw new Exception("API call did not succeed: ". $response->message);
+            throw new ApiClientException("API call did not succeed: ". $response->message);
         }
         return $response;
     }
