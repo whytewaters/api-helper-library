@@ -1,9 +1,15 @@
 <?php
 
 require_once("vendor/autoload.php");
-require_once("config.php");
 
-$booking_service = new Rtbs\ApiHelper\BookingServiceImpl();
+// To get an API key contact http://whytewaters.com
+$credentials = array(
+    "host" => 'https://dev.rtbstraining.com',
+    "key" => 'YOUR_KEY_HERE',
+    "pwd" => 'YOUR_PASSWORD_HERE'
+);
+
+$booking_service = new Rtbs\ApiHelper\BookingServiceImpl($credentials);
 
 $categories = $booking_service->get_categories();
 

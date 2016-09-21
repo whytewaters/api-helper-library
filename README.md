@@ -1,13 +1,29 @@
-RTBS API Helper Classes
-====================
+# RTBS API Helper Classes
 
 This repository contains a set of helper classes that can be used to communicate with the RTBS API.
 
 **Please Note**
 All code is provided 'as is' for information purposes only.
 
-Copyright
----------
+## Installation
+
+Download and install composer from `http://www.getcomposer.org/download`
+
+Run the following command:
+```
+$ composer config repositories.whytewaters-api-client-helper git https://github.com/whytewaters/api-helper-library
+$ composer require whytewaters/api-helper-library
+```
+
+## Usage
+
+For usage example please see the [example.php](https://github.com/whytewaters/api-helper-library/master/example.php)
+
+## Documentation
+
+Contact http://whytewaters.com for full documentation
+
+## Copyright
 
  Copyright (c) 2016 Whyte Waters Limited
 

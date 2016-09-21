@@ -10,6 +10,15 @@ use Rtbs\ApiHelper\Models\Tour;
 
 class BookingServiceImpl implements BookingService {
     private $api_client;
+    private $credentials;
+
+    /**
+     * BookingServiceImpl constructor.
+     * @param array $credentials
+     */
+    public function __construct($credentials) {
+        $this->credentials = $credentials;
+    }
 
     /**
      * @return Category[]
@@ -115,13 +124,10 @@ class BookingServiceImpl implements BookingService {
         return Supplier::fromRaw($raw_supplier);
     }
 
+
     private function get_api_client() {
         if($this->api_client == null) {
-            $this->api_client = new APIClient(array(
-                "host" => RTBS_API_HOST,
-                "key" => RTBS_API_KEY,
-                "pwd" => RTBS_API_PASSWORD
-            ));
+            $this->api_client = new APIClient($this->credentials);
         }
 
         return $this->api_client;
