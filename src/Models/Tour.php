@@ -142,6 +142,9 @@ class Tour {
         return $this->info_date_range_notes;
     }
 
+    /**
+     * @return Price[]
+     */
     public function get_prices() {
         return $this->prices;
     }
