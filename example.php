@@ -11,8 +11,6 @@ $credentials = array(
 
 $booking_service = new Rtbs\ApiHelper\BookingServiceImpl($credentials);
 
-$categories = $booking_service->get_categories();
-
 echo PHP_EOL."Suppliers...";
 $suppliers = $booking_service->get_suppliers();
 echo count($suppliers);
