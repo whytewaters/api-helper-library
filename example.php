@@ -86,9 +86,9 @@ echo PHP_EOL,"Booking " . $tour->get_name() . " at " . $session->get_datetime() 
 $booking = new Rtbs\ApiHelper\Models\Booking();
 $booking->set_tour_key($session->get_tour_key());
 $booking->set_datetime($session->get_datetime());
-$booking->set_first_name("Mark");
-$booking->set_last_name("Crook");
-$booking->set_email("joe@yahoo.com");
+$booking->set_first_name("James");
+$booking->set_last_name("Hetfield");
+$booking->set_email("james.hetfield@fake.email");
 $booking->set_phone("0211234567");
 //$booking->set_promo_key(40226);
 
