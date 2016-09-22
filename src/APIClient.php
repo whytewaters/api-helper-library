@@ -18,13 +18,6 @@ class APIClient {
         if (isset($options['pwd'])) {
             $this->pwd = $options['pwd'];
         }
-
-        $this->seed = $this->api_signature_seed();
-    }
-
-    function api_signature_seed() {
-        $response = $this->call('/api/signature_seed');
-        return $response->signature_seed;
     }
 
     function api_categories() {
@@ -206,22 +199,6 @@ class APIClient {
         //add key
         $separator = strpos($request, '?') === false ? '?' : '&';
         $request .= $separator.'apikey='.$this->key;
-
-        //sign
-        $is_signature_needed = strpos($request, "/api/signature_seed") === false;
-        if ($is_signature_needed) {
-            if (empty($this->seed)) {
-                throw new ApiClientException("Did not sign request: no seed");
-            }
-            if (!isset($this->seed->expires) || !isset($this->seed->seed)) {
-                throw new ApiClientException("Did not sign request: seed invalid");
-            }
-            if (strtotime($this->seed->expires) < time()) {
-                throw new ApiClientException("Did not sign request: seed expired");
-            }
-            $signature = sha1($request . $this->seed->seed . $this->pwd);
-            $request.="&signature=".$signature;
-        }
 
         $url = $this->host.$request;
 
