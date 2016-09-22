@@ -9,19 +9,16 @@ $credentials = array(
     "pwd" => 'YOUR_PASSWORD_HERE'
 );
 
+
 $booking_service = new Rtbs\ApiHelper\BookingServiceImpl($credentials);
 
-echo PHP_EOL."Suppliers...";
-$suppliers = $booking_service->get_suppliers();
-echo count($suppliers);
+$supplier_key = "";//a supplier key, as provided to you by Whytewaters
+
+$supplier = $booking_service->get_supplier($supplier_key);
+$supplier_name = $supplier->get_name();
+echo PHP_EOL . "Details for $supplier_name...";
 
 /* @var $supplier Rtbs\ApiHelper\Models\Supplier */
-$supplier = $suppliers[0];
-$supplier_name = $supplier->get_name();
-$supplier_key = $supplier->get_supplier_key();
-
-echo PHP_EOL . "Details for $supplier_name...";
-$supplier = $booking_service->get_supplier($supplier_key);
 echo count($supplier->get_tours()) . ' tours.';
 if (count($supplier->get_tours()) < 1) {
     echo " Stopping.";
