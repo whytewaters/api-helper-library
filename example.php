@@ -12,7 +12,7 @@ $credentials = array(
 
 $booking_service = new Rtbs\ApiHelper\BookingServiceImpl($credentials);
 
-$supplier_key = "";//a supplier key, as provided to you by Whytewaters
+$supplier_key = "s3qmgijy4a";//a Demonstration Supplier Key. Replace with a Supplier Key as provided to you by Whytewaters
 
 $supplier = $booking_service->get_supplier($supplier_key);
 $supplier_name = $supplier->get_name();
