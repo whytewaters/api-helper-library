@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Pacific/Auckland');
 
 require_once("vendor/autoload.php");
 
