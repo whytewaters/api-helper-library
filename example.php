@@ -72,7 +72,7 @@ foreach ($sessions as $session) {
     }
 }
 if (!$found) {
-    echo PHP_EOL."No valid sessions found, stopping.";
+    echo PHP_EOL."No open sessions with prices found, stopping.";
     echo PHP_EOL;
     return ;
 }
@@ -99,7 +99,7 @@ $price = $prices[0];
 $booking->add_price_selection($price, 1);
 
 $url_or_booking = $booking_service->make_booking($booking);
-echo PHP_EOL, "Booking done. Payment url is : " . $url_or_booking;
+echo PHP_EOL, "Booking done. Response is : " . var_export($url_or_booking, true);
 
 echo PHP_EOL;
 echo PHP_EOL;
