@@ -28,6 +28,8 @@ class Booking {
     private $total_disc;
     private $total_inc_disc;
     private $fields;
+    private $return_url;
+    private $pickup_key;
 
     /**
      * @return mixed
@@ -405,6 +407,19 @@ class Booking {
         return $this->price_selections;
     }
 
+    /**
+     * @param string $return_url
+     */
+    public function set_return_url($return_url) {
+        $this->return_url = $return_url;
+    }
+
+    /**
+     * @param string $pickup_key
+     */
+    public function set_pickup_key($pickup_key) {
+        $this->pickup_key = $pickup_key;
+    }
 
 
     public function to_raw_object() {
@@ -420,7 +435,15 @@ class Booking {
 
         if(is_numeric($this->get_promo_key())) {
             $raw_object['promo_key'] = $this->get_promo_key();
-        };
+        }
+
+        if (!empty($this->return_url)) {
+            $raw_object['return_url'] = $this->return_url;
+        }
+
+        if (!empty($this->pickup_key)) {
+            $raw_object['pickup_key'] = $this->pickup_key;
+        }
 
         return $raw_object;
     }
