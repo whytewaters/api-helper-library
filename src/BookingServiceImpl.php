@@ -110,7 +110,7 @@ class BookingServiceImpl implements BookingService {
 
     /**
      *
-     * @param $supplier_key
+     * @param string $supplier_key
      * @return Supplier
      * @throws ModelNotFoundException
      */

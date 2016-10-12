@@ -392,6 +392,13 @@ class Booking {
         );
     }
 
+    public function add_price_selection_keys($price_key, $quantity) {
+        $this->price_selections[] = array(
+            'price_key' => $price_key,
+            'qty' => $quantity
+        );
+    }
+
     protected function add_price(Price $price) {
         $this->prices[] = $price;
     }
