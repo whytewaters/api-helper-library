@@ -249,7 +249,13 @@ class Price {
         if(property_exists($raw_price, 'price_category_key')) $price->set_price_category_key($raw_price->price_category_key);
         if(property_exists($raw_price, 'price_category_name')) $price->set_price_category_name($raw_price->price_category_name);
         if(property_exists($raw_price, 'passenger_count')) $price->set_passenger_count($raw_price->passenger_count);
-        if(property_exists($raw_price, 'name')) $price->set_name($raw_price->name);
+
+	    // sessions api calls it price name
+	    if(property_exists($raw_price, 'price_name')) $price->set_name($raw_price->price_name);
+	    
+	    // tours api calls it name
+	    if(property_exists($raw_price, 'name')) $price->set_name($raw_price->name);
+
         if(property_exists($raw_price, 'description')) $price->set_description($raw_price->description);
         if(property_exists($raw_price, 'rate')) $price->set_rate($raw_price->rate);
         if(property_exists($raw_price, 'price_code')) $price->set_price_code($raw_price->price_code);
