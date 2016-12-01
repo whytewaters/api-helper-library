@@ -407,6 +407,13 @@ class Booking {
         return $this->prices;
     }
 
+    public function add_field_data($name, $value) {
+    	$this->fields[] = [
+    		'name' => $name,
+		    'value' => $value
+	    ];
+    }
+
     /**
      * @return array
      */
@@ -450,6 +457,10 @@ class Booking {
 
         if (!empty($this->pickup_key)) {
             $raw_object['pickup_key'] = $this->pickup_key;
+        }
+
+        if (!empty($this->fields)) {
+        	$raw_object['fields'] = $this->fields;
         }
 
         return $raw_object;

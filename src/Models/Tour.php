@@ -11,7 +11,12 @@ class Tour {
     private $info_bring;
     private $info_provided;
     private $info_transport;
+
+    /** @var Price[] */
     private $prices = array();
+
+    /** @var Field[] */
+	private $fields = array();
 
     /**
      * @return mixed
@@ -134,6 +139,10 @@ class Tour {
         $this->prices[] = $price;
     }
 
+	public function add_field(Field $field) {
+		$this->fields[] = $field;
+	}
+
     /**
      * @return array
      */
@@ -149,7 +158,15 @@ class Tour {
         return $this->prices;
     }
 
-    public static function from_raw($raw_tour) {
+	/**
+	 * @return Field[]
+	 */
+	public function get_fields() {
+		return $this->fields;
+	}
+
+
+	public static function from_raw($raw_tour) {
         $tour = new Tour();
 
         $tour->set_name($raw_tour->name);
@@ -190,6 +207,12 @@ class Tour {
                 $tour->add_price(Price::from_raw($raw_price));
             }
         }
+
+        if (property_exists($raw_tour, 'fields') && is_array($raw_tour->fields)) {
+	        foreach($raw_tour->fields as $raw_field) {
+		        $tour->add_field(Field::from_raw($raw_field));
+	        }
+	    }
 
         return $tour;
     }
