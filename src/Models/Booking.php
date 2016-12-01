@@ -408,10 +408,10 @@ class Booking {
     }
 
     public function add_field_data($name, $value) {
-    	$this->fields[] = [
+    	$this->fields[] = array(
     		'name' => $name,
 		    'value' => $value
-	    ];
+	    );
     }
 
     /**
