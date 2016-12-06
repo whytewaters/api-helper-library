@@ -463,6 +463,10 @@ class Booking {
         	$raw_object['fields'] = $this->fields;
         }
 
+        if (!empty($this->comment)) {
+            $raw_object['comment'] = $this->comment;
+        }
+
         return $raw_object;
     }
 
