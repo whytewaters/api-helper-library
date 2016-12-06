@@ -218,7 +218,7 @@ class Booking {
     /**
      * @param mixed $comment
      */
-    protected function set_comment($comment)
+    public function set_comment($comment)
     {
         $this->comment = $comment;
     }
