@@ -118,7 +118,7 @@ class BookingServiceImpl implements BookingService {
         $raw_supplier = $this->get_api_client()->api_supplier($supplier_key);
 
         if($raw_supplier == null) {
-            throw new ModelNotFoundException();
+            throw new ModelNotFoundException('Supplier Not Found, check Expose to API setting in RTBS');
         }
 
         return Supplier::fromRaw($raw_supplier);
