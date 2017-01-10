@@ -48,7 +48,7 @@ class SessionAndAdvanceDates {
         $earliest_date = null;
 
         foreach ($this->advance_dates as $advance_date) {
-            if ($earliest_date == null || $advance_date['date'] < $earliest_date) {
+            if ($earliest_date == null || $advance_date->date < $earliest_date) {
                 $earliest_date = $advance_date->date;
             }
         }

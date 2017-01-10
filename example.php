@@ -7,7 +7,6 @@ require_once("vendor/autoload.php");
 $credentials = array(
     "host" => 'https://dev.rtbstraining.com',
     "key" => 'YOUR_KEY_HERE',
-    "pwd" => 'YOUR_PASSWORD_HERE'
 );
 
 
