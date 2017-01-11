@@ -43,9 +43,9 @@ class SessionAndAdvanceDates {
 
     /**
      * @param array|string $tour_keys
-     * @return null|string first open session datetime, or null if none exists
+     * @return null|string first available session datetime, or null if none exists
      */
-    public function get_first_open_session_datetime($tour_keys = null) {
+    public function get_first_available_session_datetime($tour_keys = null) {
 
         $first_open_datetime = null;
 
@@ -56,10 +56,6 @@ class SessionAndAdvanceDates {
         foreach ($this->sessions as $session) {
 
             if (!empty($tour_keys) && !in_array($session->get_tour_key(), $tour_keys)) {
-                continue;
-            }
-
-            if (!$session->is_open()) {
                 continue;
             }
 
