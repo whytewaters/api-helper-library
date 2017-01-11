@@ -218,7 +218,7 @@ class Booking {
     /**
      * @param mixed $comment
      */
-    protected function set_comment($comment)
+    public function set_comment($comment)
     {
         $this->comment = $comment;
     }
@@ -461,6 +461,10 @@ class Booking {
 
         if (!empty($this->fields)) {
         	$raw_object['fields'] = $this->fields;
+        }
+
+        if (!empty($this->comment)) {
+            $raw_object['comment'] = $this->comment;
         }
 
         return $raw_object;

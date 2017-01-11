@@ -7,7 +7,6 @@ require_once("vendor/autoload.php");
 $credentials = array(
     "host" => 'https://dev.rtbstraining.com',
     "key" => 'YOUR_KEY_HERE',
-    "pwd" => 'YOUR_PASSWORD_HERE'
 );
 
 
@@ -53,14 +52,13 @@ $tour_keys = array($tour->get_tour_key());
 $date = date('Y-m-d', strtotime('tomorrow +1 week'));
 $sessions_and_advanced_dates = $booking_service->get_sessions_and_advance_dates($supplier->get_supplier_key(), $tour_keys, $date);
 
-/** @var Rtbs\ApiHelper\Models\Session[] $sessions */
-$sessions = $sessions_and_advanced_dates['sessions'];
+$sessions = $sessions_and_advanced_dates->get_sessions();
 echo count($sessions);
 foreach ($sessions as $session) {
     echo PHP_EOL.'SESSION: ' . $session->get_datetime() . ' ' . ($session->is_open() ? 'OPEN' : 'CLOSED');
 }
 
-if (!empty($sessions_and_advanced_dates['advance_dates'])) {
+if (!empty($sessions_and_advanced_dates->get_advance_dates())) {
     echo PHP_EOL."Found " . count($sessions_and_advanced_dates['advance_dates']) . " advance dates.";
 }
 

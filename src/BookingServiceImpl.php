@@ -5,6 +5,7 @@ use Rtbs\ApiHelper\Models\Booking;
 use Rtbs\ApiHelper\Models\Category;
 use Rtbs\ApiHelper\Models\Pickup;
 use Rtbs\ApiHelper\Models\Session;
+use Rtbs\ApiHelper\Models\SessionAndAdvanceDates;
 use Rtbs\ApiHelper\Models\Supplier;
 use Rtbs\ApiHelper\Models\Tour;
 
@@ -37,25 +38,23 @@ class BookingServiceImpl implements BookingService {
     }
 
     /**
-     * @param $supplier_key
-     * @param $tour_keys
-     * @param $date
+     * @param string $supplier_key
+     * @param string|array $tour_keys
+     * @param string $date
      * @param bool $search_next_available
-     * @return array
+     * @return SessionAndAdvanceDates
      */
     public function get_sessions_and_advance_dates($supplier_key, $tour_keys, $date, $search_next_available = false) {
-        $sessions_and_advance_dates = array(
-            'sessions' => array(),
-            'advance_dates' => array(),
-        );
 
         $response = $this->get_api_client()->api_sessions($supplier_key, $tour_keys, $date, $search_next_available);
 
+        $sessions_and_advance_dates = new SessionAndAdvanceDates();
+
         foreach($response->sessions as $raw_session) {
-            $sessions_and_advance_dates['sessions'][] = Session::from_raw($raw_session);
+            $sessions_and_advance_dates->add_session(Session::from_raw($raw_session));
         }
 
-        $sessions_and_advance_dates['advance_dates'] = $response->advance_dates;
+        $sessions_and_advance_dates->set_advance_dates($response->advance_dates);
 
         return $sessions_and_advance_dates;
     }
@@ -119,7 +118,7 @@ class BookingServiceImpl implements BookingService {
         $raw_supplier = $this->get_api_client()->api_supplier($supplier_key);
 
         if($raw_supplier == null) {
-            throw new ModelNotFoundException();
+            throw new ModelNotFoundException('Supplier Not Found, check Expose to API setting in RTBS');
         }
 
         return Supplier::fromRaw($raw_supplier);
