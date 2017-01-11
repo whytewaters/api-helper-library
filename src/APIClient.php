@@ -140,9 +140,12 @@ class APIClient {
         return $response;
     }
 
-    function api_pay_itinerary(Itinerary $itinerary) {
+    function api_pay_itinerary($itinerary_key) {
         $method = '/api/pay-itinerary';
-        $data = get_object_vars($itinerary);
+        $data = [
+            'itinerary_key' => $itinerary_key
+        ];
+
         $content = "data=".rawurlencode( json_encode($data) );
 
         $referrer = isset($_SERVER['SCRIPT_URI']) ? $_SERVER['SCRIPT_URI'] : 'Demonstration';

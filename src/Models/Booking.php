@@ -30,6 +30,7 @@ class Booking {
     private $fields;
     private $return_url;
     private $pickup_key;
+    private $itinerary_key;
 
     /**
      * @return mixed
@@ -467,6 +468,10 @@ class Booking {
             $raw_object['comment'] = $this->comment;
         }
 
+        if (!empty($this->itinerary_key)) {
+            $raw_object['itinerary_key'] = $this->itinerary_key;
+        }
+
         return $raw_object;
     }
 
@@ -494,5 +499,9 @@ class Booking {
         foreach($raw_booking->prices as $raw_price) {
             $this->add_price(Price::from_raw($raw_price));
         }
+    }
+
+    public function set_itinerary_key($itinerary_key) {
+        $this->itinerary_key = $itinerary_key;
     }
 }

@@ -36,4 +36,14 @@ interface BookingService
      * @return string url | Booking
      */
     public function make_booking(Booking $booking);
+
+    /**
+     *
+     * @param string $first_name
+     * @param string $last_name
+     * @param string $email
+     * @param string $phone
+     * @return \Rtbs\ApiHelper\Models\Customer
+     */
+    public function create_customer($first_name, $last_name, $email, $phone);
 }
