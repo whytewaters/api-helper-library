@@ -40,15 +40,16 @@ class BookingServiceImpl implements BookingService {
      * @param $supplier_key
      * @param $tour_keys
      * @param $date
+     * @param bool $search_next_available
      * @return array
      */
-    public function get_sessions_and_advance_dates($supplier_key, $tour_keys, $date) {
+    public function get_sessions_and_advance_dates($supplier_key, $tour_keys, $date, $search_next_available = false) {
         $sessions_and_advance_dates = array(
             'sessions' => array(),
             'advance_dates' => array(),
         );
 
-        $response = $this->get_api_client()->api_sessions($supplier_key, $tour_keys, $date);
+        $response = $this->get_api_client()->api_sessions($supplier_key, $tour_keys, $date, $search_next_available);
 
         foreach($response->sessions as $raw_session) {
             $sessions_and_advance_dates['sessions'][] = Session::from_raw($raw_session);
