@@ -49,7 +49,7 @@ class SessionAndAdvanceDates {
         $earliest_date = null;
 
         if (!empty($tour_keys) && !is_array($tour_keys)) {
-            $tour_keys = [$tour_keys];
+            $tour_keys = array($tour_keys);
         }
 
         foreach ($this->advance_dates as $advance_date) {
@@ -58,13 +58,49 @@ class SessionAndAdvanceDates {
                 continue;
             }
 
-            if ($earliest_date == null || $advance_date->date < $earliest_date) {
+            if (empty($earliest_date)) {
+                $earliest_date = $advance_date->date;
+            }
+
+            if ($advance_date->date < $earliest_date) {
                 $earliest_date = $advance_date->date;
             }
         }
 
         return $earliest_date;
     }
+
+
+    /**
+     * @param array|string $tour_keys
+     * @return null|string first available date, or null if none exists
+     */
+    public function get_first_available_session_date($tour_keys = null) {
+
+        $first_available_date = null;
+
+        if (!empty($tour_keys) && !is_array($tour_keys)) {
+            $tour_keys = array($tour_keys);
+        }
+
+        foreach ($this->sessions as $session) {
+
+            if (!empty($tour_keys) && !in_array($session->get_tour_key(), $tour_keys)) {
+                continue;
+            }
+
+            if (empty($first_available_date)) {
+                $first_available_date = $session->get_datetime();
+            }
+
+            if ($session->get_datetime() < $first_available_date) {
+                $first_available_date = $session->get_datetime();
+            }
+        }
+        return $first_available_date;
+    }
+
+
 
     /**
      * Checks if any of the sessions are open. If not, then you should requery the sessions using the get_earliest_advance_date
