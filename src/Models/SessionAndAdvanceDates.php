@@ -40,37 +40,34 @@ class SessionAndAdvanceDates {
         $this->advance_dates = $advance_dates;
     }
 
-    /**
-     * @return string|null earliest advanced date, or null if none exists
-     */
-    public function get_earliest_advance_date()
-    {
-        $earliest_date = null;
 
-        foreach ($this->advance_dates as $advance_date) {
-            if ($earliest_date == null || $advance_date->date < $earliest_date) {
-                $earliest_date = $advance_date->date;
-            }
+    /**
+     * @param array|string $tour_keys
+     * @return null|string first available session datetime, or null if none exists
+     */
+    public function get_first_available_session_datetime($tour_keys = null) {
+
+        $first_open_datetime = null;
+
+        if (!empty($tour_keys) && !is_array($tour_keys)) {
+            $tour_keys = array($tour_keys);
         }
-
-        return $earliest_date;
-    }
-
-    /**
-     * Checks if any of the sessions are open. If not, then you should requery the sessions using the get_earliest_advance_date
-     * @return bool
-     */
-    public function has_open_session()
-    {
-        $has_open_session = false;
 
         foreach ($this->sessions as $session) {
-            if ($session->is_open()) {
-                $has_open_session = true;
-                break;
+
+            if (!empty($tour_keys) && !in_array($session->get_tour_key(), $tour_keys)) {
+                continue;
+            }
+
+            if (empty($first_open_datetime)) {
+                $first_open_datetime = $session->get_datetime();
+            }
+
+            if ($session->get_datetime() < $first_open_datetime) {
+                $first_open_datetime = $session->get_datetime();
             }
         }
-
-        return $has_open_session;
+        return $first_open_datetime;
     }
+    
 }

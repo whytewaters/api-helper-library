@@ -43,11 +43,12 @@ class BookingServiceImpl implements BookingService {
      * @param string $supplier_key
      * @param string|array $tour_keys
      * @param string $date
+     * @param bool $search_next_available
      * @return SessionAndAdvanceDates
      */
-    public function get_sessions_and_advance_dates($supplier_key, $tour_keys, $date) {
+    public function get_sessions_and_advance_dates($supplier_key, $tour_keys, $date, $search_next_available = false) {
 
-        $response = $this->get_api_client()->api_sessions($supplier_key, $tour_keys, $date);
+        $response = $this->get_api_client()->api_sessions($supplier_key, $tour_keys, $date, $search_next_available);
 
         $sessions_and_advance_dates = new SessionAndAdvanceDates();
 
@@ -112,7 +113,7 @@ class BookingServiceImpl implements BookingService {
     /**
      *
      * @param string $supplier_key
-     * @return \Rtbs\ApiHelper\Models\Supplier
+     * @return Supplier
      * @throws ModelNotFoundException
      */
     public function get_supplier($supplier_key) {
