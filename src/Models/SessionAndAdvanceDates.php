@@ -40,14 +40,30 @@ class SessionAndAdvanceDates {
         $this->advance_dates = $advance_dates;
     }
 
+    /**
+     * @return string
+     */
+    public function get_first_advance_date()
+    {
+        $earliest_advance_date = null;
+
+        foreach ($this->advance_dates as $advance_date) {
+            if ($earliest_advance_date == null || $earliest_advance_date > $advance_date->date) {
+                $earliest_advance_date = $advance_date->date;
+            }
+        }
+
+        return $earliest_advance_date;
+    }
 
     /**
      * @param array|string $tour_keys
+     * @param bool $open_only
      * @return null|string first available session datetime, or null if none exists
      */
-    public function get_first_available_session_datetime($tour_keys = null) {
+    public function get_first_available_session_datetime($tour_keys = null, $open_only = false) {
 
-        $first_open_datetime = null;
+        $first_available_datetime = null;
 
         if (!empty($tour_keys) && !is_array($tour_keys)) {
             $tour_keys = array($tour_keys);
@@ -59,15 +75,19 @@ class SessionAndAdvanceDates {
                 continue;
             }
 
-            if (empty($first_open_datetime)) {
-                $first_open_datetime = $session->get_datetime();
+            if ($open_only && !$session->is_open()) {
+                continue;
             }
 
-            if ($session->get_datetime() < $first_open_datetime) {
-                $first_open_datetime = $session->get_datetime();
+            if (empty($first_available_datetime)) {
+                $first_available_datetime = $session->get_datetime();
+            }
+
+            if ($session->get_datetime() < $first_available_datetime) {
+                $first_available_datetime = $session->get_datetime();
             }
         }
-        return $first_open_datetime;
+        return $first_available_datetime;
     }
-    
+
 }
