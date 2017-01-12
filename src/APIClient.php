@@ -77,11 +77,11 @@ class APIClient {
     }
 
     //NOTE! returns an object with potentially two properties: 'sessions' & 'advance_dates'
-    function api_sessions($supplier_key, $tour_keys, $date, $search_next_available = false) {
-        $pattern = "/api/sessions?supplier=%s&tours=%s&date=%s&search_next_available=%d";
+    function api_sessions($supplier_key, $tour_keys, $date, $search_next_available = false, $days = 1) {
+        $pattern = "/api/sessions?supplier=%s&tours=%s&date=%s&search_next_available=%d&days=%d";
         $tours = is_array($tour_keys) ? implode(",", $tour_keys) : $tour_keys;
         $search_next_available = ($search_next_available) ? 1 : 0;
-        $request = sprintf($pattern, $supplier_key, $tours, $date, $search_next_available);
+        $request = sprintf($pattern, $supplier_key, $tours, $date, $search_next_available, $days);
         $response = $this->call($request);
         return $response;
     }
@@ -141,9 +141,12 @@ class APIClient {
         return $response;
     }
 
-    function api_pay_itinerary(Itinerary $itinerary) {
+    function api_pay_itinerary($itinerary_key) {
         $method = '/api/pay-itinerary';
-        $data = get_object_vars($itinerary);
+        $data = [
+            'itinerary_key' => $itinerary_key
+        ];
+
         $content = "data=".rawurlencode( json_encode($data) );
 
         $referrer = isset($_SERVER['SCRIPT_URI']) ? $_SERVER['SCRIPT_URI'] : 'Demonstration';

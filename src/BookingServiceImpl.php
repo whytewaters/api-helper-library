@@ -3,11 +3,13 @@
 use Rtbs\ApiHelper\Exceptions\ModelNotFoundException;
 use Rtbs\ApiHelper\Models\Booking;
 use Rtbs\ApiHelper\Models\Category;
+use Rtbs\ApiHelper\Models\Customer;
 use Rtbs\ApiHelper\Models\Pickup;
 use Rtbs\ApiHelper\Models\Session;
 use Rtbs\ApiHelper\Models\SessionAndAdvanceDates;
 use Rtbs\ApiHelper\Models\Supplier;
 use Rtbs\ApiHelper\Models\Tour;
+use Rtbs\ApiHelper\Models\Itinerary;
 
 class BookingServiceImpl implements BookingService {
     private $api_client;
@@ -42,11 +44,12 @@ class BookingServiceImpl implements BookingService {
      * @param string|array $tour_keys
      * @param string $date
      * @param bool $search_next_available
+     * @param int $days
      * @return SessionAndAdvanceDates
      */
-    public function get_sessions_and_advance_dates($supplier_key, $tour_keys, $date, $search_next_available = false) {
+    public function get_sessions_and_advance_dates($supplier_key, $tour_keys, $date, $search_next_available = false, $days = 1) {
 
-        $response = $this->get_api_client()->api_sessions($supplier_key, $tour_keys, $date, $search_next_available);
+        $response = $this->get_api_client()->api_sessions($supplier_key, $tour_keys, $date, $search_next_available, $days);
 
         $sessions_and_advance_dates = new SessionAndAdvanceDates();
 
@@ -148,5 +151,39 @@ class BookingServiceImpl implements BookingService {
             $booking->from_raw($response->booking);
             return $booking;
         }
+    }
+
+    /**
+     *
+     * @param string $first_name
+     * @param string $last_name
+     * @param string $email
+     * @param string $phone
+     * @return \Rtbs\ApiHelper\Models\Customer
+     */
+    public function create_customer($first_name, $last_name, $email, $phone) {
+        $raw_customer = $this->get_api_client()->api_create_customer($first_name, $last_name, $email, $phone);
+
+        return Customer::fromRaw($raw_customer->customer);
+    }
+
+    /**
+     * @param Customer $customer
+     * @return \Rtbs\ApiHelper\Models\Itinerary
+     */
+    public function create_itinerary(Customer $customer) {
+        $raw_itinerary = $this->get_api_client()->api_create_itinerary($customer->get_customer_key());
+
+        return Itinerary::from_raw($raw_itinerary->itinerary);
+    }
+
+    /**
+     * @param Itinerary $itinerary
+     * @return string payment_url
+     */
+    public function pay_itinerary(Itinerary $itinerary) {
+        $response = $this->get_api_client()->api_pay_itinerary($itinerary->get_itinerary_key());
+
+        return $response->url;
     }
 }
