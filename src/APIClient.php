@@ -273,4 +273,33 @@ class APIClient {
         $response = $this->call($method, $opts);
         return $response;
     }
+
+    public function api_reserve_capacity($tour_key, $datetime, $pax, $expiry_mins = 15)
+    {
+        $method = '/api/reserve-capacity';
+        $data = array(
+            'tour_key' => $tour_key,
+            'datetime' => $datetime,
+            'pax' => $pax,
+            'expiry_mins' => $expiry_mins,
+        );
+
+        $content = "data=" . rawurlencode(json_encode($data));
+        $referrer = isset($_SERVER['SCRIPT_URI']) ? $_SERVER['SCRIPT_URI'] : 'Demonstration';
+
+        $opts = array(
+            'http' => array(
+                'method' => 'POST',
+                'header' => array(
+                    "Content-type: application/x-www-form-urlencoded",
+                    "Referer: " . $referrer,
+                    "Connection: close",
+                    "Accept-language: en"
+                ),
+                'content' => $content,
+            ),
+        );
+        $response = $this->call($method, $opts);
+        return $response;
+    }
 }

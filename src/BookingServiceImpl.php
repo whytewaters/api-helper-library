@@ -10,6 +10,7 @@ use Rtbs\ApiHelper\Models\SessionAndAdvanceDates;
 use Rtbs\ApiHelper\Models\Supplier;
 use Rtbs\ApiHelper\Models\Tour;
 use Rtbs\ApiHelper\Models\Itinerary;
+use Rtbs\ApiHelper\Models\CapacityHold;
 
 class BookingServiceImpl implements BookingService {
     private $api_client;
@@ -185,5 +186,22 @@ class BookingServiceImpl implements BookingService {
         $response = $this->get_api_client()->api_pay_itinerary($itinerary->get_itinerary_key());
 
         return $response->url;
+    }
+
+    /**
+     * @param string $tour_key
+     * @param \DateTime|string $trip_datetime
+     * @param int $pax
+     * @return string
+     */
+    public function reserve_capacity($tour_key, $trip_datetime, $pax)
+    {
+        if ($trip_datetime instanceof \DateTime) {
+            $trip_datetime = $trip_datetime->format('Y-m-d\TH:i:sO');
+        }
+
+        $raw_capacity_hold = $this->get_api_client()->api_reserve_capacity($tour_key, $trip_datetime, $pax);
+
+        return CapacityHold::from_raw($raw_capacity_hold);
     }
 }

@@ -31,6 +31,7 @@ class Booking {
     private $return_url;
     private $pickup_key;
     private $itinerary_key;
+    private $capacity_hold_key;
 
     /**
      * @return mixed
@@ -299,11 +300,15 @@ class Booking {
     }
 
     /**
-     * @param mixed $datetime
+     * @param \DateTime|string $datetime
      */
     public function set_datetime($datetime)
     {
-        $this->datetime = $datetime;
+        if ($datetime instanceof \DateTime) {
+            $this->datetime = $datetime->format('Y-m-d H:i:s');
+        } else {
+            $this->datetime = $datetime;
+        }
     }
 
     /**
@@ -437,6 +442,16 @@ class Booking {
     }
 
 
+    public function set_itinerary_key($itinerary_key) {
+        $this->itinerary_key = $itinerary_key;
+    }
+
+    public function set_capacity_hold_key($capacity_hold_key)
+    {
+        $this->capacity_hold_key = $capacity_hold_key;
+    }
+
+
     public function to_raw_object() {
         $raw_object = array(
             'tour_key' => $this->get_tour_key(),
@@ -472,6 +487,10 @@ class Booking {
             $raw_object['itinerary_key'] = $this->itinerary_key;
         }
 
+        if (!empty($this->capacity_hold_key)) {
+            $raw_object['capacity_hold_key'] = $this->capacity_hold_key;
+        }
+
         return $raw_object;
     }
 
@@ -499,9 +518,5 @@ class Booking {
         foreach($raw_booking->prices as $raw_price) {
             $this->add_price(Price::from_raw($raw_price));
         }
-    }
-
-    public function set_itinerary_key($itinerary_key) {
-        $this->itinerary_key = $itinerary_key;
     }
 }
