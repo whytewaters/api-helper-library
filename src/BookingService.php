@@ -46,4 +46,12 @@ interface BookingService
      * @return \Rtbs\ApiHelper\Models\Customer
      */
     public function create_customer($first_name, $last_name, $email, $phone);
+
+    /**
+     * @param string $tour_key
+     * @param \DateTime|string $trip_datetime
+     * @param int $pax
+     * @return string
+     */
+    public function reserve_capacity($tour_key, $trip_datetime, $pax);
 }
