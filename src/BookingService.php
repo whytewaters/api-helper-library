@@ -48,10 +48,11 @@ interface BookingService
     public function create_customer($first_name, $last_name, $email, $phone);
 
     /**
+     * @param string $supplier_key
      * @param string $tour_key
      * @param \DateTime|string $trip_datetime
      * @param int $pax
      * @return string
      */
-    public function reserve_capacity($tour_key, $trip_datetime, $pax);
+    public function reserve_capacity($supplier_key, $tour_key, $trip_datetime, $pax);
 }

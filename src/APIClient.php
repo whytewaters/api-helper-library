@@ -274,9 +274,23 @@ class APIClient {
         return $response;
     }
 
-    public function api_reserve_capacity($tour_key, $datetime, $pax, $expiry_mins = 15)
+
+    /**
+     * @param string $supplier_key
+     * @param string $tour_key
+     * @param \DateTime|string $datetime
+     * @param int $pax
+     * @param int $expiry_mins
+     * @return mixed
+     */
+    public function api_reserve_capacity($supplier_key, $tour_key, $datetime, $pax, $expiry_mins = 15)
     {
-        $method = '/api/reserve-capacity';
+        if ($datetime instanceof \DateTime) {
+            $datetime = $datetime->format('Y-m-d H:i:s');
+        }
+
+
+        $method = '/api/reserve-capacity?' . http_build_query(['supplier' => $supplier_key]);
         $data = array(
             'tour_key' => $tour_key,
             'datetime' => $datetime,
