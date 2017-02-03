@@ -5,7 +5,10 @@ class Session {
     private $datetime;
     private $tour_key;
     private $open;
+
+    /** @var Price[] $prices */
     private $prices = array();
+
     private $state;
     private $remaining;
 
@@ -56,7 +59,7 @@ class Session {
     }
 
     /**
-     * @return array
+     * @return Price[]
      */
     public function get_prices()
     {
@@ -64,7 +67,7 @@ class Session {
     }
 
     /**
-     * @param array $prices
+     * @param Price[] $prices
      */
     public function set_prices($prices)
     {

@@ -96,21 +96,8 @@ class APIClient {
     function api_booking(Booking $booking) {
         $method = '/api/booking';
         $data = $booking->to_raw_object();
-        $content = "data=".rawurlencode( json_encode($data) );
-        $referrer = isset($_SERVER['SCRIPT_URI']) ? $_SERVER['SCRIPT_URI'] : 'Demonstration';
 
-        $opts=array(
-            'http' => array(
-                'method'  => 'POST',
-                'header'  => array(
-                    "Content-type: application/x-www-form-urlencoded",
-                    "Referer: " . $referrer ,
-                    "Connection: close",
-                    "Accept-language: en"
-                ),
-                'content' => $content,
-            ),
-        );
+        $opts = $this->build_opts($data);
         $response = $this->call($method, $opts);
         return $response;
     }
@@ -122,21 +109,8 @@ class APIClient {
             'booking_id' => $booking_id,
             'booking_type' => $booking_type
         );
-        $content = "data=".rawurlencode( json_encode($data) );
-        $referrer = isset($_SERVER['SCRIPT_URI']) ? $_SERVER['SCRIPT_URI'] : 'Demonstration';
 
-        $opts=array(
-            'http' => array(
-                'method'  => 'POST',
-                'header'  => array(
-                    "Content-type: application/x-www-form-urlencoded",
-                    "Referer: " . $referrer ,
-                    "Connection: close",
-                    "Accept-language: en",
-                ),
-                'content' => $content,
-            ),
-        );
+        $opts = $this->build_opts($data);
         $response = $this->call($method, $opts);
         return $response;
     }
@@ -147,22 +121,7 @@ class APIClient {
             'itinerary_key' => $itinerary_key
         ];
 
-        $content = "data=".rawurlencode( json_encode($data) );
-
-        $referrer = isset($_SERVER['SCRIPT_URI']) ? $_SERVER['SCRIPT_URI'] : 'Demonstration';
-
-        $opts=array(
-            'http' => array(
-                'method'  => 'POST',
-                'header'  => array(
-                    "Content-type: application/x-www-form-urlencoded",
-                    "Referer: " . $referrer ,
-                    "Connection: close",
-                    "Accept-language: en",
-                ),
-                'content' => $content,
-            ),
-        );
+        $opts = $this->build_opts($data);
         $response = $this->call($method, $opts);
         return $response;
     }
@@ -175,21 +134,7 @@ class APIClient {
             'additional_customer_keys' => $additional_customer_keys
         );
 
-        $content = "data=".rawurlencode( json_encode($data) );
-        $referrer = isset($_SERVER['SCRIPT_URI']) ? $_SERVER['SCRIPT_URI'] : 'Demonstration';
-
-        $opts=array(
-            'http' => array(
-                'method'  => 'POST',
-                'header'  => array(
-                    "Content-type: application/x-www-form-urlencoded",
-                    "Referer: " . $referrer ,
-                    "Connection: close",
-                    "Accept-language: en",
-                ),
-                'content' => $content,
-            ),
-        );
+        $opts = $this->build_opts($data);
         $response = $this->call($method, $opts);
         return $response;
     }
@@ -203,6 +148,8 @@ class APIClient {
         //add key
         $separator = strpos($request, '?') === false ? '?' : '&';
         $request .= $separator.'apikey='.$this->key;
+
+        $request .= "&XDEBUG_SESSION_START=PHPSTORM";
 
         $url = $this->host.$request;
 
@@ -232,21 +179,7 @@ class APIClient {
             'phone' => $phone
         );
 
-        $content = "data=".rawurlencode( json_encode($data) );
-        $referrer = isset($_SERVER['SCRIPT_URI']) ? $_SERVER['SCRIPT_URI'] : 'Demonstration';
-
-        $opts=array(
-            'http' => array(
-                'method'  => 'POST',
-                'header'  => array(
-                    "Content-type: application/x-www-form-urlencoded",
-                    "Referer: " . $referrer ,
-                    "Connection: close",
-                    "Accept-language: en",
-                ),
-                'content' => $content,
-            ),
-        );
+        $opts = $this->build_opts($data);
         $response = $this->call('/api/customer', $opts);
         return $response;
     }
@@ -283,12 +216,11 @@ class APIClient {
      * @param int $expiry_mins
      * @return mixed
      */
-    public function api_reserve_capacity($supplier_key, $tour_key, $datetime, $pax, $expiry_mins = 15)
+    public function api_reserve_capacity($supplier_key, $tour_key, $datetime, $pax, $expiry_mins = 10)
     {
         if ($datetime instanceof \DateTime) {
             $datetime = $datetime->format('Y-m-d H:i:s');
         }
-
 
         $method = '/api/reserve-capacity?' . http_build_query(['supplier' => $supplier_key]);
         $data = array(
@@ -298,10 +230,36 @@ class APIClient {
             'expiry_mins' => $expiry_mins,
         );
 
+        $opts = $this->build_opts($data);
+        $response = $this->call($method, $opts);
+        return $response;
+    }
+
+
+    /**
+     * @param string $supplier_key
+     * @param string $capacity_hold_key
+     * @return mixed
+     */
+    public function api_release_capacity($supplier_key, $capacity_hold_key)
+    {
+        $method = '/api/release-capacity?' . http_build_query(['supplier' => $supplier_key]);
+        $data = array(
+            'capacity_hold_key' => $capacity_hold_key
+        );
+
+        $opts = $this->build_opts($data);
+        $response = $this->call($method, $opts);
+        return $response;
+    }
+
+
+    private function build_opts($data) {
+
         $content = "data=" . rawurlencode(json_encode($data));
         $referrer = isset($_SERVER['SCRIPT_URI']) ? $_SERVER['SCRIPT_URI'] : 'Demonstration';
 
-        $opts = array(
+        return array(
             'http' => array(
                 'method' => 'POST',
                 'header' => array(
@@ -313,7 +271,6 @@ class APIClient {
                 'content' => $content,
             ),
         );
-        $response = $this->call($method, $opts);
-        return $response;
+
     }
 }

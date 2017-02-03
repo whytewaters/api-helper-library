@@ -193,12 +193,18 @@ class BookingServiceImpl implements BookingService {
      * @param string $tour_key
      * @param \DateTime|string $trip_datetime
      * @param int $pax
+     * @param int $expiry_mins
      * @return CapacityHold
      */
-    public function reserve_capacity($supplier_key, $tour_key, $trip_datetime, $pax)
+    public function reserve_capacity($supplier_key, $tour_key, $trip_datetime, $pax, $expiry_mins = 10)
     {
-        $raw_capacity_hold = $this->get_api_client()->api_reserve_capacity($supplier_key, $tour_key, $trip_datetime, $pax);
+        $raw_capacity_hold = $this->get_api_client()->api_reserve_capacity($supplier_key, $tour_key, $trip_datetime, $pax, $expiry_mins);
 
         return CapacityHold::from_raw($raw_capacity_hold);
+    }
+
+
+    public function release_capacity($supplier_key, $capacity_hold_key) {
+        $this->get_api_client()->api_release_capacity($supplier_key, $capacity_hold_key);
     }
 }
