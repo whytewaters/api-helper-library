@@ -48,9 +48,9 @@ class BookingServiceImpl implements BookingService {
      * @param int $days
      * @return SessionAndAdvanceDates
      */
-    public function get_sessions_and_advance_dates($supplier_key, $tour_keys, $date, $search_next_available = false, $days = 1) {
+    public function get_sessions_and_advance_dates($supplier_key, $tour_keys, $date, $search_next_available = false, $days = 1, $exclude_capacityholds = null) {
 
-        $response = $this->get_api_client()->api_sessions($supplier_key, $tour_keys, $date, $search_next_available, $days);
+        $response = $this->get_api_client()->api_sessions($supplier_key, $tour_keys, $date, $search_next_available, $days, $exclude_capacityholds);
 
         $sessions_and_advance_dates = new SessionAndAdvanceDates();
 
@@ -178,12 +178,18 @@ class BookingServiceImpl implements BookingService {
         return Itinerary::from_raw($raw_itinerary->itinerary);
     }
 
+
+    public function intinerary_tickets_html($token) {
+        return $this->get_api_client()->api_itinerary_tickets_html($token);
+    }
+
+
     /**
      * @param Itinerary $itinerary
      * @return string payment_url
      */
-    public function pay_itinerary(Itinerary $itinerary) {
-        $response = $this->get_api_client()->api_pay_itinerary($itinerary->get_itinerary_key());
+    public function pay_itinerary(Itinerary $itinerary, $return_url = null) {
+        $response = $this->get_api_client()->api_pay_itinerary($itinerary->get_itinerary_key(), $return_url);
 
         return $response->url;
     }

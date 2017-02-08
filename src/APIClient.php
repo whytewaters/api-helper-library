@@ -77,13 +77,13 @@ class APIClient {
     }
 
     //NOTE! returns an object with potentially two properties: 'sessions' & 'advance_dates'
-    function api_sessions($supplier_key, $tour_keys, $date, $search_next_available = false, $days = 1) {
-        $pattern = "/api/sessions?supplier=%s&tours=%s&date=%s&search_next_available=%d&days=%d";
+    function api_sessions($supplier_key, $tour_keys, $date, $search_next_available = false, $days = 1, $exclude_capacityholds = null) {
+        $pattern = "/api/sessions?supplier=%s&tours=%s&date=%s&search_next_available=%d&days=%d&exclude_capacityholds=%s";
         $tours = is_array($tour_keys) ? implode(",", $tour_keys) : $tour_keys;
+        $exclude_capacityholds = is_array($exclude_capacityholds) ? implode(",", $exclude_capacityholds) : $exclude_capacityholds;
         $search_next_available = ($search_next_available) ? 1 : 0;
-        $request = sprintf($pattern, $supplier_key, $tours, $date, $search_next_available, $days);
-        $response = $this->call($request);
-        return $response;
+        $request = sprintf($pattern, $supplier_key, $tours, $date, $search_next_available, $days, $exclude_capacityholds);
+        return $this->call($request);
     }
 
     function api_pickups($tour_key) {
@@ -115,11 +115,15 @@ class APIClient {
         return $response;
     }
 
-    function api_pay_itinerary($itinerary_key) {
+    function api_pay_itinerary($itinerary_key, $return_url = null) {
         $method = '/api/pay-itinerary';
         $data = [
             'itinerary_key' => $itinerary_key
         ];
+
+        if ($return_url) {
+            $data['return_url'] = $return_url;
+        }
 
         $opts = $this->build_opts($data);
         $response = $this->call($method, $opts);
@@ -139,6 +143,16 @@ class APIClient {
         return $response;
     }
 
+
+    public function api_itinerary_tickets_html($token) {
+        return file_get_contents($this->api_itinerary_tickets_url($token));
+    }
+
+
+    public function api_itinerary_tickets_url($token) {
+        return $this->host . '/api/itinerary/' . urlencode($token) . '/tickets?apikey=' . $this->key;
+    }
+
     //Makes an api call.
     protected function call($request, $opts = null) {
         if (substr($request, 0,5) !== "/api/") {
@@ -149,7 +163,7 @@ class APIClient {
         $separator = strpos($request, '?') === false ? '?' : '&';
         $request .= $separator.'apikey='.$this->key;
 
-        $request .= "&XDEBUG_SESSION_START=PHPSTORM";
+//        $request .= "&XDEBUG_SESSION_START=PHPSTORM";
 
         $url = $this->host.$request;
 
