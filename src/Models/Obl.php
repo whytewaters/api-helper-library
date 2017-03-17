@@ -105,7 +105,7 @@ class Obl {
      */
     public function get_tour_keys()
     {
-        return $this->url_banner_img;
+        return $this->tour_keys;
     }
 
 
@@ -122,7 +122,7 @@ class Obl {
      * @param \stdClass $raw_obl
      * @return Obl
      */
-    public static function fromRaw($raw_obl)
+    public static function from_raw($raw_obl)
     {
         $obl = new self();
 

@@ -4,6 +4,7 @@ use Rtbs\ApiHelper\Exceptions\ModelNotFoundException;
 use Rtbs\ApiHelper\Models\Booking;
 use Rtbs\ApiHelper\Models\Category;
 use Rtbs\ApiHelper\Models\Customer;
+use Rtbs\ApiHelper\Models\Obl;
 use Rtbs\ApiHelper\Models\Pickup;
 use Rtbs\ApiHelper\Models\Session;
 use Rtbs\ApiHelper\Models\SessionAndAdvanceDates;
@@ -95,22 +96,24 @@ class BookingServiceImpl implements BookingService {
         return $pickups;
     }
 
+
     /**
-     * @param $tour_keys
+     * @param string[] $tour_keys
      * @return Tour[]
      */
-    public function get_tours($tour_keys) {
+    public function get_tours($tour_keys)
+    {
         $tours = array();
 
         $raw_tours = $this->get_api_client()->api_tours($tour_keys);
 
-        foreach($raw_tours as $raw_tour) {
+        foreach ($raw_tours as $raw_tour) {
             $tours[] = Tour::from_raw($raw_tour);
         }
 
-
         return $tours;
     }
+
 
     /**
      *
@@ -233,7 +236,7 @@ class BookingServiceImpl implements BookingService {
     /**
      * For Internal Use Only
      * @param string $obl_id
-     * @return Obl
+     * @return \Rtbs\ApiHelper\Models\Obl
      */
     public function get_obl($obl_id)
     {

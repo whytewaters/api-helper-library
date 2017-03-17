@@ -71,10 +71,17 @@ class APIClient {
         return null;
     }
 
-    function api_tours($keys) {
-        $response = $this->call('/api/tours/'.implode(",", $keys));
+
+    /**
+     * @param stirng[] $keys
+     * @return \stdClass
+     */
+    public function api_tours($keys)
+    {
+        $response = $this->call('/api/tours/' . implode(",", $keys));
         return $response->tours;
     }
+
 
     //NOTE! returns an object with potentially two properties: 'sessions' & 'advance_dates'
     function api_sessions($supplier_key, $tour_keys, $date, $search_next_available = false, $days = 1, $exclude_capacityholds = null) {
