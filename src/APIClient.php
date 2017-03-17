@@ -285,6 +285,17 @@ class APIClient {
                 'content' => $content,
             ),
         );
+    }
 
+
+    /**
+     * For Internal Use Only
+     * @param string $obl_id
+     * @return \stdClass
+     */
+    public function api_obl($obl_id)
+    {
+        $response = $this->call("/api/obl/{$obl_id}");
+        return $response->obl;
     }
 }

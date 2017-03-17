@@ -441,10 +441,21 @@ class Booking {
         $this->pickup_key = $pickup_key;
     }
 
-
+    /**
+     * @param string|null $itinerary_key
+     */
     public function set_itinerary_key($itinerary_key) {
         $this->itinerary_key = $itinerary_key;
     }
+
+
+    /**
+     * @return string|null
+     */
+    public function get_itinerary_key() {
+        return $this->itinerary_key;
+    }
+
 
     public function set_capacity_hold_key($capacity_hold_key)
     {

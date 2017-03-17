@@ -140,7 +140,7 @@ class BookingServiceImpl implements BookingService {
 
     /**
      * @param $booking Booking
-     * @return string url | Booking
+     * @return string|Booking url
      */
     public function make_booking(Booking $booking) {
         $response = $this->get_api_client()->api_booking($booking);
@@ -153,6 +153,18 @@ class BookingServiceImpl implements BookingService {
             return $booking;
         }
     }
+
+
+    /**
+     * @param string $booking_id
+     * @param string $itinerary_key
+     * @return mixed
+     */
+    public function remove_activity_booking($booking_id, $itinerary_key)
+    {
+        return $this->get_api_client()->api_remove_booking($booking_id, $itinerary_key, 'ACTIVITY');
+    }
+
 
     /**
      *
@@ -209,8 +221,24 @@ class BookingServiceImpl implements BookingService {
         return CapacityHold::from_raw($raw_capacity_hold);
     }
 
-
+    /**
+     * @param string $supplier_key
+     * @param string $capacity_hold_key
+     */
     public function release_capacity($supplier_key, $capacity_hold_key) {
         $this->get_api_client()->api_release_capacity($supplier_key, $capacity_hold_key);
     }
+
+
+    /**
+     * For Internal Use Only
+     * @param string $obl_id
+     * @return Obl
+     */
+    public function get_obl($obl_id)
+    {
+        $raw_obl = $this->get_api_client()->api_obl($obl_id);
+        return Obl::from_raw($raw_obl);
+    }
+
 }
