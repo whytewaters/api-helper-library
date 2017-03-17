@@ -11,6 +11,7 @@ class Tour {
     private $info_bring;
     private $info_provided;
     private $info_transport;
+    private $url_img;
 
     /** @var Price[] */
     private $prices = array();
@@ -120,18 +121,41 @@ class Tour {
     /**
      * @return mixed
      */
-    public function get_info_transport() {
+    public function get_info_transport()
+    {
         return $this->info_transport;
     }
+
 
     /**
      * @param mixed $info_transport
      */
-    public function set_info_transport($info_transport) {
+    public function set_info_transport($info_transport)
+    {
         $this->info_transport = $info_transport;
     }
 
-    public function add_info_date_range_note($info_date_range_note) {
+
+    /**
+     * @return string
+     */
+    public function get_url_img()
+    {
+        return $this->url_img;
+    }
+
+
+    /**
+     * @param mixed $info_transport
+     */
+    public function set_url_img($url_img)
+    {
+        $this->url_img = $url_img;
+    }
+
+
+    public function add_info_date_range_note($info_date_range_note)
+    {
         $this->info_date_range_notes[] = $info_date_range_note;
     }
 
@@ -166,43 +190,52 @@ class Tour {
 	}
 
 
-	public static function from_raw($raw_tour) {
-        $tour = new Tour();
+    /**
+     * @param \stdClass $raw_tour
+     * @return Tour
+     */
+	public static function from_raw($raw_tour)
+    {
+        $tour = new self();
 
         $tour->set_name($raw_tour->name);
         $tour->set_tour_key($raw_tour->tour_key);
 
-        if(property_exists($raw_tour, 'description')) {
+        if (property_exists($raw_tour, 'url_img')) {
+            $tour->set_url_img($raw_tour->url_img);
+        }
+
+        if (property_exists($raw_tour, 'description')) {
             $tour->set_description($raw_tour->description);
         }
 
-        if(property_exists($raw_tour, 'info_directions')) {
+        if (property_exists($raw_tour, 'info_directions')) {
             $tour->set_info_directions($raw_tour->info_directions);
         }
 
-        if(property_exists($raw_tour, 'info_bring')) {
+        if (property_exists($raw_tour, 'info_bring')) {
             $tour->set_info_bring($raw_tour->info_bring);
         }
 
-        if(property_exists($raw_tour, 'info_provided')) {
+        if (property_exists($raw_tour, 'info_provided')) {
             $tour->set_info_provided($raw_tour->info_provided);
         }
 
-        if(property_exists($raw_tour, 'info_transport')) {
+        if (property_exists($raw_tour, 'info_transport')) {
             $tour->set_info_transport($raw_tour->info_transport);
         }
 
-        if(property_exists($raw_tour, 'supplier_key')) {
+        if (property_exists($raw_tour, 'supplier_key')) {
             $tour->set_supplier_key($raw_tour->supplier_key);
         }
 
-        if(property_exists($raw_tour, 'info_date_range_notes') && is_array($raw_tour->info_date_range_notes)) {
+        if (property_exists($raw_tour, 'info_date_range_notes') && is_array($raw_tour->info_date_range_notes)) {
             foreach($raw_tour->info_date_range_notes as $raw_info_date_range_note) {
                 $tour->add_info_date_range_note(InfoDateRangeNote::from_raw($raw_info_date_range_note));
             }
         }
 
-        if(property_exists($raw_tour, 'prices') && is_array($raw_tour->prices)) {
+        if (property_exists($raw_tour, 'prices') && is_array($raw_tour->prices)) {
             foreach($raw_tour->prices as $raw_price) {
                 $tour->add_price(Price::from_raw($raw_price));
             }
