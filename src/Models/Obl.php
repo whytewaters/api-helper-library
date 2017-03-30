@@ -2,13 +2,15 @@
 
 
 class Obl {
-    private $id;
     private $browser_title;
+    private $id;
     private $style_css;
+    private $supplier_key;
+    private $theme;
+    private $tour_keys = [];
+    private $url_banner_img;
     private $url_complete;
     private $url_website;
-    private $url_banner_img;
-    private $tour_keys = [];
 
 
     /**
@@ -138,6 +140,42 @@ class Obl {
 
 
     /**
+     * @return string
+     */
+    public function get_supplier_key()
+    {
+        return $this->supplier_key;
+    }
+
+
+    /**
+     * @param string $supplier_key
+     */
+    public function set_supplier_key($supplier_key)
+    {
+        $this->supplier_key = $supplier_key;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function get_theme()
+    {
+        return $this->theme;
+    }
+
+
+    /**
+     * @param string $theme
+     */
+    public function set_theme($theme)
+    {
+        $this->theme = $theme;
+    }
+
+
+    /**
      * @param \stdClass $raw_obl
      * @return Obl
      */
@@ -148,10 +186,19 @@ class Obl {
         $obl->set_id($raw_obl->obl_id);
         $obl->set_browser_title($raw_obl->browser_title);
         $obl->set_style_css($raw_obl->style_css);
+
+        if (!empty($raw_obl->theme)) {
+            $obl->set_theme($raw_obl->theme);
+        }
+
         $obl->set_url_complete($raw_obl->url_complete);
         $obl->set_url_website($raw_obl->url_website);
         $obl->set_url_banner_img($raw_obl->url_banner_img);
         $obl->set_tour_keys($raw_obl->tour_keys);
+
+        if (!empty($raw_obl->supplier_key)) {
+            $obl->set_supplier_key($raw_obl->supplier_key);
+        }
 
         return $obl;
     }

@@ -78,6 +78,10 @@ class APIClient {
      */
     public function api_tours($keys)
     {
+        if (!is_array($keys)) {
+            $keys = [$keys];
+        }
+
         $response = $this->call('/api/tours/' . implode(",", $keys));
         return $response->tours;
     }
