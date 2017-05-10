@@ -4,12 +4,14 @@ use Rtbs\ApiHelper\Exceptions\ModelNotFoundException;
 use Rtbs\ApiHelper\Models\Booking;
 use Rtbs\ApiHelper\Models\Category;
 use Rtbs\ApiHelper\Models\Customer;
+use Rtbs\ApiHelper\Models\Obl;
 use Rtbs\ApiHelper\Models\Pickup;
 use Rtbs\ApiHelper\Models\Session;
 use Rtbs\ApiHelper\Models\SessionAndAdvanceDates;
 use Rtbs\ApiHelper\Models\Supplier;
 use Rtbs\ApiHelper\Models\Tour;
 use Rtbs\ApiHelper\Models\Itinerary;
+use Rtbs\ApiHelper\Models\CapacityHold;
 
 class BookingServiceImpl implements BookingService {
     private $api_client;
@@ -47,9 +49,9 @@ class BookingServiceImpl implements BookingService {
      * @param int $days
      * @return SessionAndAdvanceDates
      */
-    public function get_sessions_and_advance_dates($supplier_key, $tour_keys, $date, $search_next_available = false, $days = 1) {
+    public function get_sessions_and_advance_dates($supplier_key, $tour_keys, $date, $search_next_available = false, $days = 1, $exclude_capacityholds = null) {
 
-        $response = $this->get_api_client()->api_sessions($supplier_key, $tour_keys, $date, $search_next_available, $days);
+        $response = $this->get_api_client()->api_sessions($supplier_key, $tour_keys, $date, $search_next_available, $days, $exclude_capacityholds);
 
         $sessions_and_advance_dates = new SessionAndAdvanceDates();
 
@@ -94,22 +96,24 @@ class BookingServiceImpl implements BookingService {
         return $pickups;
     }
 
+
     /**
-     * @param $tour_keys
+     * @param string[] $tour_keys
      * @return Tour[]
      */
-    public function get_tours($tour_keys) {
+    public function get_tours($tour_keys)
+    {
         $tours = array();
 
         $raw_tours = $this->get_api_client()->api_tours($tour_keys);
 
-        foreach($raw_tours as $raw_tour) {
+        foreach ($raw_tours as $raw_tour) {
             $tours[] = Tour::from_raw($raw_tour);
         }
 
-
         return $tours;
     }
+
 
     /**
      *
@@ -139,7 +143,7 @@ class BookingServiceImpl implements BookingService {
 
     /**
      * @param $booking Booking
-     * @return string url | Booking
+     * @return string|Booking url
      */
     public function make_booking(Booking $booking) {
         $response = $this->get_api_client()->api_booking($booking);
@@ -152,6 +156,18 @@ class BookingServiceImpl implements BookingService {
             return $booking;
         }
     }
+
+
+    /**
+     * @param string $booking_id
+     * @param string $itinerary_key
+     * @return mixed
+     */
+    public function remove_activity_booking($booking_id, $itinerary_key)
+    {
+        return $this->get_api_client()->api_remove_booking($booking_id, $itinerary_key, 'ACTIVITY');
+    }
+
 
     /**
      *
@@ -177,13 +193,55 @@ class BookingServiceImpl implements BookingService {
         return Itinerary::from_raw($raw_itinerary->itinerary);
     }
 
+
+    public function intinerary_tickets_html($token) {
+        return $this->get_api_client()->api_itinerary_tickets_html($token);
+    }
+
+
     /**
      * @param Itinerary $itinerary
      * @return string payment_url
      */
-    public function pay_itinerary(Itinerary $itinerary) {
-        $response = $this->get_api_client()->api_pay_itinerary($itinerary->get_itinerary_key());
+    public function pay_itinerary(Itinerary $itinerary, $return_url = null) {
+        $response = $this->get_api_client()->api_pay_itinerary($itinerary->get_itinerary_key(), $return_url);
 
         return $response->url;
     }
+
+    /**
+     * @param string $supplier_key
+     * @param string $tour_key
+     * @param \DateTime|string $trip_datetime
+     * @param int $pax
+     * @param int $expiry_mins
+     * @return CapacityHold
+     */
+    public function reserve_capacity($supplier_key, $tour_key, $trip_datetime, $pax, $expiry_mins = 10)
+    {
+        $raw_capacity_hold = $this->get_api_client()->api_reserve_capacity($supplier_key, $tour_key, $trip_datetime, $pax, $expiry_mins);
+
+        return CapacityHold::from_raw($raw_capacity_hold);
+    }
+
+    /**
+     * @param string $supplier_key
+     * @param string $capacity_hold_key
+     */
+    public function release_capacity($supplier_key, $capacity_hold_key) {
+        $this->get_api_client()->api_release_capacity($supplier_key, $capacity_hold_key);
+    }
+
+
+    /**
+     * For Internal Use Only
+     * @param string $obl_id
+     * @return \Rtbs\ApiHelper\Models\Obl
+     */
+    public function get_obl($obl_id)
+    {
+        $raw_obl = $this->get_api_client()->api_obl($obl_id);
+        return Obl::from_raw($raw_obl);
+    }
+
 }

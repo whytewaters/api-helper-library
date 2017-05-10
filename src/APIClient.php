@@ -71,19 +71,30 @@ class APIClient {
         return null;
     }
 
-    function api_tours($keys) {
-        $response = $this->call('/api/tours/'.implode(",", $keys));
+
+    /**
+     * @param stirng[] $keys
+     * @return \stdClass
+     */
+    public function api_tours($keys)
+    {
+        if (!is_array($keys)) {
+            $keys = [$keys];
+        }
+
+        $response = $this->call('/api/tours/' . implode(",", $keys));
         return $response->tours;
     }
 
+
     //NOTE! returns an object with potentially two properties: 'sessions' & 'advance_dates'
-    function api_sessions($supplier_key, $tour_keys, $date, $search_next_available = false, $days = 1) {
-        $pattern = "/api/sessions?supplier=%s&tours=%s&date=%s&search_next_available=%d&days=%d";
+    function api_sessions($supplier_key, $tour_keys, $date, $search_next_available = false, $days = 1, $exclude_capacityholds = null) {
+        $pattern = "/api/sessions?supplier=%s&tours=%s&date=%s&search_next_available=%d&days=%d&exclude_capacityholds=%s";
         $tours = is_array($tour_keys) ? implode(",", $tour_keys) : $tour_keys;
+        $exclude_capacityholds = is_array($exclude_capacityholds) ? implode(",", $exclude_capacityholds) : $exclude_capacityholds;
         $search_next_available = ($search_next_available) ? 1 : 0;
-        $request = sprintf($pattern, $supplier_key, $tours, $date, $search_next_available, $days);
-        $response = $this->call($request);
-        return $response;
+        $request = sprintf($pattern, $supplier_key, $tours, $date, $search_next_available, $days, $exclude_capacityholds);
+        return $this->call($request);
     }
 
     function api_pickups($tour_key) {
@@ -96,21 +107,8 @@ class APIClient {
     function api_booking(Booking $booking) {
         $method = '/api/booking';
         $data = $booking->to_raw_object();
-        $content = "data=".rawurlencode( json_encode($data) );
-        $referrer = isset($_SERVER['SCRIPT_URI']) ? $_SERVER['SCRIPT_URI'] : 'Demonstration';
 
-        $opts=array(
-            'http' => array(
-                'method'  => 'POST',
-                'header'  => array(
-                    "Content-type: application/x-www-form-urlencoded",
-                    "Referer: " . $referrer ,
-                    "Connection: close",
-                    "Accept-language: en"
-                ),
-                'content' => $content,
-            ),
-        );
+        $opts = $this->build_opts($data);
         $response = $this->call($method, $opts);
         return $response;
     }
@@ -122,47 +120,23 @@ class APIClient {
             'booking_id' => $booking_id,
             'booking_type' => $booking_type
         );
-        $content = "data=".rawurlencode( json_encode($data) );
-        $referrer = isset($_SERVER['SCRIPT_URI']) ? $_SERVER['SCRIPT_URI'] : 'Demonstration';
 
-        $opts=array(
-            'http' => array(
-                'method'  => 'POST',
-                'header'  => array(
-                    "Content-type: application/x-www-form-urlencoded",
-                    "Referer: " . $referrer ,
-                    "Connection: close",
-                    "Accept-language: en",
-                ),
-                'content' => $content,
-            ),
-        );
+        $opts = $this->build_opts($data);
         $response = $this->call($method, $opts);
         return $response;
     }
 
-    function api_pay_itinerary($itinerary_key) {
+    function api_pay_itinerary($itinerary_key, $return_url = null) {
         $method = '/api/pay-itinerary';
         $data = [
             'itinerary_key' => $itinerary_key
         ];
 
-        $content = "data=".rawurlencode( json_encode($data) );
+        if ($return_url) {
+            $data['return_url'] = $return_url;
+        }
 
-        $referrer = isset($_SERVER['SCRIPT_URI']) ? $_SERVER['SCRIPT_URI'] : 'Demonstration';
-
-        $opts=array(
-            'http' => array(
-                'method'  => 'POST',
-                'header'  => array(
-                    "Content-type: application/x-www-form-urlencoded",
-                    "Referer: " . $referrer ,
-                    "Connection: close",
-                    "Accept-language: en",
-                ),
-                'content' => $content,
-            ),
-        );
+        $opts = $this->build_opts($data);
         $response = $this->call($method, $opts);
         return $response;
     }
@@ -175,23 +149,19 @@ class APIClient {
             'additional_customer_keys' => $additional_customer_keys
         );
 
-        $content = "data=".rawurlencode( json_encode($data) );
-        $referrer = isset($_SERVER['SCRIPT_URI']) ? $_SERVER['SCRIPT_URI'] : 'Demonstration';
-
-        $opts=array(
-            'http' => array(
-                'method'  => 'POST',
-                'header'  => array(
-                    "Content-type: application/x-www-form-urlencoded",
-                    "Referer: " . $referrer ,
-                    "Connection: close",
-                    "Accept-language: en",
-                ),
-                'content' => $content,
-            ),
-        );
+        $opts = $this->build_opts($data);
         $response = $this->call($method, $opts);
         return $response;
+    }
+
+
+    public function api_itinerary_tickets_html($token) {
+        return file_get_contents($this->api_itinerary_tickets_url($token));
+    }
+
+
+    public function api_itinerary_tickets_url($token) {
+        return $this->host . '/api/itinerary/' . urlencode($token) . '/tickets?apikey=' . $this->key;
     }
 
     //Makes an api call.
@@ -203,6 +173,8 @@ class APIClient {
         //add key
         $separator = strpos($request, '?') === false ? '?' : '&';
         $request .= $separator.'apikey='.$this->key;
+
+//        $request .= "&XDEBUG_SESSION_START=PHPSTORM";
 
         $url = $this->host.$request;
 
@@ -232,21 +204,7 @@ class APIClient {
             'phone' => $phone
         );
 
-        $content = "data=".rawurlencode( json_encode($data) );
-        $referrer = isset($_SERVER['SCRIPT_URI']) ? $_SERVER['SCRIPT_URI'] : 'Demonstration';
-
-        $opts=array(
-            'http' => array(
-                'method'  => 'POST',
-                'header'  => array(
-                    "Content-type: application/x-www-form-urlencoded",
-                    "Referer: " . $referrer ,
-                    "Connection: close",
-                    "Accept-language: en",
-                ),
-                'content' => $content,
-            ),
-        );
+        $opts = $this->build_opts($data);
         $response = $this->call('/api/customer', $opts);
         return $response;
     }
@@ -272,5 +230,83 @@ class APIClient {
         );
         $response = $this->call($method, $opts);
         return $response;
+    }
+
+
+    /**
+     * @param string $supplier_key
+     * @param string $tour_key
+     * @param \DateTime|string $datetime
+     * @param int $pax
+     * @param int $expiry_mins
+     * @return mixed
+     */
+    public function api_reserve_capacity($supplier_key, $tour_key, $datetime, $pax, $expiry_mins = 10)
+    {
+        if ($datetime instanceof \DateTime) {
+            $datetime = $datetime->format('Y-m-d H:i:s');
+        }
+
+        $method = '/api/reserve-capacity?' . http_build_query(['supplier' => $supplier_key]);
+        $data = array(
+            'tour_key' => $tour_key,
+            'datetime' => $datetime,
+            'pax' => $pax,
+            'expiry_mins' => $expiry_mins,
+        );
+
+        $opts = $this->build_opts($data);
+        $response = $this->call($method, $opts);
+        return $response;
+    }
+
+
+    /**
+     * @param string $supplier_key
+     * @param string $capacity_hold_key
+     * @return mixed
+     */
+    public function api_release_capacity($supplier_key, $capacity_hold_key)
+    {
+        $method = '/api/release-capacity?' . http_build_query(['supplier' => $supplier_key]);
+        $data = array(
+            'capacity_hold_key' => $capacity_hold_key
+        );
+
+        $opts = $this->build_opts($data);
+        $response = $this->call($method, $opts);
+        return $response;
+    }
+
+
+    private function build_opts($data) {
+
+        $content = "data=" . rawurlencode(json_encode($data));
+        $referrer = isset($_SERVER['SCRIPT_URI']) ? $_SERVER['SCRIPT_URI'] : 'Demonstration';
+
+        return array(
+            'http' => array(
+                'method' => 'POST',
+                'header' => array(
+                    "Content-type: application/x-www-form-urlencoded",
+                    "Referer: " . $referrer,
+                    "Connection: close",
+                    "Accept-language: en"
+                ),
+                'content' => $content,
+            ),
+        );
+    }
+
+
+    /**
+     * For Internal Use Only
+     * @param string $obl_id
+     * @return \stdClass
+     */
+    public function api_obl($obl_id)
+    {
+        $response = $this->call("/api/obl/{$obl_id}");
+        return $response->obl;
     }
 }

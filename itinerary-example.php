@@ -51,8 +51,11 @@ foreach ($tours as $tour) {
 $tour = $tours[mt_rand(0,count($tours)-1)];
 echo PHP_EOL."Sessions for " . $tour->get_name() . "...";
 $tour_keys = array($tour->get_tour_key());
-$date = date('Y-m-d', strtotime('tomorrow +1 week'));
+$date = date('Y-m-d', strtotime('tomorrow +2 week'));
+
 $sessions_and_advanced_dates = $booking_service->get_sessions_and_advance_dates($supplier->get_supplier_key(), $tour_keys, $date);
+
+
 
 $sessions = $sessions_and_advanced_dates->get_sessions();
 echo count($sessions);
@@ -77,6 +80,10 @@ if (!$found) {
     return ;
 }
 $session = $found;
+
+echo PHP_EOL."Adding capacity hold...";
+$reserve_capacity_datetime = date("Y-m-d H:i:s", strtotime($session->get_datetime()));
+$booking_service->reserve_capacity($session->get_tour_key(), $reserve_capacity_datetime, 10);
 
 echo PHP_EOL."Checking pickups...";
 $pickups = $booking_service->get_pickups($tour->get_tour_key());
