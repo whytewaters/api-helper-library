@@ -139,9 +139,9 @@ class Tour {
     /**
      * @return string
      */
-    public function get_url_img()
+    public function get_url_img($default_img)
     {
-        return $this->url_img;
+        return ($this->url_img) ? $this->url_img : $default_img;
     }
 
 
