@@ -300,11 +300,11 @@ class Booking {
     }
 
     /**
-     * @param \DateTime|string $datetime
+     * @param \DateTimeInterface|string $datetime
      */
     public function set_datetime($datetime)
     {
-        if ($datetime instanceof \DateTime) {
+        if ($datetime instanceof \DateTimeInterface) {
             $this->datetime = $datetime->format('Y-m-d H:i:s');
         } else {
             $this->datetime = $datetime;

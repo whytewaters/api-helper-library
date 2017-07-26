@@ -236,14 +236,14 @@ class APIClient {
     /**
      * @param string $supplier_key
      * @param string $tour_key
-     * @param \DateTime|string $datetime
+     * @param \DateTimeInterface|string $datetime
      * @param int $pax
      * @param int $expiry_mins
      * @return mixed
      */
     public function api_reserve_capacity($supplier_key, $tour_key, $datetime, $pax, $expiry_mins = 10)
     {
-        if ($datetime instanceof \DateTime) {
+        if ($datetime instanceof \DateTimeInterface) {
             $datetime = $datetime->format('Y-m-d H:i:s');
         }
 
@@ -308,5 +308,17 @@ class APIClient {
     {
         $response = $this->call("/api/obl/{$obl_id}");
         return $response->obl;
+    }
+
+
+    public function api_ticket_url($token)
+    {
+        return $this->host . '/api/ticket?token=' . urlencode($token);
+    }
+
+
+    public function api_ticket_html($token)
+    {
+        return file_get_contents($this->api_ticket_url($token));
     }
 }

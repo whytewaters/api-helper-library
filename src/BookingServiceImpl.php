@@ -244,4 +244,9 @@ class BookingServiceImpl implements BookingService {
         return Obl::from_raw($raw_obl);
     }
 
+
+    public function ticket_html($token)
+    {
+        return $this->get_api_client()->api_ticket_html($token);
+    }
 }
