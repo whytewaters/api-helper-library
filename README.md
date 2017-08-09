@@ -1,5 +1,7 @@
 # RTBS API Helper Classes
 
+Please note, this plugin must support php 5.3 This means no short array syntax
+
 This repository contains a set of helper classes that can be used to communicate with the RTBS API.
 
 **Please Note**
