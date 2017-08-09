@@ -82,7 +82,7 @@ class BookingServiceImpl implements BookingService {
 
     /**
      * @param $tour_key
-     * @return Pickup[]
+     * @return Rtbs\ApiHelper\Models\Pickup[]
      */
     public function get_pickups($tour_key) {
         $pickups = array();
@@ -249,4 +249,13 @@ class BookingServiceImpl implements BookingService {
     {
         return $this->get_api_client()->api_ticket_html($token);
     }
+
+
+    private static function getUserMessageForAPIException(\Exception $ex) {
+        return strtr($ex->getMessage(), array(
+            'API call did not succeed: datetime past' => 'The chosen date and time has passed, please choose a later date',
+            'API call did not succeed: Trip is closed' => 'The event is unavailable at the chosen date and time, please choose a different date',
+        ));
+    }
+
 }

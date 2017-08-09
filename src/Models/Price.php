@@ -119,7 +119,7 @@ class Price {
      */
     public function get_description()
     {
-        return $this->description;
+        return ($this->description != $this->name) ? $this->description : null;
     }
 
     /**

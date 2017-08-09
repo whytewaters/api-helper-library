@@ -7,7 +7,7 @@ class Obl {
     private $style_css;
     private $supplier_key;
     private $theme;
-    private $tour_keys = [];
+    private $tour_keys = array();
     private $url_banner_img;
     private $url_complete;
     private $url_website;

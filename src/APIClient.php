@@ -190,11 +190,22 @@ class APIClient {
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new ApiClientException("Server response invalid JSON format: ". $response_raw);
         }
+
         if (isset($response->success) && $response->success == false) {
-            throw new ApiClientException("API call did not succeed: ". $response->message);
+            throw new ApiClientException($this->getUserMessageForAPIException($response->message));
         }
+
         return $response;
     }
+
+
+    private function getUserMessageForAPIException($err_msg) {
+        return strtr($err_msg, array(
+            'datetime past' => 'The chosen date and time has passed, please choose a later date',
+            'Trip is closed' => 'The event is unavailable at the chosen date and time, please choose a different date',
+        ));
+    }
+
 
     public function api_create_customer($first_name, $last_name, $email, $phone) {
         $data = array(
