@@ -12,6 +12,7 @@ class Obl {
     private $url_complete;
     private $url_website;
     private $is_latipay_payment_gateway;
+    private $operator_status_msg;
 
 
     /**
