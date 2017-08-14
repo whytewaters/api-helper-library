@@ -11,6 +11,7 @@ class Obl {
     private $url_banner_img;
     private $url_complete;
     private $url_website;
+    private $is_latipay_payment_gateway;
 
 
     /**
@@ -175,6 +176,33 @@ class Obl {
     }
 
 
+    public function get_is_latipay_payment_gateway()
+    {
+        return $this->is_latipay_payment_gateway;
+    }
+
+
+    public function set_is_latipay_payment_gateway($is_latipay_payment_gateway)
+    {
+        $this->is_latipay_payment_gateway = $is_latipay_payment_gateway;
+    }
+
+
+    public function get_operator_status_msg()
+    {
+        return $this->operator_status_msg;
+    }
+
+
+    public function set_operator_status_msg($operator_status_msg)
+    {
+        $this->operator_status_msg = $operator_status_msg;
+    }
+
+
+
+
+
     /**
      * @param \stdClass $raw_obl
      * @return Obl
@@ -195,6 +223,14 @@ class Obl {
         $obl->set_url_website($raw_obl->url_website);
         $obl->set_url_banner_img($raw_obl->url_banner_img);
         $obl->set_tour_keys($raw_obl->tour_keys);
+
+        if (property_exists($raw_obl, 'is_latipay_payment_gateway')) {
+            $obl->set_is_latipay_payment_gateway($raw_obl->is_latipay_payment_gateway);
+        }
+
+        if (property_exists($raw_obl, 'operator_status_msg')) {
+            $obl->set_operator_status_msg($raw_obl->operator_status_msg);
+        }
 
         if (!empty($raw_obl->supplier_key)) {
             $obl->set_supplier_key($raw_obl->supplier_key);

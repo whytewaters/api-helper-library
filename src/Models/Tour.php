@@ -12,6 +12,11 @@ class Tour {
     private $info_provided;
     private $info_transport;
     private $url_img;
+    private $terms;
+    private $directions_html;
+    private $description_short_html;
+    private $information_html;
+
 
     /** @var Price[] */
     private $prices = array();
@@ -90,6 +95,71 @@ class Tour {
         $this->info_directions = $info_directions;
     }
 
+
+    /**
+     * @return mixed
+     */
+    public function get_directions_html() {
+        return $this->directions_html;
+    }
+
+
+    /**
+     * @param mixed $directions_html
+     */
+    public function set_directions_html($directions_html) {
+        $this->directions_html = $directions_html;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function get_description_html() {
+        return $this->description_html;
+    }
+
+
+    /**
+     * @param mixed $description_html
+     */
+    public function set_description_html($description_html) {
+        $this->description_html = $description_html;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function get_description_short_html() {
+        return $this->description_short_html;
+    }
+
+
+    /**
+     * @param mixed $info_directions_short_html
+     */
+    public function set_description_short_html($description_short_html) {
+        $this->description_short_html = $description_short_html;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function get_information_html() {
+        return $this->information_html;
+    }
+
+
+    /**
+     * @param mixed $info_information_html
+     */
+    public function set_information_html($information_html) {
+        $this->information_html = $information_html;
+    }
+
+
     /**
      * @return mixed
      */
@@ -154,6 +224,21 @@ class Tour {
     }
 
 
+    public function get_terms_html()
+    {
+        return $this->terms_html;
+    }
+
+
+    /**
+     * @param string|null $terms_html
+     */
+    public function set_terms_html($terms_html)
+    {
+        $this->terms_html = $terms_html;
+    }
+
+
     public function add_info_date_range_note($info_date_range_note)
     {
         $this->info_date_range_notes[] = $info_date_range_note;
@@ -213,6 +298,18 @@ class Tour {
             $tour->set_info_directions($raw_tour->info_directions);
         }
 
+        if (property_exists($raw_tour, 'description_html')) {
+            $tour->set_description_html($raw_tour->description_html);
+        }
+
+        if (property_exists($raw_tour, 'description_short_html')) {
+            $tour->set_direction_short_html($raw_tour->direction_short_html);
+        }
+
+        if (property_exists($raw_tour, 'information_html')) {
+            $tour->set_information_html($raw_tour->information_html);
+        }
+
         if (property_exists($raw_tour, 'info_bring')) {
             $tour->set_info_bring($raw_tour->info_bring);
         }
@@ -227,6 +324,10 @@ class Tour {
 
         if (property_exists($raw_tour, 'supplier_key')) {
             $tour->set_supplier_key($raw_tour->supplier_key);
+        }
+
+        if (property_exists($raw_tour, 'terms_html')) {
+            $tour->set_terms_html($raw_tour->terms_html);
         }
 
         if (property_exists($raw_tour, 'info_date_range_notes') && is_array($raw_tour->info_date_range_notes)) {

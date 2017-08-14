@@ -401,7 +401,7 @@ class Booking {
     public function add_price_selection_keys($price_key, $quantity) {
         $this->price_selections[] = array(
             'price_key' => $price_key,
-            'qty' => $quantity
+            'qty' => (int) $quantity
         );
     }
 

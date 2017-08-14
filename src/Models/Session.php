@@ -74,6 +74,21 @@ class Session {
         $this->prices = $prices;
     }
 
+
+    public function get_min_price()
+    {
+        $min_price = 9999999999;
+
+        foreach ($this->prices as $price) {
+            if ($price->get_passenger_count() > 0 && $price->get_rate() < $min_price) {
+                $min_price = $price->get_rate();
+            }
+        }
+
+        return $min_price;
+    }
+
+
     /**
      * @return mixed
      */
