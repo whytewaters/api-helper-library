@@ -73,7 +73,7 @@ class APIClient {
 
 
     /**
-     * @param stirng[] $keys
+     * @param string|stirng[] $keys
      * @return \stdClass
      */
     public function api_tours($keys)

@@ -82,7 +82,7 @@ class BookingServiceImpl implements BookingService {
 
     /**
      * @param $tour_key
-     * @return Rtbs\ApiHelper\Models\Pickup[]
+     * @return Pickup[]
      */
     public function get_pickups($tour_key) {
         $pickups = array();
@@ -98,7 +98,7 @@ class BookingServiceImpl implements BookingService {
 
 
     /**
-     * @param string[] $tour_keys
+     * @param string|string[] $tour_keys
      * @return Tour[]
      */
     public function get_tours($tour_keys)
