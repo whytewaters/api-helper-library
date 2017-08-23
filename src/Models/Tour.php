@@ -15,6 +15,7 @@ class Tour {
     private $terms;
     private $directions_html;
     private $description_short_html;
+    private $description_html;
     private $information_html;
 
 
@@ -22,7 +23,7 @@ class Tour {
     private $prices = array();
 
     /** @var Field[] */
-	private $fields = array();
+    private $fields = array();
 
     /**
      * @return mixed
@@ -248,9 +249,9 @@ class Tour {
         $this->prices[] = $price;
     }
 
-	public function add_field(Field $field) {
-		$this->fields[] = $field;
-	}
+    public function add_field(Field $field) {
+        $this->fields[] = $field;
+    }
 
     /**
      * @return array
@@ -267,19 +268,19 @@ class Tour {
         return $this->prices;
     }
 
-	/**
-	 * @return Field[]
-	 */
-	public function get_fields() {
-		return $this->fields;
-	}
+    /**
+     * @return Field[]
+     */
+    public function get_fields() {
+        return $this->fields;
+    }
 
 
     /**
      * @param \stdClass $raw_tour
      * @return Tour
      */
-	public static function from_raw($raw_tour)
+    public static function from_raw($raw_tour)
     {
         $tour = new self();
 
@@ -298,12 +299,16 @@ class Tour {
             $tour->set_info_directions($raw_tour->info_directions);
         }
 
+        if (property_exists($raw_tour, 'directions_html')) {
+            $tour->set_directions_html($raw_tour->directions_html);
+        }
+
         if (property_exists($raw_tour, 'description_html')) {
             $tour->set_description_html($raw_tour->description_html);
         }
 
         if (property_exists($raw_tour, 'description_short_html')) {
-            $tour->set_direction_short_html($raw_tour->direction_short_html);
+            $tour->set_description_short_html($raw_tour->description_short_html);
         }
 
         if (property_exists($raw_tour, 'information_html')) {
@@ -343,10 +348,10 @@ class Tour {
         }
 
         if (property_exists($raw_tour, 'fields') && is_array($raw_tour->fields)) {
-	        foreach($raw_tour->fields as $raw_field) {
-		        $tour->add_field(Field::from_raw($raw_field));
-	        }
-	    }
+            foreach($raw_tour->fields as $raw_field) {
+                $tour->add_field(Field::from_raw($raw_field));
+            }
+        }
 
         return $tour;
     }
