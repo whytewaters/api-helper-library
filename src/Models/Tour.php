@@ -17,6 +17,7 @@ class Tour {
     private $description_short_html;
     private $description_html;
     private $information_html;
+    private $is_show_obl;
 
 
     /** @var Price[] */
@@ -277,6 +278,24 @@ class Tour {
 
 
     /**
+     * @return bool
+     */
+    public function is_show_obl()
+    {
+        return $this->is_show_obl;
+    }
+
+
+    /**
+     * @param bool $is_show_obl
+     */
+    public function set_show_obl($is_show_obl)
+    {
+        $this->is_show_obl = $is_show_obl;
+    }
+
+
+    /**
      * @param \stdClass $raw_tour
      * @return Tour
      */
@@ -333,6 +352,10 @@ class Tour {
 
         if (property_exists($raw_tour, 'terms_html')) {
             $tour->set_terms_html($raw_tour->terms_html);
+        }
+
+        if (property_exists($raw_tour, 'is_show_obl')) {
+            $tour->set_show_obl($raw_tour->is_show_obl);
         }
 
         if (property_exists($raw_tour, 'info_date_range_notes') && is_array($raw_tour->info_date_range_notes)) {
