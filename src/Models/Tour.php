@@ -12,12 +12,13 @@ class Tour {
     private $info_provided;
     private $info_transport;
     private $url_img;
-    private $terms;
     private $directions_html;
     private $description_short_html;
     private $description_html;
     private $information_html;
-
+    private $min_pax_per_booking = 0;
+    private $max_pax_per_booking = 999;
+    private $terms_html;
 
     /** @var Price[] */
     private $prices = array();
@@ -138,7 +139,7 @@ class Tour {
 
 
     /**
-     * @param mixed $info_directions_short_html
+     * @param mixed $description_short_html
      */
     public function set_description_short_html($description_short_html) {
         $this->description_short_html = $description_short_html;
@@ -154,7 +155,7 @@ class Tour {
 
 
     /**
-     * @param mixed $info_information_html
+     * @param mixed $information_html
      */
     public function set_information_html($information_html) {
         $this->information_html = $information_html;
@@ -208,6 +209,7 @@ class Tour {
 
 
     /**
+     * @param string $default_img
      * @return string
      */
     public function get_url_img($default_img)
@@ -217,7 +219,7 @@ class Tour {
 
 
     /**
-     * @param mixed $info_transport
+     * @param mixed $url_img
      */
     public function set_url_img($url_img)
     {
@@ -237,6 +239,36 @@ class Tour {
     public function set_terms_html($terms_html)
     {
         $this->terms_html = $terms_html;
+    }
+
+
+    public function get_min_pax_per_booking()
+    {
+        return $this->min_pax_per_booking;
+    }
+
+
+    /**
+     * @param int $min_pax_per_booking
+     */
+    public function set_min_pax_per_booking($min_pax_per_booking)
+    {
+        $this->min_pax_per_booking = (int) $min_pax_per_booking;
+    }
+
+
+    public function get_max_pax_per_booking()
+    {
+        return $this->max_pax_per_booking;
+    }
+
+
+    /**
+     * @param int $max_pax_per_booking
+     */
+    public function set_max_pax_per_booking($max_pax_per_booking)
+    {
+        $this->max_pax_per_booking = (int) $max_pax_per_booking;
     }
 
 
@@ -333,6 +365,14 @@ class Tour {
 
         if (property_exists($raw_tour, 'terms_html')) {
             $tour->set_terms_html($raw_tour->terms_html);
+        }
+
+        if (property_exists($raw_tour, 'min_pax_per_booking')) {
+            $tour->set_min_pax_per_booking($raw_tour->min_pax_per_booking);
+        }
+
+        if (property_exists($raw_tour, 'max_pax_per_booking')) {
+            $tour->set_max_pax_per_booking($raw_tour->max_pax_per_booking);
         }
 
         if (property_exists($raw_tour, 'info_date_range_notes') && is_array($raw_tour->info_date_range_notes)) {
