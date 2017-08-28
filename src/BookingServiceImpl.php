@@ -6,6 +6,7 @@ use Rtbs\ApiHelper\Models\Category;
 use Rtbs\ApiHelper\Models\Customer;
 use Rtbs\ApiHelper\Models\Obl;
 use Rtbs\ApiHelper\Models\Pickup;
+use Rtbs\ApiHelper\Models\Promo;
 use Rtbs\ApiHelper\Models\Session;
 use Rtbs\ApiHelper\Models\SessionAndAdvanceDates;
 use Rtbs\ApiHelper\Models\Supplier;
@@ -155,6 +156,18 @@ class BookingServiceImpl implements BookingService {
             $booking->from_raw($response->booking);
             return $booking;
         }
+    }
+
+
+    /**
+     * @param string $promo_code
+     * @param Booking $booking
+     * @return Promo
+     */
+    public function get_promo($promo_code, Booking $booking) {
+        $response = $this->get_api_client()->api_promo($promo_code, $booking);
+
+        return Promo::from_raw($response);
     }
 
 

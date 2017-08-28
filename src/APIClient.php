@@ -3,9 +3,10 @@
 use Rtbs\ApiHelper\Exceptions\ApiClientException;
 use Rtbs\ApiHelper\Models\AccommodationBooking;
 use Rtbs\ApiHelper\Models\Booking;
-use Rtbs\ApiHelper\Models\Itinerary;
 
-class APIClient {
+
+class APIClient
+{
 
     function __construct($options=array()) {
         //override defaults
@@ -73,13 +74,13 @@ class APIClient {
 
 
     /**
-     * @param string|stirng[] $keys
+     * @param string|string[] $keys
      * @return \stdClass
      */
     public function api_tours($keys)
     {
         if (!is_array($keys)) {
-            $keys = [$keys];
+            $keys = array($keys);
         }
 
         $response = $this->call('/api/tours/' . implode(",", $keys));
@@ -113,6 +114,19 @@ class APIClient {
         return $response;
     }
 
+
+    function api_promo($promo_code, Booking $booking) {
+        $method = '/api/promo';
+
+        $data = $booking->to_raw_object();
+        $data['promo_code'] = $promo_code;
+
+        $opts = $this->build_opts($data);
+        $response = $this->call($method, $opts);
+        return $response;
+    }
+
+
     function api_remove_booking($booking_id, $itinerary_key, $booking_type) {
         $method = '/api/remove-itinerary-booking';
         $data = array(
@@ -128,9 +142,9 @@ class APIClient {
 
     function api_pay_itinerary($itinerary_key, $return_url = null) {
         $method = '/api/pay-itinerary';
-        $data = [
+        $data = array(
             'itinerary_key' => $itinerary_key
-        ];
+        );
 
         if ($return_url) {
             $data['return_url'] = $return_url;
@@ -193,7 +207,7 @@ class APIClient {
 
         if (isset($response->success) && $response->success == false) {
             $code = (!empty($response->code)) ? $response->code : null;
-            throw new ApiClientException($this->getUserMessageForAPIException($response->message, $code));
+            throw new ApiClientException($this->getUserMessageForAPIException($response->message));
         }
 
         return $response;
@@ -259,7 +273,7 @@ class APIClient {
             $datetime = $datetime->format('Y-m-d H:i:s');
         }
 
-        $method = '/api/reserve-capacity?' . http_build_query(['supplier' => $supplier_key]);
+        $method = '/api/reserve-capacity?' . http_build_query(array('supplier' => $supplier_key));
         $data = array(
             'tour_key' => $tour_key,
             'datetime' => $datetime,
@@ -280,7 +294,7 @@ class APIClient {
      */
     public function api_release_capacity($supplier_key, $capacity_hold_key)
     {
-        $method = '/api/release-capacity?' . http_build_query(['supplier' => $supplier_key]);
+        $method = '/api/release-capacity?' . http_build_query(array('supplier' => $supplier_key));
         $data = array(
             'capacity_hold_key' => $capacity_hold_key
         );
