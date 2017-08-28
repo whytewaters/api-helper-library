@@ -1,6 +1,7 @@
 <?php namespace Rtbs\ApiHelper;
 
 use Rtbs\ApiHelper\Exceptions\ModelNotFoundException;
+use Rtbs\ApiHelper\Exceptions\PromoNotFoundException;
 use Rtbs\ApiHelper\Models\Booking;
 use Rtbs\ApiHelper\Models\Category;
 use Rtbs\ApiHelper\Models\Customer;
@@ -13,6 +14,7 @@ use Rtbs\ApiHelper\Models\Supplier;
 use Rtbs\ApiHelper\Models\Tour;
 use Rtbs\ApiHelper\Models\Itinerary;
 use Rtbs\ApiHelper\Models\CapacityHold;
+use Symfony\Component\CssSelector\Exception\ExpressionErrorException;
 
 class BookingServiceImpl implements BookingService {
     private $api_client;
@@ -163,9 +165,21 @@ class BookingServiceImpl implements BookingService {
      * @param string $promo_code
      * @param Booking $booking
      * @return Promo
+     * @throws PromoNotFoundException
+     * @throws \Exception
      */
-    public function get_promo($promo_code, Booking $booking) {
-        $response = $this->get_api_client()->api_promo($promo_code, $booking);
+    public function apply_promo($promo_code, Booking $booking) {
+        try {
+            $response = $this->get_api_client()->api_promo($promo_code, $booking);
+        } catch (\Exception $ex) {
+            if ($ex->getMessage() == 'promotion not found') {
+                throw new PromoNotFoundException("Promo Code Not Found", 0, $ex);
+            } else if ($ex->getMessage() == 'promo code invalid') {
+                throw new PromoNotFoundException("Invalid Promo Code", 0, $ex);
+            } else {
+                throw $ex;
+            }
+        }
 
         return Promo::from_raw($response);
     }
