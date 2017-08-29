@@ -1,7 +1,8 @@
 <?php namespace Rtbs\ApiHelper\Models;
 
 
-class Obl {
+class Obl
+{
     private $browser_title;
     private $id;
     private $style_css;
@@ -13,6 +14,8 @@ class Obl {
     private $url_website;
     private $is_latipay_payment_gateway;
     private $operator_status_msg;
+    private $is_mouseflow_tracking;
+    private $is_show_promo_codes;
 
 
     /**
@@ -43,15 +46,6 @@ class Obl {
 
 
     /**
-     * @param string $browser_title
-     */
-    public function set_browser_title($browser_title)
-    {
-        $this->browser_title = $browser_title;
-    }
-
-
-    /**
      * @return string
      */
     public function get_style_css()
@@ -61,29 +55,11 @@ class Obl {
 
 
     /**
-     * @param string $style_css
-     */
-    public function set_style_css($style_css)
-    {
-        $this->style_css = $style_css;
-    }
-
-
-    /**
      * @return string
      */
     public function get_url_complete()
     {
         return $this->url_complete;
-    }
-
-
-    /**
-     * @param string $url_complete
-     */
-    public function set_url_complete($url_complete)
-    {
-        $this->url_complete = $url_complete;
     }
 
 
@@ -133,29 +109,11 @@ class Obl {
 
 
     /**
-     * @param string[] $tour_keys
-     */
-    public function set_tour_keys($tour_keys)
-    {
-        $this->tour_keys = $tour_keys;
-    }
-
-
-    /**
      * @return string
      */
     public function get_supplier_key()
     {
         return $this->supplier_key;
-    }
-
-
-    /**
-     * @param string $supplier_key
-     */
-    public function set_supplier_key($supplier_key)
-    {
-        $this->supplier_key = $supplier_key;
     }
 
 
@@ -169,39 +127,39 @@ class Obl {
 
 
     /**
-     * @param string $theme
+     * @return string
      */
-    public function set_theme($theme)
-    {
-        $this->theme = $theme;
-    }
-
-
     public function get_is_latipay_payment_gateway()
     {
         return $this->is_latipay_payment_gateway;
     }
 
 
-    public function set_is_latipay_payment_gateway($is_latipay_payment_gateway)
-    {
-        $this->is_latipay_payment_gateway = $is_latipay_payment_gateway;
-    }
-
-
+    /**
+     * @return string
+     */
     public function get_operator_status_msg()
     {
         return $this->operator_status_msg;
     }
 
 
-    public function set_operator_status_msg($operator_status_msg)
+    /**
+     * @return bool
+     */
+    public function get_is_mouseflow_tracking()
     {
-        $this->operator_status_msg = $operator_status_msg;
+        return $this->is_mouseflow_tracking;
     }
 
 
-
+    /**
+     * @return bool
+     */
+    public function get_is_show_promo_codes()
+    {
+        return $this->is_show_promo_codes;
+    }
 
 
     /**
@@ -212,29 +170,37 @@ class Obl {
     {
         $obl = new self();
 
-        $obl->set_id($raw_obl->obl_id);
-        $obl->set_browser_title($raw_obl->browser_title);
-        $obl->set_style_css($raw_obl->style_css);
+        $obl->id = $raw_obl->obl_id;
+        $obl->browser_title = $raw_obl->browser_title;
+        $obl->style_css = $raw_obl->style_css;
 
         if (!empty($raw_obl->theme)) {
-            $obl->set_theme($raw_obl->theme);
+            $obl->theme = $raw_obl->theme;
         }
 
-        $obl->set_url_complete($raw_obl->url_complete);
-        $obl->set_url_website($raw_obl->url_website);
-        $obl->set_url_banner_img($raw_obl->url_banner_img);
-        $obl->set_tour_keys($raw_obl->tour_keys);
+        $obl->url_complete = $raw_obl->url_complete;
+        $obl->url_website = $raw_obl->url_website;
+        $obl->url_banner_img = $raw_obl->url_banner_img;
+        $obl->tour_keys = $raw_obl->tour_keys;
 
         if (property_exists($raw_obl, 'is_latipay_payment_gateway')) {
-            $obl->set_is_latipay_payment_gateway($raw_obl->is_latipay_payment_gateway);
+            $obl->is_latipay_payment_gateway = $raw_obl->is_latipay_payment_gateway;
+        }
+
+        if (property_exists($raw_obl, 'is_mouseflow_tracking')) {
+            $obl->is_mouseflow_tracking = $raw_obl->is_mouseflow_tracking;
+        }
+
+        if (property_exists($raw_obl, 'is_show_promo_codes')) {
+            $obl->is_show_promo_codes = $raw_obl->is_show_promo_codes;
         }
 
         if (property_exists($raw_obl, 'operator_status_msg')) {
-            $obl->set_operator_status_msg($raw_obl->operator_status_msg);
+            $obl->operator_status_msg = $raw_obl->operator_status_msg;
         }
 
         if (!empty($raw_obl->supplier_key)) {
-            $obl->set_supplier_key($raw_obl->supplier_key);
+            $obl->supplier_key = $raw_obl->supplier_key;
         }
 
         return $obl;

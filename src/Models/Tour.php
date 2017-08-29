@@ -1,7 +1,8 @@
 <?php namespace Rtbs\ApiHelper\Models;
 
 
-class Tour {
+class Tour
+{
     private $tour_key;
     private $name;
     private $info_date_range_notes = array();
@@ -250,27 +251,9 @@ class Tour {
     }
 
 
-    /**
-     * @param int $min_pax_per_booking
-     */
-    public function set_min_pax_per_booking($min_pax_per_booking)
-    {
-        $this->min_pax_per_booking = (int) $min_pax_per_booking;
-    }
-
-
     public function get_max_pax_per_booking()
     {
         return $this->max_pax_per_booking;
-    }
-
-
-    /**
-     * @param int $max_pax_per_booking
-     */
-    public function set_max_pax_per_booking($max_pax_per_booking)
-    {
-        $this->max_pax_per_booking = (int) $max_pax_per_booking;
     }
 
 
@@ -316,15 +299,6 @@ class Tour {
     public function is_show_obl()
     {
         return $this->is_show_obl;
-    }
-
-
-    /**
-     * @param bool $is_show_obl
-     */
-    public function set_show_obl($is_show_obl)
-    {
-        $this->is_show_obl = $is_show_obl;
     }
 
 
@@ -388,15 +362,15 @@ class Tour {
         }
 
         if (property_exists($raw_tour, 'is_show_obl')) {
-            $tour->set_show_obl($raw_tour->is_show_obl);
+            $tour->is_show_obl = $raw_tour->is_show_obl;
         }
 
         if (property_exists($raw_tour, 'min_pax_per_booking')) {
-            $tour->set_min_pax_per_booking($raw_tour->min_pax_per_booking);
+            $tour->min_pax_per_booking = $raw_tour->min_pax_per_booking;
         }
 
         if (property_exists($raw_tour, 'max_pax_per_booking')) {
-            $tour->set_max_pax_per_booking($raw_tour->max_pax_per_booking);
+            $tour->max_pax_per_booking = $raw_tour->max_pax_per_booking;
         }
 
         if (property_exists($raw_tour, 'info_date_range_notes') && is_array($raw_tour->info_date_range_notes)) {
@@ -419,4 +393,6 @@ class Tour {
 
         return $tour;
     }
+
+
 }

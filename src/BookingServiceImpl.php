@@ -14,7 +14,6 @@ use Rtbs\ApiHelper\Models\Supplier;
 use Rtbs\ApiHelper\Models\Tour;
 use Rtbs\ApiHelper\Models\Itinerary;
 use Rtbs\ApiHelper\Models\CapacityHold;
-use Symfony\Component\CssSelector\Exception\ExpressionErrorException;
 
 class BookingServiceImpl implements BookingService {
     private $api_client;
