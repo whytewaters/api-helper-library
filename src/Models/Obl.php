@@ -16,6 +16,7 @@ class Obl
     private $operator_status_msg;
     private $is_mouseflow_tracking;
     private $is_show_promo_codes;
+    private $is_active;
 
 
     /**
@@ -37,11 +38,22 @@ class Obl
 
 
     /**
+     * @param string|null $append
      * @return string
      */
-    public function get_browser_title()
+    public function get_browser_title($append = null)
     {
-        return $this->browser_title;
+        if (!empty($this->browser_title)) {
+            $browser_title = $this->browser_title;
+
+            if ($append) {
+                $browser_title .= " - {$append}";
+            }
+        } else {
+            $browser_title = $append;
+        }
+
+        return $browser_title;
     }
 
 
@@ -163,6 +175,15 @@ class Obl
 
 
     /**
+     * @return bool
+     */
+    public function get_is_active()
+    {
+        return $this->is_active;
+    }
+
+
+    /**
      * @param \stdClass $raw_obl
      * @return Obl
      */
@@ -193,6 +214,10 @@ class Obl
 
         if (property_exists($raw_obl, 'is_show_promo_codes')) {
             $obl->is_show_promo_codes = $raw_obl->is_show_promo_codes;
+        }
+
+        if (property_exists($raw_obl, 'is_active')) {
+            $obl->is_active = $raw_obl->is_active;
         }
 
         if (property_exists($raw_obl, 'operator_status_msg')) {
