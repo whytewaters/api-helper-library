@@ -475,7 +475,7 @@ class Booking {
         );
 
         if(is_numeric($this->promo_key)) {
-		    $raw_object['promo_key'] = $this->promo_key);
+		    $raw_object['promo_key'] = $this->promo_key;
 	    }
 
 	    if(!empty($this->promo_code)) {
