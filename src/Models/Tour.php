@@ -18,6 +18,7 @@ class Tour
     private $description_html;
     private $information_html;
     private $is_show_obl;
+    private $has_promo_codes;
 
     private $min_pax_per_booking = 0;
     private $max_pax_per_booking = 999;
@@ -302,6 +303,15 @@ class Tour
     }
 
 
+	/**
+	 * @return bool
+	 */
+	public function get_has_promo_codes()
+	{
+		return $this->has_promo_codes;
+	}
+
+
     /**
      * @param \stdClass $raw_tour
      * @return Tour
@@ -372,6 +382,10 @@ class Tour
         if (property_exists($raw_tour, 'max_pax_per_booking')) {
             $tour->max_pax_per_booking = $raw_tour->max_pax_per_booking;
         }
+
+	    if (property_exists($raw_tour, 'has_promo_codes')) {
+		    $tour->has_promo_codes = $raw_tour->has_promo_codes;
+	    }
 
         if (property_exists($raw_tour, 'info_date_range_notes') && is_array($raw_tour->info_date_range_notes)) {
             foreach($raw_tour->info_date_range_notes as $raw_info_date_range_note) {

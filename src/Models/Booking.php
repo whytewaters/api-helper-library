@@ -172,7 +172,7 @@ class Booking {
     /**
      * @param mixed $promo_code
      */
-    protected function set_promo_code($promo_code)
+	public function set_promo_code($promo_code)
     {
         $this->promo_code = $promo_code;
     }
