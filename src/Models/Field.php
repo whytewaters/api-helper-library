@@ -1,9 +1,16 @@
 <?php namespace Rtbs\ApiHelper\Models;
 
 
-class Field {
-    private $name;
+class Field
+{
+	const TYPE_SELECT = 'select';
+
+	private $name;
     private $description;
+    private $type;
+    private $default_value;
+    private $options;
+    private $is_required;
 
 	/**
 	 * @return string

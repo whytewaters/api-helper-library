@@ -12,6 +12,7 @@ class Obl
     private $url_banner_img;
     private $url_complete;
     private $url_website;
+    private $url_facebook;
     private $is_latipay_payment_gateway;
     private $operator_status_msg;
     private $is_mouseflow_tracking;
@@ -183,6 +184,23 @@ class Obl
     }
 
 
+	/**
+	 * @return string|null
+	 */
+    public function get_url_facebook()
+    {
+    	return $this->url_facebook;
+    }
+
+
+	/**
+	 * @param string|null $url_facebook
+	 */
+    public function set_url_facebook($url_facebook)
+    {
+    	$this->url_facebook = $url_facebook;
+    }
+
     /**
      * @param \stdClass $raw_obl
      * @return Obl
@@ -223,6 +241,10 @@ class Obl
         if (property_exists($raw_obl, 'operator_status_msg')) {
             $obl->operator_status_msg = $raw_obl->operator_status_msg;
         }
+
+	    if (property_exists($raw_obl, 'url_facebook')) {
+		    $obl->url_facebook = $raw_obl->url_facebook;
+	    }
 
         if (!empty($raw_obl->supplier_key)) {
             $obl->supplier_key = $raw_obl->supplier_key;
