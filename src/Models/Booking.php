@@ -172,7 +172,7 @@ class Booking {
     /**
      * @param mixed $promo_code
      */
-    protected function set_promo_code($promo_code)
+	public function set_promo_code($promo_code)
     {
         $this->promo_code = $promo_code;
     }
@@ -474,9 +474,13 @@ class Booking {
             'prices' => $this->get_price_selections(),
         );
 
-        if(is_numeric($this->get_promo_key())) {
-            $raw_object['promo_key'] = $this->get_promo_key();
-        }
+        if(is_numeric($this->promo_key)) {
+		    $raw_object['promo_key'] = $this->promo_key;
+	    }
+
+	    if(!empty($this->promo_code)) {
+		    $raw_object['promo_code'] = $this->promo_code;
+	    }
 
         if (!empty($this->return_url)) {
             $raw_object['return_url'] = $this->return_url;
