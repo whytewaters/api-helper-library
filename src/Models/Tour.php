@@ -332,11 +332,11 @@ class Tour
         }
 
         if (property_exists($raw_tour, 'info_directions')) {
-            $tour->set_info_directions($raw_tour->info_directions);
+            $tour->info_directions = $raw_tour->info_directions;
         }
 
         if (property_exists($raw_tour, 'directions_html')) {
-            $tour->set_directions_html($raw_tour->directions_html);
+            $tour->directions_html = $raw_tour->directions_html;
         }
 
         if (property_exists($raw_tour, 'description_html')) {

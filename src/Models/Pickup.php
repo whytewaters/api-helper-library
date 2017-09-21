@@ -8,6 +8,7 @@ class Pickup {
     private $minutes;
     private $lat;
     private $lng;
+    private $is_user_editable;
 
     /**
      * @return mixed
@@ -106,6 +107,15 @@ class Pickup {
     }
 
 
+    /**
+     * @return bool
+     */
+    public function get_is_user_editable()
+    {
+        return $this->is_user_editable;
+    }
+
+
 
     public static function from_raw($raw_pickup) {
         $pickup = new Pickup();
@@ -116,6 +126,10 @@ class Pickup {
         $pickup->set_minutes($raw_pickup->minutes);
         $pickup->set_pickup_key($raw_pickup->pickup_key);
         $pickup->set_place($raw_pickup->place);
+
+        if (property_exists($raw_pickup, 'is_user_editable')) {
+            $pickup->is_user_editable = $raw_pickup->is_user_editable;
+        }
 
         return $pickup;
     }
