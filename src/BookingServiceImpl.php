@@ -172,11 +172,13 @@ class BookingServiceImpl implements BookingService {
             $response = $this->get_api_client()->api_promo($promo_code, $booking);
         } catch (\Exception $ex) {
             if ($ex->getMessage() == 'promotion not found') {
-                throw new PromoNotFoundException("Invalid Promo Code", 0, $ex);
+                throw new PromoNotFoundException('Invalid Promo Code', 0, $ex);
             } else if ($ex->getMessage() == 'promo code invalid') {
-                throw new PromoNotFoundException("Invalid Promo Code", 0, $ex);
+                throw new PromoNotFoundException('"Invalid Promo Code', 0, $ex);
             } else if ($ex->getMessage() == 'promo_code missing or invalid') {
-                throw new PromoNotFoundException("Invalid Promo Code", 0, $ex);
+                throw new PromoNotFoundException('Invalid Promo Code', 0, $ex);
+            } else if ($ex->getMessage() == 'promo activity mismatch') {
+	            throw new PromoNotFoundException('Promo Code not valid for this tour', 0, $ex);
             } else {
                 throw $ex;
             }
