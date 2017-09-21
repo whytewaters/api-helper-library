@@ -246,12 +246,20 @@ class Tour
     }
 
 
+    /**
+     * @return int
+     * @deprecated use session get_min_pax
+     */
     public function get_min_pax_per_booking()
     {
         return $this->min_pax_per_booking;
     }
 
 
+    /**
+     * @return int
+     * @deprecated use session get_max_pax
+     */
     public function get_max_pax_per_booking()
     {
         return $this->max_pax_per_booking;
@@ -407,6 +415,5 @@ class Tour
 
         return $tour;
     }
-
 
 }

@@ -1,7 +1,8 @@
 <?php namespace Rtbs\ApiHelper\Models;
 
 
-class Session {
+class Session
+{
     private $datetime;
     private $tour_key;
     private $open;
@@ -11,6 +12,9 @@ class Session {
 
     private $state;
     private $remaining;
+    private $min_pax;
+    private $max_pax;
+
 
     /**
      * @return mixed
@@ -125,6 +129,18 @@ class Session {
         $this->prices[] = $price;
     }
 
+    public function get_min_pax()
+    {
+        return $this->min_pax;
+    }
+
+
+    public function get_max_pax()
+    {
+        return $this->max_pax;
+    }
+
+
     public static function from_raw($raw_session) {
         $session = new Session();
 
@@ -133,6 +149,14 @@ class Session {
         $session->set_open($raw_session->open);
         $session->set_state($raw_session->state);
         $session->set_remaining($raw_session->remaining);
+
+        if (property_exists($raw_session, 'min_pax')) {
+            $session->min_pax = $raw_session->min_pax;
+        }
+
+        if (property_exists($raw_session, 'max_pax')) {
+            $session->max_pax = $raw_session->max_pax;
+        }
 
         foreach($raw_session->prices as $raw_price) {
             $session->add_price(Price::from_raw($raw_price));
