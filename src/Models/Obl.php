@@ -18,6 +18,10 @@ class Obl
     private $is_mouseflow_tracking;
     private $is_show_promo_codes;
     private $is_active;
+    private $operator_email;
+    private $operator_phone;
+    private $operator_phone_free;
+    private $operator_name;
 
 
     /**
@@ -158,6 +162,42 @@ class Obl
 
 
     /**
+     * @return string
+     */
+    public function get_operator_email()
+    {
+        return $this->operator_email;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function get_operator_phone()
+    {
+        return $this->operator_phone;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function get_operator_phone_free()
+    {
+        return $this->operator_phone_free;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function get_operator_name()
+    {
+        return $this->operator_name;
+    }
+
+
+    /**
      * @return bool
      */
     public function get_is_mouseflow_tracking()
@@ -240,6 +280,22 @@ class Obl
 
         if (property_exists($raw_obl, 'operator_status_msg')) {
             $obl->operator_status_msg = $raw_obl->operator_status_msg;
+        }
+
+        if (property_exists($raw_obl, 'operator_email')) {
+            $obl->operator_email = $raw_obl->operator_email;
+        }
+
+        if (property_exists($raw_obl, 'operator_phone')) {
+            $obl->operator_phone = $raw_obl->operator_phone;
+        }
+
+        if (property_exists($raw_obl, 'operator_phone_free')) {
+            $obl->operator_phone_free = $raw_obl->operator_phone_free;
+        }
+
+        if (property_exists($raw_obl, 'operator_name')) {
+            $obl->operator_name = $raw_obl->operator_name;
         }
 
 	    if (property_exists($raw_obl, 'url_facebook')) {
