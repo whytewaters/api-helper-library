@@ -22,6 +22,7 @@ class Obl
     private $operator_phone;
     private $operator_phone_free;
     private $operator_name;
+    private $url_operator_img;
 
 
     /**
@@ -233,7 +234,17 @@ class Obl
     }
 
 
-	/**
+    /**
+     * @return string|null
+     */
+    public function get_url_operator_img()
+    {
+        return $this->url_operator_img;
+    }
+
+
+
+    /**
 	 * @param string|null $url_facebook
 	 */
     public function set_url_facebook($url_facebook)
@@ -301,6 +312,10 @@ class Obl
 	    if (property_exists($raw_obl, 'url_facebook')) {
 		    $obl->url_facebook = $raw_obl->url_facebook;
 	    }
+
+        if (property_exists($raw_obl, 'url_operator_img')) {
+            $obl->url_operator_img = $raw_obl->url_operator_img;
+        }
 
         if (!empty($raw_obl->supplier_key)) {
             $obl->supplier_key = $raw_obl->supplier_key;
