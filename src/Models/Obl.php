@@ -44,6 +44,15 @@ class Obl
 
 
     /**
+     * @param string $title
+     */
+    public function set_browser_title($title)
+    {
+        $this->browser_title = $title;
+    }
+
+
+    /**
      * @param string|null $append
      * @return string
      */
