@@ -22,9 +22,12 @@ class BookingServiceImpl implements BookingService {
     /**
      * BookingServiceImpl constructor.
      * @param array $credentials
+     * @param string $xdebug_key
      */
-    public function __construct($credentials) {
+    public function __construct($credentials, $xdebug_key = null)
+    {
         $this->credentials = $credentials;
+        $this->xdebug_key = $xdebug_key;
     }
 
     /**
@@ -162,10 +165,13 @@ class BookingServiceImpl implements BookingService {
     }
 
 
-    private function get_api_client() {
+    private function get_api_client()
+    {
         if($this->api_client == null) {
             $this->api_client = new APIClient($this->credentials);
         }
+
+        $this->api_client->set_xdebug_key($this->xdebug_key);
 
         return $this->api_client;
     }

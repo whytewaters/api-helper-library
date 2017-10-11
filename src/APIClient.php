@@ -8,18 +8,37 @@ use Rtbs\ApiHelper\Models\Booking;
 class APIClient
 {
 
-    function __construct($options=array()) {
+    private $host;
+    private $key;
+    private $pwd;
+    private $xdebug_key;
+
+
+    function __construct($options=array())
+    {
         //override defaults
         if (isset($options['host'])) {
             $this->host = $options['host'];
         }
+
         if (isset($options['key'])) {
             $this->key = $options['key'];
         }
+
         if (isset($options['pwd'])) {
             $this->pwd = $options['pwd'];
         }
     }
+
+
+    /**
+     * @param string $xdebug_key such as PHPSTORM
+     */
+    public function set_xdebug_key($xdebug_key)
+    {
+        $this->xdebug_key = $xdebug_key;
+    }
+
 
     function api_categories() {
         $response = $this->call('/api/categories');
@@ -210,7 +229,14 @@ class APIClient
         $separator = strpos($request, '?') === false ? '?' : '&';
         $request .= $separator.'apikey='.$this->key;
 
-//        $request .= "&XDEBUG_SESSION_START=PHPSTORM";
+        // tracer
+        if (session_id()) {
+            $request .= '&tracer=' . urlencode(session_id());
+        }
+
+        if ($this->xdebug_key) {
+            $request .= '&XDEBUG_SESSION_START=' . urlencode($this->xdebug_key);
+        }
 
         $url = $this->host.$request;
 
@@ -369,4 +395,5 @@ class APIClient
     {
         return file_get_contents($this->api_ticket_url($token));
     }
+
 }
