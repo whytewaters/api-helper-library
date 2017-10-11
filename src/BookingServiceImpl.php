@@ -43,12 +43,14 @@ class BookingServiceImpl implements BookingService {
         return $categories;
     }
 
+
     /**
      * @param string $supplier_key
      * @param string|array $tour_keys
      * @param string $date
      * @param bool $search_next_available
      * @param int $days
+     * @param array|null $exclude_capacityholds
      * @return SessionAndAdvanceDates
      */
     public function get_sessions_and_advance_dates($supplier_key, $tour_keys, $date, $search_next_available = false, $days = 1, $exclude_capacityholds = null) {
@@ -65,6 +67,32 @@ class BookingServiceImpl implements BookingService {
 
         return $sessions_and_advance_dates;
     }
+
+
+    /**
+     * @param string $supplier_key
+     * @param string|array $experience_keys
+     * @param string $date
+     * @param bool $search_next_available
+     * @param int $days
+     * @param array|null $exclude_capacityholds
+     * @return SessionAndAdvanceDates
+     */
+    public function get_experience_sessions_and_advance_dates($supplier_key, $experience_keys, $date, $search_next_available = false, $days = 1, $exclude_capacityholds = null)
+    {
+        $response = $this->get_api_client()->api_experience_sessions($supplier_key, $experience_keys, $date, $search_next_available, $days, $exclude_capacityholds);
+
+        $sessions_and_advance_dates = new SessionAndAdvanceDates();
+
+        foreach($response->sessions as $raw_session) {
+            $sessions_and_advance_dates->add_session(Session::from_raw($raw_session));
+        }
+
+        $sessions_and_advance_dates->set_advance_dates($response->advance_dates);
+
+        return $sessions_and_advance_dates;
+    }
+
 
     /**
      * @return Supplier[]
@@ -287,5 +315,6 @@ class BookingServiceImpl implements BookingService {
             'API call did not succeed: Trip is closed' => 'The event is unavailable at the chosen date and time, please choose a different date',
         ));
     }
+
 
 }

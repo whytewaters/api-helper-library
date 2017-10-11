@@ -88,7 +88,7 @@ class APIClient
     }
 
 
-    //NOTE! returns an object with potentially two properties: 'sessions' & 'advance_dates'
+    // NOTE! returns an object with potentially two properties: 'sessions' & 'advance_dates'
     function api_sessions($supplier_key, $tour_keys, $date, $search_next_available = false, $days = 1, $exclude_capacityholds = null) {
         $pattern = "/api/sessions?supplier=%s&tours=%s&date=%s&search_next_available=%d&days=%d&exclude_capacityholds=%s";
         $tours = is_array($tour_keys) ? implode(",", $tour_keys) : $tour_keys;
@@ -98,13 +98,35 @@ class APIClient
         return $this->call($request);
     }
 
+
+    // NOTE! returns an object with potentially two properties: 'sessions' & 'advance_dates'
+    function api_experience_sessions($supplier_key, $experience_keys, $date, $search_next_available = false, $days = 1, $exclude_capacityholds = null)
+    {
+        $experiences = is_array($experience_keys) ? implode(",", $experience_keys) : $experience_keys;
+        $exclude_capacityholds = is_array($exclude_capacityholds) ? implode(",", $exclude_capacityholds) : $exclude_capacityholds;
+        $search_next_available = ($search_next_available) ? 1 : 0;
+
+        $request = '/api/experience_sessions?' . http_build_query([
+            'supplier' => $supplier_key,
+            'experiences' => $experiences,
+            'date' => $date,
+            'search_next_available' => $search_next_available,
+            'days' => $days,
+            'exclude_capacityholds' => $exclude_capacityholds,
+        ]);
+
+        return $this->call($request);
+    }
+
+
     function api_pickups($tour_key) {
         $method = "/api/pickups?tour=".$tour_key;
         $response = $this->call($method);
         return $response->pickups;
     }
 
-    //returns a payment URL for the booking
+
+    // returns a payment URL for the booking
     function api_booking(Booking $booking) {
         $method = '/api/booking';
         $data = $booking->to_raw_object();
