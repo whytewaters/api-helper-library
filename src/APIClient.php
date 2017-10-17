@@ -107,7 +107,20 @@ class APIClient
     }
 
 
-    // NOTE! returns an object with potentially two properties: 'sessions' & 'advance_dates'
+    /**
+     * @param string $supplier_key
+     * @param string $voucher_code
+     * @return \stdClass
+     */
+    public function api_voucher($supplier_key, $voucher_code)
+    {
+        $query_str = http_build_query(['supplier' => $supplier_key, 'voucher' => $voucher_code]);
+        $response = $this->call("/api/voucher?{$query_str}");
+        return $response->voucher;
+    }
+
+
+    //NOTE! returns an object with potentially two properties: 'sessions' & 'advance_dates'
     function api_sessions($supplier_key, $tour_keys, $date, $search_next_available = false, $days = 1, $exclude_capacityholds = null) {
         $pattern = "/api/sessions?supplier=%s&tours=%s&date=%s&search_next_available=%d&days=%d&exclude_capacityholds=%s";
         $tours = is_array($tour_keys) ? implode(",", $tour_keys) : $tour_keys;
