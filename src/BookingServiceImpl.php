@@ -15,6 +15,7 @@ use Rtbs\ApiHelper\Models\Supplier;
 use Rtbs\ApiHelper\Models\Tour;
 use Rtbs\ApiHelper\Models\Itinerary;
 use Rtbs\ApiHelper\Models\CapacityHold;
+use Rtbs\ApiHelper\Models\Voucher;
 
 class BookingServiceImpl implements BookingService {
     private $api_client;
@@ -148,6 +149,18 @@ class BookingServiceImpl implements BookingService {
         return $tours;
     }
 
+
+    /**
+     * @param string $supplier_key
+     * @param string $voucher_code
+     * @return Voucher
+     */
+    public function get_voucher($supplier_key, $voucher_code)
+    {
+        $raw_voucher = $this->get_api_client()->api_voucher($supplier_key, $voucher_code);
+
+        return Voucher::from_raw($raw_voucher);
+    }
 
     /**
      *

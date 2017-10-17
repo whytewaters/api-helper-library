@@ -16,7 +16,6 @@ class Obl
     private $is_latipay_payment_gateway;
     private $operator_status_msg;
     private $is_mouseflow_tracking;
-    private $is_show_promo_codes;
     private $is_active;
     private $operator_email;
     private $operator_phone;
@@ -37,20 +36,22 @@ class Obl
     private $color_page_link_bg;
     private $color_page_link_hover_text;
     private $color_page_link_hover_bg;
+
     private $color_grid_bg;
     private $color_grid_text;
+
     private $color_navbar_bg;
     private $color_navbar_content_bg;
-    private $color_navbar_text;
     private $color_navbar_next_text;
     private $color_navbar_prev_text;
     private $color_navbar_prev_bg;
     private $color_navbar_prev_hover_text;
     private $color_navbar_prev_hover_bg;
-    private $color_navbar_link_text;
-    private $color_navbar_link_bg;
-    private $color_navbar_link_hover_text;
-    private $color_navbar_link_hover_bg;
+    private $color_navbar_curr_text;
+    private $color_navbar_curr_bg;
+    private $color_navbar_curr_hover_text;
+    private $color_navbar_curr_hover_bg;
+
     private $color_button_default_bg;
     private $color_button_default_text;
     private $color_button_default_hover_bg;
@@ -63,6 +64,11 @@ class Obl
     private $color_button_gridnav_text;
     private $color_button_gridnav_hover_bg;
     private $color_button_gridnav_hover_text;
+    private $color_button_booknow_bg;
+    private $color_button_booknow_text;
+    private $color_button_booknow_hover_bg;
+    private $color_button_booknow_hover_text;
+
     private $color_activity_block_bg;
     private $color_activity_block_text;
     private $color_page_header_bg;
@@ -73,6 +79,11 @@ class Obl
     private $color_grid_head_text;
     private $color_grid_hover_bg;
     private $color_grid_hover_text;
+
+    private $color_mobile_theme;
+
+    private $has_promo_codes;
+    private $has_vouchers;
 
 
     /**
@@ -296,15 +307,6 @@ class Obl
     /**
      * @return bool
      */
-    public function get_is_show_promo_codes()
-    {
-        return $this->is_show_promo_codes;
-    }
-
-
-    /**
-     * @return bool
-     */
     public function get_is_active()
     {
         return $this->is_active;
@@ -321,20 +323,20 @@ class Obl
 
 
     /**
+     * @param string|null $url_facebook
+     */
+    public function set_url_facebook($url_facebook)
+    {
+        $this->url_facebook = $url_facebook;
+    }
+
+
+    /**
      * @return string|null
      */
     public function get_url_operator_img()
     {
         return $this->url_operator_img;
-    }
-    
-
-    /**
-	 * @param string|null $url_facebook
-	 */
-    public function set_url_facebook($url_facebook)
-    {
-    	$this->url_facebook = $url_facebook;
     }
 
 
@@ -470,15 +472,6 @@ class Obl
     public function get_color_navbar_content_bg()
     {
         return $this->color_navbar_content_bg;
-    }
-
-    
-    /**
-     * @return string|null
-     */
-    public function get_color_navbar_text()
-    {
-        return $this->color_navbar_text;
     }
 
 
@@ -673,6 +666,42 @@ class Obl
     /**
      * @return string|null
      */
+    public function get_color_button_booknow_bg()
+    {
+        return $this->color_button_booknow_bg;
+    }
+
+
+    /**
+     * @return string|null
+     */
+    public function get_color_button_booknow_text()
+    {
+        return $this->color_button_booknow_text;
+    }
+
+
+    /**
+     * @return string|null
+     */
+    public function get_color_button_booknow_hover_bg()
+    {
+        return $this->color_button_booknow_hover_bg;
+    }
+
+
+    /**
+     * @return string|null
+     */
+    public function get_color_button_booknow_hover_text()
+    {
+        return $this->color_button_booknow_hover_text;
+    }
+    
+
+    /**
+     * @return string|null
+     */
     public function get_color_activity_block_bg()
     {
         return $this->color_activity_block_bg;
@@ -761,6 +790,33 @@ class Obl
 
 
     /**
+     * @return string|null
+     */
+    public function get_color_mobile_theme()
+    {
+        return $this->color_mobile_theme;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function has_promo_codes()
+    {
+        return $this->has_promo_codes;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function has_vouchers()
+    {
+        return $this->has_vouchers;
+    }
+
+
+    /**
      * @param \stdClass $raw_obl
      * @return Obl
      */
@@ -780,6 +836,8 @@ class Obl
         $obl->url_website = $raw_obl->url_website;
         $obl->url_banner_img = $raw_obl->url_banner_img;
         $obl->tour_keys = $raw_obl->tour_keys;
+        $obl->has_promo_codes = $raw_obl->has_promo_codes;
+        $obl->has_vouchers = $raw_obl->has_vouchers;
 
         if (property_exists($raw_obl, 'is_latipay_payment_gateway')) {
             $obl->is_latipay_payment_gateway = $raw_obl->is_latipay_payment_gateway;
@@ -787,10 +845,6 @@ class Obl
 
         if (property_exists($raw_obl, 'is_mouseflow_tracking')) {
             $obl->is_mouseflow_tracking = $raw_obl->is_mouseflow_tracking;
-        }
-
-        if (property_exists($raw_obl, 'is_show_promo_codes')) {
-            $obl->is_show_promo_codes = $raw_obl->is_show_promo_codes;
         }
 
         if (property_exists($raw_obl, 'is_active')) {
@@ -835,191 +889,63 @@ class Obl
 
 
         // colors
+        $obl->color_body_bg = $raw_obl->obl_color_body_bg;
+        $obl->color_body_text = $raw_obl->obl_color_body_text;
+        $obl->color_page_bg = $raw_obl->obl_color_page_bg;
+        $obl->color_page_content_bg = $raw_obl->obl_color_page_content_bg;
+        $obl->color_page_content_text = $raw_obl->obl_color_page_content_text;
+        $obl->color_page_heading_text = $raw_obl->obl_color_page_heading_text;
+        $obl->color_page_line = $raw_obl->obl_color_page_line;
+        $obl->color_page_link_text = $raw_obl->obl_color_page_link_text;
+        $obl->color_page_link_bg = $raw_obl->obl_color_page_link_bg;
+        $obl->color_page_link_hover_text = $raw_obl->obl_color_page_link_hover_text;
+        $obl->color_page_link_hover_bg = $raw_obl->obl_color_page_link_hover_bg;
 
-        if (property_exists($raw_obl, 'obl_color_body_bg')) {
-            $obl->color_body_bg = $raw_obl->obl_color_body_bg;
-        }
+        $obl->color_grid_bg = $raw_obl->obl_color_grid_bg;
+        $obl->color_grid_text = $raw_obl->obl_color_grid_text;
 
-        if (property_exists($raw_obl, 'obl_color_body_text')) {
-            $obl->color_body_text = $raw_obl->obl_color_body_text;
-        }
+        $obl->color_navbar_bg = $raw_obl->obl_color_navbar_bg;
+        $obl->color_navbar_content_bg = $raw_obl->obl_color_navbar_content_bg;
+        $obl->color_navbar_next_text = $raw_obl->obl_color_navbar_next_text;
+        $obl->color_navbar_prev_text = $raw_obl->obl_color_navbar_prev_text;
+        $obl->color_navbar_prev_bg = $raw_obl->obl_color_navbar_prev_bg;
+        $obl->color_navbar_prev_hover_text = $raw_obl->obl_color_navbar_prev_hover_text;
+        $obl->color_navbar_prev_hover_bg = $raw_obl->obl_color_navbar_prev_hover_bg;
+        $obl->color_navbar_curr_text = $raw_obl->obl_color_navbar_curr_text;
+        $obl->color_navbar_curr_bg = $raw_obl->obl_color_navbar_curr_bg;
+        $obl->color_navbar_curr_hover_text = $raw_obl->obl_color_navbar_curr_hover_text;
+        $obl->color_navbar_curr_hover_bg = $raw_obl->obl_color_navbar_curr_hover_bg;
 
-        if (property_exists($raw_obl, 'obl_color_page_bg')) {
-            $obl->color_page_bg = $raw_obl->obl_color_page_bg;
-        }
+        $obl->color_button_default_bg = $raw_obl->obl_color_button_default_bg;
+        $obl->color_button_default_text = $raw_obl->obl_color_button_default_text;
+        $obl->color_button_default_hover_bg = $raw_obl->obl_color_button_default_hover_bg;
+        $obl->color_button_default_hover_text = $raw_obl->obl_color_button_default_hover_text;
+        $obl->color_button_primary_bg = $raw_obl->obl_color_button_primary_bg;
+        $obl->color_button_primary_text = $raw_obl->obl_color_button_primary_text;
+        $obl->color_button_primary_hover_bg = $raw_obl->obl_color_button_primary_hover_bg;
+        $obl->color_button_primary_hover_text = $raw_obl->obl_color_button_primary_hover_text;
+        $obl->color_button_gridnav_bg = $raw_obl->obl_color_button_gridnav_bg;
+        $obl->color_button_gridnav_text = $raw_obl->obl_color_button_gridnav_text;
+        $obl->color_button_gridnav_hover_bg = $raw_obl->obl_color_button_gridnav_hover_bg;
+        $obl->color_button_gridnav_hover_text = $raw_obl->obl_color_button_gridnav_hover_text;
+        $obl->color_button_booknow_bg = $raw_obl->obl_color_button_booknow_bg;
+        $obl->color_button_booknow_text = $raw_obl->obl_color_button_booknow_text;
+        $obl->color_button_booknow_hover_bg = $raw_obl->obl_color_button_booknow_hover_bg;
+        $obl->color_button_booknow_hover_text = $raw_obl->obl_color_button_booknow_hover_text;
 
-        if (property_exists($raw_obl, 'obl_color_page_content_bg')) {
-            $obl->color_page_content_bg = $raw_obl->obl_color_page_content_bg;
-        }
+        $obl->color_activity_block_bg = $raw_obl->obl_color_activity_block_bg;
+        $obl->color_activity_block_text = $raw_obl->obl_color_activity_block_text;
 
-        if (property_exists($raw_obl, 'obl_color_page_content_text')) {
-            $obl->color_page_content_text = $raw_obl->obl_color_page_content_text;
-        }
+        $obl->color_page_header_bg = $raw_obl->obl_color_page_header_bg;
+        $obl->color_page_header_content_bg = $raw_obl->obl_color_page_header_content_bg;
+        $obl->color_page_footer_bg = $raw_obl->obl_color_page_footer_bg;
+        $obl->color_page_footer_content_bg = $raw_obl->obl_color_page_footer_content_bg;
 
-        if (property_exists($raw_obl, 'obl_color_page_heading_text')) {
-            $obl->color_page_heading_text = $raw_obl->obl_color_page_heading_text;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_page_line')) {
-            $obl->color_page_line = $raw_obl->obl_color_page_line;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_page_link_text')) {
-            $obl->color_page_link_text = $raw_obl->obl_color_page_link_text;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_page_link_bg')) {
-            $obl->color_page_link_bg = $raw_obl->obl_color_page_link_bg;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_page_link_hover_text')) {
-            $obl->color_page_link_hover_text = $raw_obl->obl_color_page_link_hover_text;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_page_link_hover_bg')) {
-            $obl->color_page_link_hover_bg = $raw_obl->obl_color_page_link_hover_bg;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_grid_bg')) {
-            $obl->color_grid_bg = $raw_obl->obl_color_grid_bg;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_grid_text')) {
-            $obl->color_grid_text = $raw_obl->obl_color_grid_text;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_navbar_bg')) {
-            $obl->color_navbar_bg = $raw_obl->obl_color_navbar_bg;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_navbar_content_bg')) {
-            $obl->color_navbar_content_bg = $raw_obl->obl_color_navbar_content_bg;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_navbar_next_text')) {
-            $obl->color_navbar_next_text = $raw_obl->obl_color_navbar_next_text;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_navbar_prev_text')) {
-            $obl->color_navbar_prev_text = $raw_obl->obl_color_navbar_prev_text;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_navbar_prev_bg')) {
-            $obl->color_navbar_prev_bg = $raw_obl->obl_color_navbar_prev_bg;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_navbar_prev_hover_text')) {
-            $obl->color_navbar_prev_hover_text = $raw_obl->obl_color_navbar_prev_hover_text;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_navbar_prev_hover_bg')) {
-            $obl->color_navbar_prev_hover_bg = $raw_obl->obl_color_navbar_prev_hover_bg;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_navbar_curr_text')) {
-            $obl->color_navbar_curr_text = $raw_obl->obl_color_navbar_curr_text;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_navbar_curr_bg')) {
-            $obl->color_navbar_curr_bg = $raw_obl->obl_color_navbar_curr_bg;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_navbar_curr_hover_text')) {
-            $obl->color_navbar_curr_hover_text = $raw_obl->obl_color_navbar_curr_hover_text;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_navbar_curr_hover_bg')) {
-            $obl->color_navbar_curr_hover_bg = $raw_obl->obl_color_navbar_curr_hover_bg;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_button_default_bg')) {
-            $obl->color_button_default_bg = $raw_obl->obl_color_button_default_bg;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_button_default_text')) {
-            $obl->color_button_default_text = $raw_obl->obl_color_button_default_text;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_button_default_hover_bg')) {
-            $obl->color_button_default_hover_bg = $raw_obl->obl_color_button_default_hover_bg;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_button_default_hover_text')) {
-            $obl->color_button_default_hover_text = $raw_obl->obl_color_button_default_hover_text;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_button_primary_bg')) {
-            $obl->color_button_primary_bg = $raw_obl->obl_color_button_primary_bg;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_button_primary_text')) {
-            $obl->color_button_primary_text = $raw_obl->obl_color_button_primary_text;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_button_primary_hover_bg')) {
-            $obl->color_button_primary_hover_bg = $raw_obl->obl_color_button_primary_hover_bg;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_button_primary_hover_text')) {
-            $obl->color_button_primary_hover_text = $raw_obl->obl_color_button_primary_hover_text;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_button_gridnav_bg')) {
-            $obl->color_button_gridnav_bg = $raw_obl->obl_color_button_gridnav_bg;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_button_gridnav_text')) {
-            $obl->color_button_gridnav_text = $raw_obl->obl_color_button_gridnav_text;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_button_gridnav_hover_bg')) {
-            $obl->color_button_gridnav_hover_bg = $raw_obl->obl_color_button_gridnav_hover_bg;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_button_gridnav_hover_text')) {
-            $obl->color_button_gridnav_hover_text = $raw_obl->obl_color_button_gridnav_hover_text;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_activity_block_bg')) {
-            $obl->color_activity_block_bg = $raw_obl->obl_color_activity_block_bg;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_activity_block_text')) {
-            $obl->color_activity_block_text = $raw_obl->obl_color_activity_block_text;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_page_header_bg')) {
-            $obl->color_page_header_bg = $raw_obl->obl_color_page_header_bg;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_page_header_content_bg')) {
-            $obl->color_page_header_content_bg = $raw_obl->obl_color_page_header_content_bg;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_page_footer_bg')) {
-            $obl->color_page_footer_bg = $raw_obl->obl_color_page_footer_bg;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_page_footer_content_bg')) {
-            $obl->color_page_footer_content_bg = $raw_obl->obl_color_page_footer_content_bg;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_grid_head_bg')) {
-            $obl->color_grid_head_bg = $raw_obl->obl_color_grid_head_bg;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_grid_head_text')) {
-            $obl->color_grid_head_text = $raw_obl->obl_color_grid_head_text;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_grid_hover_bg')) {
-            $obl->color_grid_hover_bg = $raw_obl->obl_color_grid_hover_bg;
-        }
-
-        if (property_exists($raw_obl, 'obl_color_grid_hover_text')) {
-            $obl->color_grid_hover_text = $raw_obl->obl_color_grid_hover_text;
-        }
-
+        $obl->color_grid_head_bg = $raw_obl->obl_color_grid_head_bg;
+        $obl->color_grid_head_text = $raw_obl->obl_color_grid_head_text;
+        $obl->color_grid_hover_bg = $raw_obl->obl_color_grid_hover_bg;
+        $obl->color_grid_hover_text = $raw_obl->obl_color_grid_hover_text;
+        $obl->color_mobile_theme = $raw_obl->obl_color_mobile_theme;
 
         if (!empty($raw_obl->supplier_key)) {
             $obl->supplier_key = $raw_obl->supplier_key;
