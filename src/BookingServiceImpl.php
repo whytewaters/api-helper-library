@@ -5,6 +5,7 @@ use Rtbs\ApiHelper\Exceptions\PromoNotFoundException;
 use Rtbs\ApiHelper\Models\Booking;
 use Rtbs\ApiHelper\Models\Category;
 use Rtbs\ApiHelper\Models\Customer;
+use Rtbs\ApiHelper\Models\ItineraryBooking;
 use Rtbs\ApiHelper\Models\Obl;
 use Rtbs\ApiHelper\Models\Pickup;
 use Rtbs\ApiHelper\Models\Promo;
@@ -208,6 +209,17 @@ class BookingServiceImpl implements BookingService {
 
 
     /**
+     * @param ItineraryBooking $itinerary_booking
+     * @return ItineraryBooking
+     */
+    public function make_itinerary_booking(ItineraryBooking $itinerary_booking)
+    {
+        $response = $this->get_api_client()->api_book_itineray($itineray_booking);
+        return ItineraryBooking::from_raw($response);
+    }
+
+
+    /**
      * @param string $promo_code
      * @param Booking $booking
      * @return Promo
@@ -257,9 +269,10 @@ class BookingServiceImpl implements BookingService {
     public function create_customer($first_name, $last_name, $email, $phone) {
         $raw_customer = $this->get_api_client()->api_create_customer($first_name, $last_name, $email, $phone);
 
-        return Customer::fromRaw($raw_customer->customer);
+        return Customer::from_raw($raw_customer->customer);
     }
 
+    
     /**
      * @param Customer $customer
      * @return \Rtbs\ApiHelper\Models\Itinerary

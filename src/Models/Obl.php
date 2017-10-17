@@ -36,8 +36,10 @@ class Obl
     private $color_page_link_bg;
     private $color_page_link_hover_text;
     private $color_page_link_hover_bg;
+
     private $color_grid_bg;
     private $color_grid_text;
+
     private $color_navbar_bg;
     private $color_navbar_content_bg;
     private $color_navbar_next_text;
@@ -49,6 +51,7 @@ class Obl
     private $color_navbar_curr_bg;
     private $color_navbar_curr_hover_text;
     private $color_navbar_curr_hover_bg;
+
     private $color_button_default_bg;
     private $color_button_default_text;
     private $color_button_default_hover_bg;
@@ -65,6 +68,7 @@ class Obl
     private $color_button_booknow_text;
     private $color_button_booknow_hover_bg;
     private $color_button_booknow_hover_text;
+
     private $color_activity_block_bg;
     private $color_activity_block_text;
     private $color_page_header_bg;
@@ -75,10 +79,12 @@ class Obl
     private $color_grid_head_text;
     private $color_grid_hover_bg;
     private $color_grid_hover_text;
+
     private $color_mobile_theme;
 
     private $has_promo_codes;
     private $has_vouchers;
+
 
     /**
      * @return string
@@ -160,6 +166,33 @@ class Obl
     public function set_url_banner_img($url_banner_img)
     {
         $this->url_banner_img = $url_banner_img;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function get_url_spinner_img()
+    {
+        return $this->url_spinner_img;
+    }
+
+
+    /**
+     * @param string $url_background_img
+     */
+    public function set_url_background_img($url_background_img)
+    {
+        $this->url_background_img = $url_background_img;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function get_url_background_img()
+    {
+        return $this->url_background_img;
     }
 
 
@@ -290,20 +323,20 @@ class Obl
 
 
     /**
+     * @param string|null $url_facebook
+     */
+    public function set_url_facebook($url_facebook)
+    {
+        $this->url_facebook = $url_facebook;
+    }
+
+
+    /**
      * @return string|null
      */
     public function get_url_operator_img()
     {
         return $this->url_operator_img;
-    }
-
-
-    /**
-	 * @param string|null $url_facebook
-	 */
-    public function set_url_facebook($url_facebook)
-    {
-    	$this->url_facebook = $url_facebook;
     }
 
 
@@ -440,6 +473,7 @@ class Obl
     {
         return $this->color_navbar_content_bg;
     }
+
 
     /**
      * @return string|null
@@ -627,7 +661,7 @@ class Obl
     {
         return $this->color_button_gridnav_hover_text;
     }
-    
+
 
     /**
      * @return string|null
@@ -866,8 +900,10 @@ class Obl
         $obl->color_page_link_bg = $raw_obl->obl_color_page_link_bg;
         $obl->color_page_link_hover_text = $raw_obl->obl_color_page_link_hover_text;
         $obl->color_page_link_hover_bg = $raw_obl->obl_color_page_link_hover_bg;
+
         $obl->color_grid_bg = $raw_obl->obl_color_grid_bg;
         $obl->color_grid_text = $raw_obl->obl_color_grid_text;
+
         $obl->color_navbar_bg = $raw_obl->obl_color_navbar_bg;
         $obl->color_navbar_content_bg = $raw_obl->obl_color_navbar_content_bg;
         $obl->color_navbar_next_text = $raw_obl->obl_color_navbar_next_text;
@@ -879,6 +915,7 @@ class Obl
         $obl->color_navbar_curr_bg = $raw_obl->obl_color_navbar_curr_bg;
         $obl->color_navbar_curr_hover_text = $raw_obl->obl_color_navbar_curr_hover_text;
         $obl->color_navbar_curr_hover_bg = $raw_obl->obl_color_navbar_curr_hover_bg;
+
         $obl->color_button_default_bg = $raw_obl->obl_color_button_default_bg;
         $obl->color_button_default_text = $raw_obl->obl_color_button_default_text;
         $obl->color_button_default_hover_bg = $raw_obl->obl_color_button_default_hover_bg;
@@ -895,12 +932,15 @@ class Obl
         $obl->color_button_booknow_text = $raw_obl->obl_color_button_booknow_text;
         $obl->color_button_booknow_hover_bg = $raw_obl->obl_color_button_booknow_hover_bg;
         $obl->color_button_booknow_hover_text = $raw_obl->obl_color_button_booknow_hover_text;
+
         $obl->color_activity_block_bg = $raw_obl->obl_color_activity_block_bg;
         $obl->color_activity_block_text = $raw_obl->obl_color_activity_block_text;
+
         $obl->color_page_header_bg = $raw_obl->obl_color_page_header_bg;
         $obl->color_page_header_content_bg = $raw_obl->obl_color_page_header_content_bg;
         $obl->color_page_footer_bg = $raw_obl->obl_color_page_footer_bg;
         $obl->color_page_footer_content_bg = $raw_obl->obl_color_page_footer_content_bg;
+
         $obl->color_grid_head_bg = $raw_obl->obl_color_grid_head_bg;
         $obl->color_grid_head_text = $raw_obl->obl_color_grid_head_text;
         $obl->color_grid_hover_bg = $raw_obl->obl_color_grid_hover_bg;
