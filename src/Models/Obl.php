@@ -837,7 +837,10 @@ class Obl
         $obl->url_banner_img = $raw_obl->url_banner_img;
         $obl->tour_keys = $raw_obl->tour_keys;
         $obl->has_promo_codes = $raw_obl->has_promo_codes;
-        $obl->has_vouchers = $raw_obl->has_vouchers;
+
+        if (property_exists($raw_obl, 'has_vouchers')) {
+		    $obl->has_vouchers = $raw_obl->has_vouchers;
+	    }
 
         if (property_exists($raw_obl, 'is_latipay_payment_gateway')) {
             $obl->is_latipay_payment_gateway = $raw_obl->is_latipay_payment_gateway;
