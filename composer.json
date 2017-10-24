@@ -15,7 +15,7 @@
   "minimum-stability": "dev",
   "require": {
     "php": ">=5.3.0",
-    "nesbot/carbon": "^1.23@dev"
+    "nesbot/carbon": "^1.2"
   },
   "autoload": {
     "psr-4": {
