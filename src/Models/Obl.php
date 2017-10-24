@@ -931,10 +931,24 @@ class Obl
         $obl->color_button_gridnav_text = $raw_obl->obl_color_button_gridnav_text;
         $obl->color_button_gridnav_hover_bg = $raw_obl->obl_color_button_gridnav_hover_bg;
         $obl->color_button_gridnav_hover_text = $raw_obl->obl_color_button_gridnav_hover_text;
-        $obl->color_button_booknow_bg = $raw_obl->obl_color_button_booknow_bg;
-        $obl->color_button_booknow_text = $raw_obl->obl_color_button_booknow_text;
-        $obl->color_button_booknow_hover_bg = $raw_obl->obl_color_button_booknow_hover_bg;
-        $obl->color_button_booknow_hover_text = $raw_obl->obl_color_button_booknow_hover_text;
+
+
+
+	    if (property_exists($raw_obl, 'obl_color_button_booknow_bg')) {
+		    $obl->color_button_booknow_bg = $raw_obl->obl_color_button_booknow_bg;
+	    }
+
+	    if (property_exists($raw_obl, 'obl_color_button_booknow_text')) {
+		    $obl->color_button_booknow_text = $raw_obl->obl_color_button_booknow_text;
+	    }
+
+	    if (property_exists($raw_obl, 'obl_color_button_booknow_hover_bg')) {
+		    $obl->color_button_booknow_hover_bg = $raw_obl->obl_color_button_booknow_hover_bg;
+	    }
+
+	    if (property_exists($raw_obl, 'obl_color_button_booknow_hover_text')) {
+		    $obl->color_button_booknow_hover_text = $raw_obl->obl_color_button_booknow_hover_text;
+	    }
 
         $obl->color_activity_block_bg = $raw_obl->obl_color_activity_block_bg;
         $obl->color_activity_block_text = $raw_obl->obl_color_activity_block_text;
@@ -948,7 +962,10 @@ class Obl
         $obl->color_grid_head_text = $raw_obl->obl_color_grid_head_text;
         $obl->color_grid_hover_bg = $raw_obl->obl_color_grid_hover_bg;
         $obl->color_grid_hover_text = $raw_obl->obl_color_grid_hover_text;
-        $obl->color_mobile_theme = $raw_obl->obl_color_mobile_theme;
+	    
+	    if (property_exists($raw_obl, 'obl_color_mobile_theme')) {
+		    $obl->color_mobile_theme = $raw_obl->obl_color_mobile_theme;
+	    }
 
         if (!empty($raw_obl->supplier_key)) {
             $obl->supplier_key = $raw_obl->supplier_key;
