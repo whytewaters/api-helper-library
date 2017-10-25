@@ -5,6 +5,7 @@ use Rtbs\ApiHelper\Exceptions\PromoNotFoundException;
 use Rtbs\ApiHelper\Models\Booking;
 use Rtbs\ApiHelper\Models\Category;
 use Rtbs\ApiHelper\Models\Customer;
+use Rtbs\ApiHelper\Models\ExperienceSession;
 use Rtbs\ApiHelper\Models\ItineraryBooking;
 use Rtbs\ApiHelper\Models\Obl;
 use Rtbs\ApiHelper\Models\Pickup;
@@ -76,26 +77,27 @@ class BookingServiceImpl implements BookingService {
 
     /**
      * @param string $supplier_key
-     * @param string|array $experience_keys
-     * @param string $date
+     * @param string $experience_key
+     * @param \DateTimeInterface|string $date
      * @param bool $search_next_available
      * @param int $days
      * @param array|null $exclude_capacityholds
-     * @return SessionAndAdvanceDates
+     * @return ExperienceSession[]
      */
-    public function get_experience_sessions_and_advance_dates($supplier_key, $experience_keys, $date, $search_next_available = false, $days = 1, $exclude_capacityholds = null)
+    public function get_experience_sessions($supplier_key, $experience_key, $date, $search_next_available = false, $days = 1, $exclude_capacityholds = null)
     {
-        $response = $this->get_api_client()->api_experience_sessions($supplier_key, $experience_keys, $date, $search_next_available, $days, $exclude_capacityholds);
-
-        $sessions_and_advance_dates = new SessionAndAdvanceDates();
-
-        foreach($response->sessions as $raw_session) {
-            $sessions_and_advance_dates->add_session(Session::from_raw($raw_session));
+        if ($date instanceof \DateTimeInterface) {
+            $date = $date->format('Y-m-d');
         }
 
-        $sessions_and_advance_dates->set_advance_dates($response->advance_dates);
+        $experience_sessions = array();
+        $response = $this->get_api_client()->api_experience_sessions($supplier_key, $experience_key, $date, $search_next_available, $days, $exclude_capacityholds);
 
-        return $sessions_and_advance_dates;
+        foreach($response->experience_sessions as $raw_experience_session) {
+            $experience_sessions[] = ExperienceSession::from_raw($raw_experience_session);
+        }
+
+        return $experience_sessions;
     }
 
 
