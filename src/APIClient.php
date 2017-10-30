@@ -131,16 +131,23 @@ class APIClient
     }
 
 
-    // NOTE! returns an object with potentially two properties: 'sessions' & 'advance_dates'
-    function api_experience_sessions($supplier_key, $experience_keys, $date, $search_next_available = false, $days = 1, $exclude_capacityholds = null)
+    /**
+     * @param string $supplier_key
+     * @param string $experience_key
+     * @param string $date
+     * @param bool $search_next_available
+     * @param int $days
+     * @param array|null $exclude_capacityholds
+     * @return \stdClass
+     */
+    function api_experience_sessions($supplier_key, $experience_key, $date, $search_next_available = false, $days = 1, array $exclude_capacityholds = null)
     {
-        $experiences = is_array($experience_keys) ? implode(",", $experience_keys) : $experience_keys;
         $exclude_capacityholds = is_array($exclude_capacityholds) ? implode(",", $exclude_capacityholds) : $exclude_capacityholds;
         $search_next_available = ($search_next_available) ? 1 : 0;
 
         $request = '/api/experience_sessions?' . http_build_query([
             'supplier' => $supplier_key,
-            'experiences' => $experiences,
+            'experience' => $experience_key,
             'date' => $date,
             'search_next_available' => $search_next_available,
             'days' => $days,
