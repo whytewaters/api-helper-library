@@ -20,17 +20,20 @@ use Rtbs\ApiHelper\Models\Voucher;
 class BookingServiceImpl implements BookingService {
     private $api_client;
     private $credentials;
+	private $xdebug_key;
+
 
     /**
      * BookingServiceImpl constructor.
      * @param array $credentials
-     * @param string $xdebug_key
+     * @param string|null $xdebug_key
      */
     public function __construct($credentials, $xdebug_key = null)
     {
         $this->credentials = $credentials;
         $this->xdebug_key = $xdebug_key;
     }
+
 
     /**
      * @return Category[]
