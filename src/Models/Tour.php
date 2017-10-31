@@ -31,14 +31,14 @@ class Tour
     private $fields = array();
 
     /**
-     * @return mixed
+     * @return string
      */
     public function get_tour_key() {
         return $this->tour_key;
     }
 
     /**
-     * @param mixed $tour_key
+     * @param string $tour_key
      */
     public function set_tour_key($tour_key) {
         $this->tour_key = $tour_key;
@@ -59,7 +59,7 @@ class Tour
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function get_supplier_key()
     {
@@ -67,35 +67,35 @@ class Tour
     }
 
     /**
-     * @param mixed $supplier_key
+     * @param string $supplier_key
      */
     public function set_supplier_key($supplier_key) {
         $this->supplier_key = $supplier_key;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function get_description() {
         return $this->description;
     }
 
     /**
-     * @param mixed $description
+     * @param string $description
      */
     public function set_description($description) {
         $this->description = $description;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function get_info_directions() {
         return $this->info_directions;
     }
 
     /**
-     * @param mixed $info_directions
+     * @param string $info_directions
      */
     public function set_info_directions($info_directions) {
         $this->info_directions = $info_directions;
@@ -103,7 +103,7 @@ class Tour
 
 
     /**
-     * @return mixed
+     * @return string
      */
     public function get_directions_html() {
         return $this->directions_html;
@@ -111,7 +111,7 @@ class Tour
 
 
     /**
-     * @param mixed $directions_html
+     * @param string $directions_html
      */
     public function set_directions_html($directions_html) {
         $this->directions_html = $directions_html;
@@ -119,7 +119,7 @@ class Tour
 
 
     /**
-     * @return mixed
+     * @return string
      */
     public function get_description_html() {
         return $this->description_html;
@@ -127,7 +127,7 @@ class Tour
 
 
     /**
-     * @param mixed $description_html
+     * @param string $description_html
      */
     public function set_description_html($description_html) {
         $this->description_html = $description_html;
@@ -135,7 +135,7 @@ class Tour
 
 
     /**
-     * @return mixed
+     * @return string
      */
     public function get_description_short_html() {
         return $this->description_short_html;
@@ -143,7 +143,7 @@ class Tour
 
 
     /**
-     * @param mixed $description_short_html
+     * @param string $description_short_html
      */
     public function set_description_short_html($description_short_html) {
         $this->description_short_html = $description_short_html;
@@ -151,7 +151,7 @@ class Tour
 
 
     /**
-     * @return mixed
+     * @return string
      */
     public function get_information_html() {
         return $this->information_html;
@@ -159,7 +159,7 @@ class Tour
 
 
     /**
-     * @param mixed $information_html
+     * @param string $information_html
      */
     public function set_information_html($information_html) {
         $this->information_html = $information_html;
@@ -167,35 +167,35 @@ class Tour
 
 
     /**
-     * @return mixed
+     * @return string
      */
     public function get_info_bring() {
         return $this->info_bring;
     }
 
     /**
-     * @param mixed $info_bring
+     * @param string $info_bring
      */
     public function set_info_bring($info_bring) {
         $this->info_bring = $info_bring;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function get_info_provided() {
         return $this->info_provided;
     }
 
     /**
-     * @param mixed $info_provided
+     * @param string $info_provided
      */
     public function set_info_provided($info_provided) {
         $this->info_provided = $info_provided;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function get_info_transport()
     {
@@ -204,7 +204,7 @@ class Tour
 
 
     /**
-     * @param mixed $info_transport
+     * @param string $info_transport
      */
     public function set_info_transport($info_transport)
     {
@@ -223,7 +223,7 @@ class Tour
 
 
     /**
-     * @param mixed $url_img
+     * @param string $url_img
      */
     public function set_url_img($url_img)
     {
@@ -231,6 +231,9 @@ class Tour
     }
 
 
+    /**
+     * @return string
+     */
     public function get_terms_html()
     {
         return $this->terms_html;

@@ -79,19 +79,20 @@ class BookingServiceImpl implements BookingService {
      * @param string $supplier_key
      * @param string $experience_key
      * @param \DateTimeInterface|string $date
+     * @param ResourceRequirement[]|null $resource_requirements
      * @param bool $search_next_available
      * @param int $days
      * @param array|null $exclude_capacityholds
      * @return ExperienceSession[]
      */
-    public function get_experience_sessions($supplier_key, $experience_key, $date, $search_next_available = false, $days = 1, $exclude_capacityholds = null)
+    public function get_experience_sessions($supplier_key, $experience_key, $date, $search_next_available = false, $days = 1, array $resource_requirements = null, $exclude_capacityholds = null)
     {
         if ($date instanceof \DateTimeInterface) {
             $date = $date->format('Y-m-d');
         }
 
         $experience_sessions = array();
-        $response = $this->get_api_client()->api_experience_sessions($supplier_key, $experience_key, $date, $search_next_available, $days, $exclude_capacityholds);
+        $response = $this->get_api_client()->api_experience_sessions($supplier_key, $experience_key, $date, $search_next_available, $days, $resource_requirements, $exclude_capacityholds);
 
         foreach($response->experience_sessions as $raw_experience_session) {
             $experience_sessions[] = ExperienceSession::from_raw($raw_experience_session);
@@ -304,7 +305,7 @@ class BookingServiceImpl implements BookingService {
     /**
      * @param string $supplier_key
      * @param string $tour_key
-     * @param \DateTime|string $trip_datetime
+     * @param \DateTimeInterface|string $trip_datetime
      * @param int $pax
      * @param int $expiry_mins
      * @return CapacityHold

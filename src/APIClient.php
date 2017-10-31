@@ -135,15 +135,26 @@ class APIClient
      * @param string $supplier_key
      * @param string $experience_key
      * @param string $date
+     * @param ResourceRequirement[]|null $resource_requirements
      * @param bool $search_next_available
      * @param int $days
      * @param array|null $exclude_capacityholds
      * @return \stdClass
      */
-    function api_experience_sessions($supplier_key, $experience_key, $date, $search_next_available = false, $days = 1, array $exclude_capacityholds = null)
+    function api_experience_sessions($supplier_key, $experience_key, $date, $search_next_available = false, $days = 1, array $resource_requirements = null, array $exclude_capacityholds = null)
     {
         $exclude_capacityholds = is_array($exclude_capacityholds) ? implode(",", $exclude_capacityholds) : $exclude_capacityholds;
         $search_next_available = ($search_next_available) ? 1 : 0;
+
+        $param_resource_requirements = '';
+        foreach ($resource_requirements as $requirement) {
+            $param_resource_requirements[$requirement->get_activity_rn()] = [
+                $requirement->get_resource_group_rn() => $requirement->get_pax()
+            ];
+        }
+
+        // don't particularly love passing an array this way, maybe use a post request one day
+        $param_resource_requirements = base64_encode(serialize($param_resource_requirements));
 
         $request = '/api/experience_sessions?' . http_build_query([
             'supplier' => $supplier_key,
@@ -152,6 +163,7 @@ class APIClient
             'search_next_available' => $search_next_available,
             'days' => $days,
             'exclude_capacityholds' => $exclude_capacityholds,
+            'resource_requirements' => $param_resource_requirements,
         ]);
 
         return $this->call($request);

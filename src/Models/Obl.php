@@ -179,6 +179,15 @@ class Obl
 
 
     /**
+     * @param string $url_spinner_img
+     */
+    public function set_url_spinner_img($url_spinner_img)
+    {
+        $this->url_spinner_img = $url_spinner_img;
+    }
+
+
+    /**
      * @param string $url_background_img
      */
     public function set_url_background_img($url_background_img)
