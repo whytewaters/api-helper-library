@@ -1,7 +1,8 @@
 <?php namespace Rtbs\ApiHelper\Models;
 
 
-class Booking {
+class Booking
+{
     private $tour_key;
     private $datetime;
     private $first_name;
@@ -33,6 +34,8 @@ class Booking {
     private $itinerary_key;
     private $capacity_hold_key;
     private $voucher_key;
+	private $obl_id;
+
 
     /**
      * @return mixed
@@ -473,6 +476,15 @@ class Booking {
 	}
 
 
+	/**
+	 * @param string $obl_id
+	 */
+	public function set_obl_id($obl_id)
+	{
+		$this->obl_id = $obl_id;
+	}
+
+
     public function to_raw_object() {
         $raw_object = array(
             'tour_key' => $this->get_tour_key(),
@@ -518,6 +530,10 @@ class Booking {
 
 	    if (!empty($this->voucher_key)) {
 		    $raw_object['voucher_key'] = $this->voucher_key;
+	    }
+
+	    if (!empty($this->obl_id)) {
+		    $raw_object['obl_id'] = $this->obl_id;
 	    }
 
         return $raw_object;
