@@ -32,6 +32,7 @@ class Booking {
     private $pickup_key;
     private $itinerary_key;
     private $capacity_hold_key;
+    private $voucher_key;
 
     /**
      * @return mixed
@@ -457,10 +458,19 @@ class Booking {
     }
 
 
-    public function set_capacity_hold_key($capacity_hold_key)
-    {
-        $this->capacity_hold_key = $capacity_hold_key;
-    }
+	public function set_capacity_hold_key($capacity_hold_key)
+	{
+		$this->capacity_hold_key = $capacity_hold_key;
+	}
+
+
+	/**
+	 * @param string $voucher_key
+	 */
+	public function set_voucher_key($voucher_key)
+	{
+		$this->voucher_key = $voucher_key;
+	}
 
 
     public function to_raw_object() {
@@ -505,6 +515,10 @@ class Booking {
         if (!empty($this->capacity_hold_key)) {
             $raw_object['capacity_hold_key'] = $this->capacity_hold_key;
         }
+
+	    if (!empty($this->voucher_key)) {
+		    $raw_object['voucher_key'] = $this->voucher_key;
+	    }
 
         return $raw_object;
     }
