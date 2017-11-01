@@ -11,7 +11,7 @@ class VoucherItem
     /**
      * @return string
      */
-    public function get_type_price_key()
+    public function get_price_type_key()
     {
         return $this->price_type_key;
     }
