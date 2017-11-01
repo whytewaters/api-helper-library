@@ -3,7 +3,7 @@
 
 class VoucherItem
 {
-    private $price_key;
+    private $price_type_key;
     private $qty;
     private $description;
 
@@ -11,9 +11,9 @@ class VoucherItem
     /**
      * @return string
      */
-    public function get_price_key()
+    public function get_type_price_key()
     {
-        return $this->price_key;
+        return $this->price_type_key;
     }
 
 
@@ -40,7 +40,7 @@ class VoucherItem
     public static function from_raw($raw_item)
     {
         $voucher_item = new self();
-        $voucher_item->price_key = $raw_item->price_key;
+        $voucher_item->price_type_key = $raw_item->price_type_key;
         $voucher_item->qty = $raw_item->qty;
         $voucher_item->description = $raw_item->description;
 
