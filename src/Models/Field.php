@@ -3,7 +3,11 @@
 
 class Field
 {
-	const TYPE_SELECT = 'select';
+	const TYPE_SELECT_SINGLE = 'select';
+	const TYPE_SELECT_MULTIPLE = 'multi-select';
+	const TYPE_TEXTAREA = 'textarea';
+	const TYPE_TEXT = 'text';
+	const TYPE_COUNTRY = 'country';
 
 	private $name;
     private $description;
