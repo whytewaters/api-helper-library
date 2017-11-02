@@ -1,7 +1,10 @@
 <?php namespace Rtbs\ApiHelper\Models;
 
 
-class Price {
+class Price
+{
+	const PRICE_CATEGORY_NAME_ADULT = 'Adult';
+
     private $price_key;
     private $price_type_key;
     private $price_category_key;
