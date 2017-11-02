@@ -35,7 +35,7 @@ class Session {
 	 * @return boolean
 	 */
 	public function is_open() {
-		return $this->open;
+		return ($this->open && $this->has_prices());
 	}
 
 
