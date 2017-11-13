@@ -207,8 +207,7 @@ class BookingServiceImpl implements BookingService {
             return $response->url;
         }
         else {
-            $booking->from_raw($response->booking);
-            return $booking;
+            return Booking::from_raw($response->booking);
         }
     }
 
@@ -344,6 +343,13 @@ class BookingServiceImpl implements BookingService {
     {
         return $this->get_api_client()->api_ticket_html($token);
     }
+
+
+	public function booking_status($token)
+	{
+		$raw_booking = $this->get_api_client()->api_booking_status($token);
+		return Booking::from_raw($raw_booking);
+	}
 
 
     private static function getUserMessageForAPIException(\Exception $ex) {
