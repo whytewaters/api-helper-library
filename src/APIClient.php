@@ -428,4 +428,15 @@ class APIClient
         return file_get_contents($this->api_ticket_url($token));
     }
 
+	/**
+	 * @param string $token
+	 * @return \stdClass
+	 */
+	public function api_booking_status($token)
+	{
+		$token = urlencode($token);
+		$response = $this->call("/api/booking/{$token}/status");
+		return $response->booking;
+	}
+
 }

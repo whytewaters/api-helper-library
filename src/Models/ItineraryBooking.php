@@ -77,14 +77,14 @@ class ItineraryBooking
      */
     public function from_raw($raw_obj)
     {
-        $intinerary_booking = new self();
-        $intinerary_booking->customer = Customer::fromRaw($raw_obj->customer);
-        $intinerary_booking->itinerary = Itinerary::from_raw($raw_obj->itinerary);
+        $itinerary_booking = new self();
+        $itinerary_booking->customer = Customer::from_raw($raw_obj->customer);
+        $itinerary_booking->itinerary = Itinerary::from_raw($raw_obj->itinerary);
 
-        $intinerary_booking->bookings = array();
+        $itinerary_booking->bookings = array();
 
         foreach ($raw_obj->bookings as $raw_booking) {
-            $intinerary_booking->bookings[] = Booking::from_raw($raw_booking);
+            $itinerary_booking->bookings[] = Booking::from_raw($raw_booking);
         }
     }
 

@@ -3,7 +3,11 @@
 
 class Field
 {
-	const TYPE_SELECT = 'select';
+	const TYPE_SELECT_SINGLE = 'select';
+	const TYPE_SELECT_MULTIPLE = 'multi-select';
+	const TYPE_TEXTAREA = 'textarea';
+	const TYPE_TEXT = 'text';
+	const TYPE_COUNTRY = 'country';
 
 	private $name;
     private $description;
@@ -11,6 +15,7 @@ class Field
     private $default_value;
     private $options;
     private $is_required;
+    private $is_listbox_choose_one = false;
 
 	/**
 	 * @return string
@@ -20,13 +25,6 @@ class Field
         return $this->name;
     }
 
-	/**
-	 * @param string $name
-	 */
-	public function set_name($name)
-	{
-		$this->name = $name;
-	}
 
 	/**
 	 * @return string
@@ -36,13 +34,6 @@ class Field
 		return $this->description;
 	}
 
-	/**
-	 * @param string $description
-	 */
-	public function set_description($description)
-	{
-		$this->description = $description;
-	}
 
     /**
      * @return string
@@ -52,13 +43,6 @@ class Field
         return $this->type;
     }
 
-    /**
-     * @param string $type
-     */
-    public function set_type($type)
-    {
-        $this->type = $type;
-    }
 
     /**
      * @return string
@@ -68,13 +52,6 @@ class Field
         return $this->default_value;
     }
 
-    /**
-     * @param string $type
-     */
-    public function set_default_value($default_value)
-    {
-        $this->default_value = $default_value;
-    }
 
     /**
      * @return string[]
@@ -84,13 +61,6 @@ class Field
         return $this->options;
     }
 
-    /**
-     * @param bool $is_required
-     */
-    public function set_required($is_required)
-    {
-        $this->is_required = $is_required;
-    }
 
     /**
      * @return bool
@@ -100,13 +70,15 @@ class Field
         return $this->is_required;
     }
 
-    /**
-     * @param string[] $options
-     */
-    public function set_options($options)
-    {
-        $this->options = $options;
-    }
+
+	/**
+	 * @return bool
+	 */
+	public function is_listbox_choose_one()
+	{
+		return $this->is_listbox_choose_one;
+	}
+
 
 	/**
 	 * @param \stdClass $raw_field
@@ -116,29 +88,13 @@ class Field
     public static function from_raw($raw_field) {
         $field = new Field();
 
-        if (property_exists($raw_field, 'name')) {
-	        $field->set_name($raw_field->name);
-        }
-
-	    if (property_exists($raw_field, 'description')) {
-		    $field->set_description($raw_field->description);
-	    }
-
-        if (property_exists($raw_field, 'type')) {
-            $field->set_type($raw_field->type);
-        }
-
-        if (property_exists($raw_field, 'default_value')) {
-            $field->set_default_value($raw_field->default_value);
-        }
-
-        if (property_exists($raw_field, 'options')) {
-            $field->set_options($raw_field->options);
-        }
-
-        if (property_exists($raw_field, 'is_required')) {
-            $field->set_required($raw_field->is_required);
-        }
+	    $field->name = $raw_field->name;
+	    $field->description = $raw_field->description;
+        $field->type = $raw_field->type;
+        $field->default_value = $raw_field->default_value;
+        $field->options = $raw_field->options;
+        $field->is_required = $raw_field->is_required;
+	    $field->is_listbox_choose_one = $raw_field->is_listbox_choose_one;
 
         return $field;
     }

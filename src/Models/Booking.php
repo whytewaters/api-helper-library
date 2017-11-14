@@ -1,7 +1,8 @@
 <?php namespace Rtbs\ApiHelper\Models;
 
 
-class Booking {
+class Booking
+{
     private $tour_key;
     private $datetime;
     private $first_name;
@@ -32,6 +33,9 @@ class Booking {
     private $pickup_key;
     private $itinerary_key;
     private $capacity_hold_key;
+    private $voucher_key;
+	private $obl_id;
+
 
     /**
      * @return mixed
@@ -409,9 +413,15 @@ class Booking {
         $this->prices[] = $price;
     }
 
-    public function get_prices() {
+
+	/**
+	 * @return Price[]
+	 */
+    public function get_prices()
+    {
         return $this->prices;
     }
+
 
     public function add_field_data($name, $value) {
     	$this->fields[] = array(
@@ -457,10 +467,28 @@ class Booking {
     }
 
 
-    public function set_capacity_hold_key($capacity_hold_key)
-    {
-        $this->capacity_hold_key = $capacity_hold_key;
-    }
+	public function set_capacity_hold_key($capacity_hold_key)
+	{
+		$this->capacity_hold_key = $capacity_hold_key;
+	}
+
+
+	/**
+	 * @param string $voucher_key
+	 */
+	public function set_voucher_key($voucher_key)
+	{
+		$this->voucher_key = $voucher_key;
+	}
+
+
+	/**
+	 * @param string $obl_id
+	 */
+	public function set_obl_id($obl_id)
+	{
+		$this->obl_id = $obl_id;
+	}
 
 
     public function to_raw_object() {
@@ -506,32 +534,46 @@ class Booking {
             $raw_object['capacity_hold_key'] = $this->capacity_hold_key;
         }
 
+	    if (!empty($this->voucher_key)) {
+		    $raw_object['voucher_key'] = $this->voucher_key;
+	    }
+
+	    if (!empty($this->obl_id)) {
+		    $raw_object['obl_id'] = $this->obl_id;
+	    }
+
         return $raw_object;
     }
 
-    public function from_raw($raw_booking) {
-        $this->set_status($raw_booking->status);
-        $this->set_booking_id($raw_booking->booking_id);
-        $this->set_id($raw_booking->id);
-        $this->set_first_name($raw_booking->fname);
-        $this->set_last_name($raw_booking->lname);
-        $this->set_email($raw_booking->email);
-        $this->set_phone($raw_booking->phone);
-        $this->set_datetime($raw_booking->datetime);
-        $this->set_valid_until($raw_booking->valid_until);
-        $this->set_is_used($raw_booking->is_used);
-        $this->set_supplier_key($raw_booking->supplier_key);
-        $this->set_supplier_name($raw_booking->supplier_name);
-        $this->set_tour_key($raw_booking->tour_key);
-        $this->set_tour_name($raw_booking->tour_name);
-        $this->set_promo_code($raw_booking->promo_code);
-        $this->set_pickup_time($raw_booking->pickup_time);
-        $this->set_pickup_point($raw_booking->pickup_point);
-        $this->set_comment($raw_booking->comment);
-        $this->set_total($raw_booking->total);
+
+    public static function from_raw($raw_booking)
+    {
+		$booking = new Booking();
+
+	    $booking->set_status($raw_booking->status);
+	    $booking->set_booking_id($raw_booking->booking_id);
+	    $booking->set_id($raw_booking->id);
+	    $booking->set_first_name($raw_booking->fname);
+	    $booking->set_last_name($raw_booking->lname);
+	    $booking->set_email($raw_booking->email);
+	    $booking->set_phone($raw_booking->phone);
+	    $booking->set_datetime($raw_booking->datetime);
+	    $booking->set_valid_until($raw_booking->valid_until);
+	    $booking->set_is_used($raw_booking->is_used);
+	    $booking->set_supplier_key($raw_booking->supplier_key);
+	    $booking->set_supplier_name($raw_booking->supplier_name);
+	    $booking->set_tour_key($raw_booking->tour_key);
+	    $booking->set_tour_name($raw_booking->tour_name);
+	    $booking->set_promo_code($raw_booking->promo_code);
+	    $booking->set_pickup_time($raw_booking->pickup_time);
+	    $booking->set_pickup_point($raw_booking->pickup_point);
+	    $booking->set_comment($raw_booking->comment);
+	    $booking->set_total($raw_booking->total);
 
         foreach($raw_booking->prices as $raw_price) {
-            $this->add_price(Price::from_raw($raw_price));
+	        $booking->add_price(Price::from_raw($raw_price));
         }
+
+        return $booking;
     }
 }

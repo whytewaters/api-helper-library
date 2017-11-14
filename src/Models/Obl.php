@@ -21,6 +21,7 @@ class Obl
     private $operator_phone;
     private $operator_phone_free;
     private $operator_name;
+    private $operator_currency_code;
     private $url_operator_img;
     private $url_spinner_img;
     private $url_background_img;
@@ -84,6 +85,11 @@ class Obl
 
     private $has_promo_codes;
     private $has_vouchers;
+
+	private $analytics_ga_rtbs_id;
+	private $analytics_ga_client_id;
+	private $analytics_ga_primary_tracking_domains;
+	private $analytics_js_completion_script;
 
 
     /**
@@ -302,6 +308,15 @@ class Obl
     {
         return $this->operator_name;
     }
+
+
+	/**
+	 * @return string
+	 */
+	public function get_operator_currency_code()
+	{
+		return $this->operator_currency_code;
+	}
 
 
     /**
@@ -825,6 +840,42 @@ class Obl
     }
 
 
+	/**
+	 * @return string|null
+	 */
+	public function get_analytics_ga_rtbs_id()
+	{
+		return $this->analytics_ga_rtbs_id;
+	}
+
+
+	/**
+	 * @return string|null
+	 */
+	public function get_analytics_ga_client_id()
+	{
+		return $this->analytics_ga_client_id;
+	}
+
+
+	/**
+	 * @return string|null
+	 */
+	public function get_analytics_ga_primary_tracking_domains()
+	{
+		return $this->analytics_ga_primary_tracking_domains;
+	}
+
+
+	/**
+	 * @return string|null
+	 */
+	public function get_analytics_js_completion_script()
+	{
+		return $this->analytics_js_completion_script;
+	}
+
+
     /**
      * @param \stdClass $raw_obl
      * @return Obl
@@ -867,21 +918,11 @@ class Obl
             $obl->operator_status_msg = $raw_obl->operator_status_msg;
         }
 
-        if (property_exists($raw_obl, 'operator_email')) {
-            $obl->operator_email = $raw_obl->operator_email;
-        }
-
-        if (property_exists($raw_obl, 'operator_phone')) {
-            $obl->operator_phone = $raw_obl->operator_phone;
-        }
-
-        if (property_exists($raw_obl, 'operator_phone_free')) {
-            $obl->operator_phone_free = $raw_obl->operator_phone_free;
-        }
-
-        if (property_exists($raw_obl, 'operator_name')) {
-            $obl->operator_name = $raw_obl->operator_name;
-        }
+	    $obl->operator_email = $raw_obl->operator_email;
+	    $obl->operator_phone = $raw_obl->operator_phone;
+        $obl->operator_phone_free = $raw_obl->operator_phone_free;
+        $obl->operator_name = $raw_obl->operator_name;
+	    $obl->operator_currency_code = $raw_obl->operator_currency_code;
 
 	    if (property_exists($raw_obl, 'url_facebook')) {
 		    $obl->url_facebook = $raw_obl->url_facebook;
@@ -971,10 +1012,12 @@ class Obl
         $obl->color_grid_head_text = $raw_obl->obl_color_grid_head_text;
         $obl->color_grid_hover_bg = $raw_obl->obl_color_grid_hover_bg;
         $obl->color_grid_hover_text = $raw_obl->obl_color_grid_hover_text;
-	    
-	    if (property_exists($raw_obl, 'obl_color_mobile_theme')) {
-		    $obl->color_mobile_theme = $raw_obl->obl_color_mobile_theme;
-	    }
+	    $obl->color_mobile_theme = $raw_obl->obl_color_mobile_theme;
+
+	    $obl->analytics_ga_rtbs_id = $raw_obl->obl_analytics_ga_rtbs_id;
+	    $obl->analytics_ga_client_id = $raw_obl->obl_analytics_ga_client_id;
+	    $obl->analytics_ga_primary_tracking_domains = $raw_obl->obl_analytics_ga_primary_tracking_domains;
+	    $obl->analytics_js_completion_script = $raw_obl->obl_analytics_js_completion_script;
 
         if (!empty($raw_obl->supplier_key)) {
             $obl->supplier_key = $raw_obl->supplier_key;
