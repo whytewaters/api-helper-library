@@ -21,6 +21,9 @@ class Price
     private $total;
     private $total_inc_disc;
 
+    private $fields = array();
+
+
     /**
      * @return mixed
      */
@@ -244,7 +247,17 @@ class Price
         $this->total_inc_disc = $total_inc_disc;
     }
 
-    public static function from_raw($raw_price) {
+
+	/**
+	 * @return Field[]
+	 */
+	public function get_fields() {
+		return $this->fields;
+	}
+
+
+    public static function from_raw($raw_price)
+    {
         $price = new Price();
 
         if(property_exists($raw_price, 'price_key')) $price->set_price_key($raw_price->price_key);
@@ -267,6 +280,12 @@ class Price
         if(property_exists($raw_price, 'rate_incl_disc')) $price->set_rate_incl_disc($raw_price->rate_incl_disc);
         if(property_exists($raw_price, 'total')) $price->set_total($raw_price->total);
         if(property_exists($raw_price, 'total_inc_disc')) $price->set_total_inc_disc($raw_price->total_inc_disc);
+
+	    if (property_exists($raw_price, 'fields') && is_array($raw_price->fields)) {
+		    foreach($raw_price->fields as $raw_field) {
+			    $price->fields[] = Field::from_raw($raw_field);
+		    }
+	    }
 
         return $price;
     }

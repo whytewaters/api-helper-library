@@ -19,9 +19,6 @@ class Tour
     private $information_html;
     private $is_show_obl;
     private $has_promo_codes;
-
-    private $min_pax_per_booking = 0;
-    private $max_pax_per_booking = 999;
     private $terms_html;
 
     /** @var Price[] */
@@ -246,38 +243,11 @@ class Tour
     }
 
 
-    /**
-     * @return int
-     * @deprecated use session get_min_pax
-     */
-    public function get_min_pax_per_booking()
-    {
-        return $this->min_pax_per_booking;
-    }
-
-
-    /**
-     * @return int
-     * @deprecated use session get_max_pax
-     */
-    public function get_max_pax_per_booking()
-    {
-        return $this->max_pax_per_booking;
-    }
-
-
     public function add_info_date_range_note($info_date_range_note)
     {
         $this->info_date_range_notes[] = $info_date_range_note;
     }
 
-    public function add_price(Price $price) {
-        $this->prices[] = $price;
-    }
-
-    public function add_field(Field $field) {
-        $this->fields[] = $field;
-    }
 
     /**
      * @return array
@@ -383,14 +353,6 @@ class Tour
             $tour->is_show_obl = $raw_tour->is_show_obl;
         }
 
-        if (property_exists($raw_tour, 'min_pax_per_booking')) {
-            $tour->min_pax_per_booking = $raw_tour->min_pax_per_booking;
-        }
-
-        if (property_exists($raw_tour, 'max_pax_per_booking')) {
-            $tour->max_pax_per_booking = $raw_tour->max_pax_per_booking;
-        }
-
 	    if (property_exists($raw_tour, 'has_promo_codes')) {
 		    $tour->has_promo_codes = $raw_tour->has_promo_codes;
 	    }
@@ -403,13 +365,13 @@ class Tour
 
         if (property_exists($raw_tour, 'prices') && is_array($raw_tour->prices)) {
             foreach($raw_tour->prices as $raw_price) {
-                $tour->add_price(Price::from_raw($raw_price));
+                $tour->prices[] = Price::from_raw($raw_price);
             }
         }
 
         if (property_exists($raw_tour, 'fields') && is_array($raw_tour->fields)) {
             foreach($raw_tour->fields as $raw_field) {
-                $tour->add_field(Field::from_raw($raw_field));
+                $tour->fields[] = Field::from_raw($raw_field);
             }
         }
 
