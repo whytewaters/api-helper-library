@@ -35,22 +35,15 @@ class Booking
     private $capacity_hold_key;
     private $voucher_key;
 	private $obl_id;
+	private $token;
 
 
-    /**
+	/**
      * @return mixed
      */
     public function get_status()
     {
         return $this->status;
-    }
-
-    /**
-     * @param mixed $status
-     */
-    protected function set_status($status)
-    {
-        $this->status = $status;
     }
 
     /**
@@ -491,6 +484,15 @@ class Booking
 	}
 
 
+	/**
+	 * @return string
+	 */
+	public function get_token()
+	{
+		return $this->token;
+	}
+
+
     public function to_raw_object() {
         $raw_object = array(
             'tour_key' => $this->get_tour_key(),
@@ -550,7 +552,7 @@ class Booking
     {
 		$booking = new Booking();
 
-	    $booking->set_status($raw_booking->status);
+	    $booking->status = $raw_booking->status;
 	    $booking->set_booking_id($raw_booking->booking_id);
 	    $booking->set_id($raw_booking->id);
 	    $booking->set_first_name($raw_booking->fname);
@@ -569,6 +571,10 @@ class Booking
 	    $booking->set_pickup_point($raw_booking->pickup_point);
 	    $booking->set_comment($raw_booking->comment);
 	    $booking->set_total($raw_booking->total);
+
+	    if (property_exists($raw_booking, 'token')) {
+		    $booking->token = $raw_booking->token;
+        }
 
         foreach($raw_booking->prices as $raw_price) {
 	        $booking->add_price(Price::from_raw($raw_price));
