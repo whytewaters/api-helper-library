@@ -1,7 +1,5 @@
 <?php namespace Rtbs\ApiHelper\Models;
 
-use Carbon\Carbon;
-
 class ResourceRequirement
 {
     private $resource_group_rn;
@@ -14,7 +12,7 @@ class ResourceRequirement
      */
     public function set_resource_group_rn($resource_group_rn)
     {
-        $this->resource_group_rn = $resource_group_rn;
+        $this->resource_group_rn = (int) $resource_group_rn;
     }
 
 
@@ -32,7 +30,7 @@ class ResourceRequirement
      */
     public function set_pax($pax)
     {
-        $this->pax = $pax;
+        $this->pax = (int) $pax;
     }
 
 
@@ -50,7 +48,7 @@ class ResourceRequirement
      */
     public function set_activity_rn($activity_rn)
     {
-        $this->activity_rn = $activity_rn;
+        $this->activity_rn = (int) $activity_rn;
     }
 
 

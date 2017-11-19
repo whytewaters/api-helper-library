@@ -10,6 +10,7 @@ use Rtbs\ApiHelper\Models\ItineraryBooking;
 use Rtbs\ApiHelper\Models\Obl;
 use Rtbs\ApiHelper\Models\Pickup;
 use Rtbs\ApiHelper\Models\Promo;
+use Rtbs\ApiHelper\Models\ResourceRequirement;
 use Rtbs\ApiHelper\Models\Session;
 use Rtbs\ApiHelper\Models\SessionAndAdvanceDates;
 use Rtbs\ApiHelper\Models\Supplier;

@@ -3,6 +3,7 @@
 use Rtbs\ApiHelper\Exceptions\ApiClientException;
 use Rtbs\ApiHelper\Models\AccommodationBooking;
 use Rtbs\ApiHelper\Models\Booking;
+use Rtbs\ApiHelper\Models\ResourceRequirement;
 
 
 class APIClient
@@ -138,35 +139,33 @@ class APIClient
      * @param ResourceRequirement[]|null $resource_requirements
      * @param bool $search_next_available
      * @param int $days
-     * @param array|null $exclude_capacityholds
+     * @param array|null $exclude_capacity_holds
      * @return \stdClass
      */
-    function api_experience_sessions($supplier_key, $experience_key, $date, $search_next_available = false, $days = 1, array $resource_requirements = null, array $exclude_capacityholds = null)
+    function api_experience_sessions($supplier_key, $experience_key, $date, $search_next_available = false, $days = 1, array $resource_requirements = null, array $exclude_capacity_holds = null)
     {
-        $exclude_capacityholds = is_array($exclude_capacityholds) ? implode(",", $exclude_capacityholds) : $exclude_capacityholds;
-        $search_next_available = ($search_next_available) ? 1 : 0;
+        $data_resource_requirements = array();
 
-        $param_resource_requirements = '';
         foreach ($resource_requirements as $requirement) {
-            $param_resource_requirements[$requirement->get_activity_rn()] = [
-                $requirement->get_resource_group_rn() => $requirement->get_pax()
+	        $data_resource_requirements[] = [
+            	'activity_rn' => $requirement->get_activity_rn(),
+                'resource_group_rn' => $requirement->get_resource_group_rn(),
+	            'pax' => $requirement->get_pax()
             ];
         }
 
-        // don't particularly love passing an array this way, maybe use a post request one day
-        $param_resource_requirements = base64_encode(serialize($param_resource_requirements));
-
-        $request = '/api/experience_sessions?' . http_build_query([
+	    $data = array(
             'supplier' => $supplier_key,
             'experience' => $experience_key,
             'date' => $date,
-            'search_next_available' => $search_next_available,
+            'search_next_available' => ($search_next_available) ? 1 : 0,
             'days' => $days,
-            'exclude_capacityholds' => $exclude_capacityholds,
-            'resource_requirements' => $param_resource_requirements,
-        ]);
+            'exclude_capacity_holds' => $exclude_capacity_holds,
+            'resource_requirements' => $data_resource_requirements,
+        );
 
-        return $this->call($request);
+	    $opts = $this->build_opts($data);
+	    return $this->call('/api/experience_sessions', $opts);
     }
 
 
@@ -179,29 +178,23 @@ class APIClient
 
     // returns a payment URL for the booking
     function api_booking(Booking $booking) {
-        $method = '/api/booking';
         $data = $booking->to_raw_object();
 
         $opts = $this->build_opts($data);
-        $response = $this->call($method, $opts);
-        return $response;
+	    return $this->call('/api/booking', $opts);
     }
 
 
     function api_promo($promo_code, Booking $booking) {
-        $method = '/api/promo';
-
         $data = $booking->to_raw_object();
         $data['promo_code'] = $promo_code;
 
         $opts = $this->build_opts($data);
-        $response = $this->call($method, $opts);
-        return $response;
+	    return $this->call('/api/promo', $opts);
     }
 
 
     function api_remove_booking($booking_id, $itinerary_key, $booking_type) {
-        $method = '/api/remove-itinerary-booking';
         $data = array(
             'itinerary_key' => $itinerary_key,
             'booking_id' => $booking_id,
@@ -209,12 +202,10 @@ class APIClient
         );
 
         $opts = $this->build_opts($data);
-        $response = $this->call($method, $opts);
-        return $response;
+	    return $this->call('/api/remove-itinerary-booking', $opts);
     }
 
     function api_pay_itinerary($itinerary_key, $return_url = null) {
-        $method = '/api/pay-itinerary';
         $data = array(
             'itinerary_key' => $itinerary_key
         );
@@ -224,21 +215,17 @@ class APIClient
         }
 
         $opts = $this->build_opts($data);
-        $response = $this->call($method, $opts);
-        return $response;
+	    return $this->call('/api/pay-itinerary', $opts);
     }
 
     function api_create_itinerary($primary_customer_key, $additional_customer_keys = array()) {
-        $method = '/api/itinerary';
-
         $data = array(
             'primary_customer_key' => $primary_customer_key,
             'additional_customer_keys' => $additional_customer_keys
         );
 
         $opts = $this->build_opts($data);
-        $response = $this->call($method, $opts);
-        return $response;
+	    return $this->call('/api/itinerary', $opts);
     }
 
 
@@ -252,25 +239,25 @@ class APIClient
     }
 
     //Makes an api call.
-    protected function call($request, $opts = null) {
-        if (substr($request, 0,5) !== "/api/") {
+    protected function call($endpoint, $opts = null) {
+        if (substr($endpoint, 0,5) !== "/api/") {
             throw new ApiClientException("All API requests must begin with /api/");
         }
 
         //add key
-        $separator = strpos($request, '?') === false ? '?' : '&';
-        $request .= $separator.'apikey='.$this->key;
+        $separator = strpos($endpoint, '?') === false ? '?' : '&';
+        $endpoint  .= $separator . 'apikey=' . $this->key;
 
         // tracer
         if (session_id()) {
-            $request .= '&tracer=' . urlencode(session_id());
+            $endpoint .= '&tracer=' . urlencode(session_id());
         }
 
         if ($this->xdebug_key) {
-            $request .= '&XDEBUG_SESSION_START=' . urlencode($this->xdebug_key);
+            $endpoint .= '&XDEBUG_SESSION_START=' . urlencode($this->xdebug_key);
         }
 
-        $url = $this->host.$request;
+        $url = $this->host . $endpoint;
 
         if ($opts == null) {
             $response_raw = file_get_contents($url);

@@ -60,6 +60,7 @@ class ExperienceSession
         return $this->tour_sessions[0]->get_state();
     }
 
+
     public static function from_raw($raw_session)
     {
         $experience_session = new ExperienceSession();
