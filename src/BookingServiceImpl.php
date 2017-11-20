@@ -264,16 +264,18 @@ class BookingServiceImpl implements BookingService {
     }
 
 
-    /**
-     *
-     * @param string $first_name
-     * @param string $last_name
-     * @param string $email
-     * @param string $phone
-     * @return \Rtbs\ApiHelper\Models\Customer
-     */
-    public function create_customer($first_name, $last_name, $email, $phone) {
-        $raw_customer = $this->get_api_client()->api_create_customer($first_name, $last_name, $email, $phone);
+	/**
+	 *
+	 * @param string $first_name
+	 * @param string $last_name
+	 * @param string $email
+	 * @param string $phone
+	 * @param string|null $obl_id
+	 *
+	 * @return Customer
+	 */
+    public function create_customer($first_name, $last_name, $email, $phone, $obl_id = null) {
+        $raw_customer = $this->get_api_client()->api_create_customer($first_name, $last_name, $email, $phone, $obl_id);
 
         return Customer::from_raw($raw_customer->customer);
     }

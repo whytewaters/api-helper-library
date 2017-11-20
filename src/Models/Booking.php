@@ -37,6 +37,9 @@ class Booking
 	private $obl_id;
 	private $token;
 
+	/** @var ResourceRequirement[] $resource_requirements */
+	private $resource_requirements;
+
 
 	/**
      * @return mixed
@@ -493,6 +496,15 @@ class Booking
 	}
 
 
+	/**
+	 * @param ResourceRequirement[] $resource_requirements
+	 */
+	public function set_resource_requirements($resource_requirements)
+	{
+		$this->resource_requirements = $resource_requirements;
+	}
+
+
     public function to_raw_object() {
         $raw_object = array(
             'tour_key' => $this->get_tour_key(),
@@ -502,7 +514,12 @@ class Booking
             'email' => $this->get_email(),
             'phone' => $this->get_phone(),
             'prices' => $this->get_price_selections(),
+	        'resource_requirements' => [],
         );
+
+        foreach ($this->resource_requirements as $resource_requirement) {
+	        $raw_object['resource_requirements'][] = $resource_requirement->to_raw_object();
+        }
 
         if(is_numeric($this->promo_key)) {
 		    $raw_object['promo_key'] = $this->promo_key;

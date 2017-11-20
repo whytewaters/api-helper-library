@@ -61,5 +61,17 @@ class ResourceRequirement
     }
 
 
+	/**
+	 * @return array
+	 */
+    public function to_raw_object()
+    {
+	    return [
+		    'activity_rn' => $this->get_activity_rn(),
+		    'resource_group_rn' => $this->get_resource_group_rn(),
+		    'pax' => $this->get_pax()
+	    ];
+    }
+
 
 }

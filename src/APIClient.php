@@ -147,11 +147,7 @@ class APIClient
         $data_resource_requirements = array();
 
         foreach ($resource_requirements as $requirement) {
-	        $data_resource_requirements[] = [
-            	'activity_rn' => $requirement->get_activity_rn(),
-                'resource_group_rn' => $requirement->get_resource_group_rn(),
-	            'pax' => $requirement->get_pax()
-            ];
+	        $data_resource_requirements[] = $requirement->to_raw_object();
         }
 
 	    $data = array(
@@ -284,17 +280,18 @@ class APIClient
     private function getUserMessageForAPIException($err_msg) {
         return strtr($err_msg, array(
             'datetime past' => 'The chosen date and time has passed, please choose a later date',
-            'Trip is closed' => 'The event is unavailable at the chosen date and time, please choose a different date',
+            'Trip is closed' => 'The tour is unavailable at the chosen date and time, please choose a different date',
         ));
     }
 
 
-    public function api_create_customer($first_name, $last_name, $email, $phone) {
+    public function api_create_customer($first_name, $last_name, $email, $phone, $obl_id = null) {
         $data = array(
             'fname' => $first_name,
             'lname' => $last_name,
             'email' => $email,
-            'phone' => $phone
+            'phone' => $phone,
+	        'obl_id' => $obl_id,
         );
 
         $opts = $this->build_opts($data);
