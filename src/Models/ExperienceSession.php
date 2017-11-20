@@ -5,6 +5,7 @@ use Carbon\Carbon;
 class ExperienceSession
 {
     private $datetime;
+    private $experience_key;
 
     /** @var Session[] */
     private $tour_sessions = array();
@@ -61,12 +62,19 @@ class ExperienceSession
     }
 
 
-    public static function from_raw($raw_session)
+    public function get_experience_key()
+    {
+    	return $this->experience_key;
+    }
+
+
+    public static function from_raw($raw_experience_session)
     {
         $experience_session = new ExperienceSession();
-        $experience_session->datetime = Carbon::parse($raw_session->datetime);
+        $experience_session->datetime = Carbon::parse($raw_experience_session->datetime);
+        $experience_session->experience_key = $raw_experience_session->experience_key;
 
-        foreach($raw_session->tour_sessions as $raw_tour_session) {
+        foreach($raw_experience_session->tour_sessions as $raw_tour_session) {
             $experience_session->tour_sessions[] = Session::from_raw($raw_tour_session);
         }
 
