@@ -152,7 +152,7 @@ class APIClient
 
 	    $data = array(
             'supplier' => $supplier_key,
-            'experience' => $experience_key,
+            'experience_key' => $experience_key,
             'date' => $date,
             'search_next_available' => ($search_next_available) ? 1 : 0,
             'days' => $days,

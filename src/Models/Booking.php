@@ -3,7 +3,8 @@
 
 class Booking
 {
-    private $tour_key;
+	private $experience_key;
+	private $tour_key;
     private $datetime;
     private $first_name;
     private $last_name;
@@ -497,6 +498,15 @@ class Booking
 
 
 	/**
+	 * @param $experience_key
+	 */
+	public function set_experience_key($experience_key)
+	{
+		$this->experience_key = $experience_key;
+	}
+
+
+	/**
 	 * @param ResourceRequirement[] $resource_requirements
 	 */
 	public function set_resource_requirements($resource_requirements)
@@ -508,6 +518,7 @@ class Booking
     public function to_raw_object() {
         $raw_object = array(
             'tour_key' => $this->get_tour_key(),
+            'experience_key' => $this->experience_key,
             'datetime' => $this->get_datetime(),
             'fname' => $this->get_first_name(),
             'lname' => $this->get_last_name(),
