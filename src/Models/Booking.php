@@ -528,8 +528,10 @@ class Booking
 	        'resource_requirements' => [],
         );
 
-        foreach ($this->resource_requirements as $resource_requirement) {
-	        $raw_object['resource_requirements'][] = $resource_requirement->to_raw_object();
+        if (isset($this->resource_requirements)) {
+            foreach ($this->resource_requirements as $resource_requirement) {
+	            $raw_object['resource_requirements'][] = $resource_requirement->to_raw_object();
+            }
         }
 
         if(is_numeric($this->promo_key)) {
