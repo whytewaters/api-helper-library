@@ -1,8 +1,10 @@
 <?php namespace Rtbs\ApiHelper\Models;
 
 
-class Session {
+class Session
+{
 	private $datetime;
+	private $time_str;
 	private $max_pax;
 	private $min_pax;
 	private $open;
@@ -18,7 +20,8 @@ class Session {
 	/**
 	 * @return string
 	 */
-	public function get_datetime() {
+	public function get_datetime()
+	{
 		return $this->datetime;
 	}
 
@@ -26,7 +29,17 @@ class Session {
 	/**
 	 * @return string
 	 */
-	public function get_tour_key() {
+	public function get_time_str()
+	{
+		return $this->time_str;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function get_tour_key()
+	{
 		return $this->tour_key;
 	}
 
@@ -34,7 +47,8 @@ class Session {
 	/**
 	 * @return boolean
 	 */
-	public function is_open() {
+	public function is_open()
+	{
 		return ($this->open && $this->has_prices());
 	}
 
@@ -42,7 +56,8 @@ class Session {
 	/**
 	 * @return Price[]
 	 */
-	public function get_prices() {
+	public function get_prices()
+	{
 		return $this->prices;
 	}
 
@@ -50,7 +65,8 @@ class Session {
 	/**
 	 * @param Price[] $prices
 	 */
-	public function set_prices($prices) {
+	public function set_prices($prices)
+	{
 		$this->prices = $prices;
 	}
 
@@ -58,7 +74,8 @@ class Session {
 	/**
 	 * @return bool
 	 */
-	public function has_prices() {
+	public function has_prices()
+	{
 		return (count($this->prices) > 0);
 	}
 
@@ -66,7 +83,8 @@ class Session {
 	/**
 	 * @return float|null
 	 */
-	public function get_min_price() {
+	public function get_min_price()
+	{
 		$min_price = null;
 
 		foreach ($this->prices as $price) {
@@ -83,7 +101,8 @@ class Session {
 	/**
 	 * @return string
 	 */
-	public function get_state() {
+	public function get_state()
+	{
 		return ($this->has_prices()) ? $this->state : 'Not Available';
 	}
 
@@ -91,7 +110,8 @@ class Session {
 	/**
 	 * @return mixed
 	 */
-	public function get_remaining() {
+	public function get_remaining()
+	{
 		return $this->remaining;
 	}
 
@@ -99,7 +119,8 @@ class Session {
 	/**
 	 * @return int
 	 */
-	public function get_min_pax() {
+	public function get_min_pax()
+	{
 		return $this->min_pax;
 	}
 
@@ -107,7 +128,8 @@ class Session {
 	/**
 	 * @return int
 	 */
-	public function get_max_pax() {
+	public function get_max_pax()
+	{
 		return $this->max_pax;
 	}
 
@@ -117,13 +139,15 @@ class Session {
 	 *
 	 * @return Session
 	 */
-	public static function from_raw($raw_session) {
+	public static function from_raw($raw_session)
+	{
 		$session = new Session();
 
-		$session->datetime  = $raw_session->datetime;
-		$session->tour_key  = $raw_session->tour_key;
-		$session->open      = $raw_session->open;
-		$session->state     = $raw_session->state;
+		$session->datetime = $raw_session->datetime;
+		$session->time_str = $raw_session->time_str;
+		$session->tour_key = $raw_session->tour_key;
+		$session->open = $raw_session->open;
+		$session->state = $raw_session->state;
 		$session->remaining = $raw_session->remaining;
 
 		if (property_exists($raw_session, 'min_pax')) {
@@ -140,4 +164,5 @@ class Session {
 
 		return $session;
 	}
+
 }
