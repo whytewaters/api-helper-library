@@ -4,6 +4,7 @@
 class Price
 {
 	const PRICE_CATEGORY_NAME_ADULT = 'Adult';
+	const PRICE_CATEGORY_NAME_CHILD = 'Child';
 
     private $price_key;
     private $price_type_key;
