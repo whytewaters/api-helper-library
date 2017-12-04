@@ -91,6 +91,10 @@ class Obl
 	private $analytics_ga_primary_tracking_domains;
 	private $analytics_js_completion_script;
 
+	private $analytics_gtm_code;
+	private $analytics_js_custom_header_script;
+	private $analytics_js_custom_body_script;
+
 
     /**
      * @return string
@@ -876,6 +880,33 @@ class Obl
 	}
 
 
+	/**
+	 * @return string|null
+	 */
+	public function get_analytics_gtm_code()
+	{
+		return $this->analytics_gtm_code;
+	}
+
+
+	/**
+	 * @return string|null
+	 */
+	public function get_analytics_js_custom_header()
+	{
+		return $this->analytics_js_custom_header;
+	}
+
+
+	/**
+	 * @return string|null
+	 */
+	public function get_analytics_js_custom_body()
+	{
+		return $this->analytics_js_custom_body;
+	}
+
+
     /**
      * @param \stdClass $raw_obl
      * @return Obl
@@ -1019,7 +1050,11 @@ class Obl
 	    $obl->analytics_ga_primary_tracking_domains = $raw_obl->obl_analytics_ga_primary_tracking_domains;
 	    $obl->analytics_js_completion_script = $raw_obl->obl_analytics_js_completion_script;
 
-        if (!empty($raw_obl->supplier_key)) {
+	    $obl->analytics_gtm_code = $raw_obl->obl_analytics_gtm_code;
+	    $obl->analytics_js_custom_header = $raw_obl->obl_analytics_js_custom_header;
+	    $obl->analytics_js_custom_body = $raw_obl->obl_analytics_js_custom_body;
+
+	    if (!empty($raw_obl->supplier_key)) {
             $obl->supplier_key = $raw_obl->supplier_key;
         }
 
