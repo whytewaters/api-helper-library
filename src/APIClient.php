@@ -13,6 +13,7 @@ class APIClient
     private $key;
     private $pwd;
     private $xdebug_key;
+    private $xdebug_profile = false;
 
 
     function __construct($options=array())
@@ -41,12 +42,24 @@ class APIClient
     }
 
 
-    function api_categories() {
+	/**
+	 * @param bool $xdebug_profile
+	 */
+	public function set_xdebug_profile($xdebug_profile)
+	{
+		$this->xdebug_profile = $xdebug_profile;
+	}
+
+
+    function api_categories()
+    {
         $response = $this->call('/api/categories');
         return $response->categories;
     }
 
-    function api_locations() {
+
+    function api_locations()
+    {
         $response = $this->call('/api/locations');
         return $response->locations;
     }
@@ -252,6 +265,10 @@ class APIClient
         if ($this->xdebug_key) {
             $endpoint .= '&XDEBUG_SESSION_START=' . urlencode($this->xdebug_key);
         }
+
+	    if ($this->xdebug_profile) {
+		    $endpoint .= '&XDEBUG_PROFILE=1';
+	    }
 
         $url = $this->host . $endpoint;
 

@@ -19,28 +19,33 @@ use Rtbs\ApiHelper\Models\Itinerary;
 use Rtbs\ApiHelper\Models\CapacityHold;
 use Rtbs\ApiHelper\Models\Voucher;
 
-class BookingServiceImpl implements BookingService {
+class BookingServiceImpl implements BookingService
+{
     private $api_client;
     private $credentials;
 	private $xdebug_key;
+	private $xdebug_profile;
 
 
     /**
      * BookingServiceImpl constructor.
      * @param array $credentials
      * @param string|null $xdebug_key
+     * @param bool $xdebug_profile
      */
-    public function __construct($credentials, $xdebug_key = null)
+    public function __construct($credentials, $xdebug_key = null, $xdebug_profile = false)
     {
         $this->credentials = $credentials;
         $this->xdebug_key = $xdebug_key;
+	    $this->xdebug_profile = $xdebug_profile;
     }
 
 
     /**
      * @return Category[]
      */
-    public function get_categories() {
+    public function get_categories()
+    {
         $categories = array();
 
         $raw_categories = $this->get_api_client()->api_categories();
@@ -63,8 +68,8 @@ class BookingServiceImpl implements BookingService {
      * @param array|null $exclude_capacityholds
      * @return SessionAndAdvanceDates
      */
-    public function get_sessions_and_advance_dates($supplier_key, $tour_keys, $date, $search_next_available = false, $days = 1, $exclude_capacityholds = null) {
-
+    public function get_sessions_and_advance_dates($supplier_key, $tour_keys, $date, $search_next_available = false, $days = 1, $exclude_capacityholds = null)
+    {
         $response = $this->get_api_client()->api_sessions($supplier_key, $tour_keys, $date, $search_next_available, $days, $exclude_capacityholds);
 
         $sessions_and_advance_dates = new SessionAndAdvanceDates();
@@ -109,7 +114,8 @@ class BookingServiceImpl implements BookingService {
     /**
      * @return Supplier[]
      */
-    public function get_suppliers() {
+    public function get_suppliers()
+    {
         $suppliers = array();
 
         $raw_suppliers = $this->get_api_client()->api_suppliers();
@@ -122,11 +128,13 @@ class BookingServiceImpl implements BookingService {
         return $suppliers;
     }
 
+
     /**
      * @param $tour_key
      * @return Pickup[]
      */
-    public function get_pickups($tour_key) {
+    public function get_pickups($tour_key)
+    {
         $pickups = array();
 
         $raw_pickups = $this->get_api_client()->api_pickups($tour_key);
@@ -175,7 +183,8 @@ class BookingServiceImpl implements BookingService {
      * @return Supplier
      * @throws ModelNotFoundException
      */
-    public function get_supplier($supplier_key) {
+    public function get_supplier($supplier_key)
+    {
         $raw_supplier = $this->get_api_client()->api_supplier($supplier_key);
 
         if($raw_supplier == null) {
@@ -193,6 +202,7 @@ class BookingServiceImpl implements BookingService {
         }
 
         $this->api_client->set_xdebug_key($this->xdebug_key);
+	    $this->api_client->set_xdebug_profile($this->xdebug_profile);
 
         return $this->api_client;
     }
@@ -202,7 +212,8 @@ class BookingServiceImpl implements BookingService {
      * @param $booking Booking
      * @return string|Booking url
      */
-    public function make_booking(Booking $booking) {
+    public function make_booking(Booking $booking)
+    {
         $response = $this->get_api_client()->api_booking($booking);
 
         if(isset($response->url)) {
@@ -232,7 +243,8 @@ class BookingServiceImpl implements BookingService {
      * @throws PromoNotFoundException
      * @throws \Exception
      */
-    public function apply_promo($promo_code, Booking $booking) {
+    public function apply_promo($promo_code, Booking $booking)
+    {
         try {
             $response = $this->get_api_client()->api_promo($promo_code, $booking);
         } catch (\Exception $ex) {
@@ -274,7 +286,8 @@ class BookingServiceImpl implements BookingService {
 	 *
 	 * @return Customer
 	 */
-    public function create_customer($first_name, $last_name, $email, $phone, $obl_id = null) {
+    public function create_customer($first_name, $last_name, $email, $phone, $obl_id = null)
+    {
         $raw_customer = $this->get_api_client()->api_create_customer($first_name, $last_name, $email, $phone, $obl_id);
 
         return Customer::from_raw($raw_customer->customer);
@@ -285,14 +298,16 @@ class BookingServiceImpl implements BookingService {
      * @param Customer $customer
      * @return \Rtbs\ApiHelper\Models\Itinerary
      */
-    public function create_itinerary(Customer $customer) {
+    public function create_itinerary(Customer $customer)
+    {
         $raw_itinerary = $this->get_api_client()->api_create_itinerary($customer->get_customer_key());
 
         return Itinerary::from_raw($raw_itinerary->itinerary);
     }
 
 
-    public function intinerary_tickets_html($token) {
+    public function intinerary_tickets_html($token)
+    {
         return $this->get_api_client()->api_itinerary_tickets_html($token);
     }
 
@@ -301,11 +316,13 @@ class BookingServiceImpl implements BookingService {
      * @param Itinerary $itinerary
      * @return string payment_url
      */
-    public function pay_itinerary(Itinerary $itinerary, $return_url = null) {
+    public function pay_itinerary(Itinerary $itinerary, $return_url = null)
+    {
         $response = $this->get_api_client()->api_pay_itinerary($itinerary->get_itinerary_key(), $return_url);
 
         return $response->url;
     }
+
 
     /**
      * @param string $supplier_key
@@ -322,11 +339,13 @@ class BookingServiceImpl implements BookingService {
         return CapacityHold::from_raw($raw_capacity_hold);
     }
 
+
     /**
      * @param string $supplier_key
      * @param string $capacity_hold_key
      */
-    public function release_capacity($supplier_key, $capacity_hold_key) {
+    public function release_capacity($supplier_key, $capacity_hold_key)
+    {
         $this->get_api_client()->api_release_capacity($supplier_key, $capacity_hold_key);
     }
 
@@ -356,12 +375,12 @@ class BookingServiceImpl implements BookingService {
 	}
 
 
-    private static function getUserMessageForAPIException(\Exception $ex) {
+    private static function getUserMessageForAPIException(\Exception $ex)
+    {
         return strtr($ex->getMessage(), array(
             'API call did not succeed: datetime past' => 'The chosen date and time has passed, please choose a later date',
             'API call did not succeed: Trip is closed' => 'The event is unavailable at the chosen date and time, please choose a different date',
         ));
     }
-
 
 }

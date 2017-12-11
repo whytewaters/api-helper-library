@@ -263,9 +263,28 @@ class Tour
     /**
      * @return Price[]
      */
-    public function get_prices() {
+    public function get_prices()
+    {
         return $this->prices;
     }
+
+
+	/**
+	 * @param string $price_type_key
+	 *
+	 * @return null|Price
+	 */
+    public function get_price($price_type_key)
+    {
+        foreach ($this->prices as $price) {
+        	if ($price->get_price_type_key() == $price_type_key) {
+        		return $price;
+	        }
+        }
+
+        return null;
+    }
+
 
     /**
      * @return Field[]

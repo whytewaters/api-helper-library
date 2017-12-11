@@ -62,10 +62,22 @@ class ExperienceSession
     }
 
 
-    public function get_experience_key()
-    {
-    	return $this->experience_key;
-    }
+	public function get_experience_key()
+	{
+		return $this->experience_key;
+	}
+
+
+	public function set_time_formatted($time_formatted)
+	{
+		$this->time_formatted = $time_formatted;
+	}
+
+
+	public function get_time_formatted()
+	{
+		return $this->time_formatted;
+	}
 
 
     public static function from_raw($raw_experience_session)
