@@ -135,12 +135,31 @@ class Supplier {
         $this->latlng = $latlng;
     }
 
-    /**
-     * @return string
-     */
-    public function get_currency_code() {
-        return $this->currency_code;
-    }
+	/**
+	 * @return string
+	 */
+	public function get_currency_code() {
+		return $this->currency_code;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function get_currency_symbol() {
+		switch ($this->currency_code) {
+
+			case 'NZD':
+				return 'NZD $';
+
+			case 'AUD':
+				return 'AUD $';
+
+			default:
+				return $this->currency_code;
+		}
+	}
+
 
     /**
      * @param string $currency_code
