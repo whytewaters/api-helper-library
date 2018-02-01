@@ -187,7 +187,7 @@ class APIClient
 
     // returns a payment URL for the booking
     function api_booking(Booking $booking) {
-        $data = $booking->to_raw_object();
+        $data = $booking->to_raw();
 
         $opts = $this->build_opts($data);
 	    return $this->call('/api/booking', $opts);
@@ -195,7 +195,7 @@ class APIClient
 
 
     function api_promo($promo_code, Booking $booking) {
-        $data = $booking->to_raw_object();
+        $data = $booking->to_raw();
         $data['promo_code'] = $promo_code;
 
         $opts = $this->build_opts($data);

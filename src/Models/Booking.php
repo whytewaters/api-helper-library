@@ -29,7 +29,11 @@ class Booking
     private $total;
     private $total_disc;
     private $total_inc_disc;
-    private $fields;
+
+    private $tour_fields;
+
+    private $price_fields;
+
     private $return_url;
     private $pickup_key;
     private $itinerary_key;
@@ -392,19 +396,24 @@ class Booking
         $this->promo_key = $promo_key;
     }
 
-    public function add_price_selection(Price $price, $quantity) {
+
+    public function add_price_selection(Price $price, $quantity, $fields = null) {
         $this->price_selections[] = array(
             'price_key' => $price->get_price_key(),
-            'qty' => $quantity
+            'qty' => (int) $quantity,
+	        'fields' => $fields,
         );
     }
 
-    public function add_price_selection_keys($price_key, $quantity) {
+
+    public function add_price_selection_keys($price_key, $quantity, $fields = null) {
         $this->price_selections[] = array(
             'price_key' => $price_key,
-            'qty' => (int) $quantity
+            'qty' => (int) $quantity,
+	        'fields' => $fields,
         );
     }
+
 
     protected function add_price(Price $price) {
         $this->prices[] = $price;
@@ -420,10 +429,10 @@ class Booking
     }
 
 
-    public function add_field_data($name, $value) {
-    	$this->fields[] = array(
-    		'name' => $name,
-		    'value' => $value
+    public function add_tour_field($field_name, $value) {
+    	$this->tour_fields[] = array(
+    		'name' => $field_name,
+		    'value' => $value,
 	    );
     }
 
@@ -515,66 +524,63 @@ class Booking
 	}
 
 
-    public function to_raw_object() {
-        $raw_object = array(
-            'tour_key' => $this->get_tour_key(),
+    public function to_raw() {
+        $raw = array(
+            'tour_key' => $this->tour_key,
             'experience_key' => $this->experience_key,
-            'datetime' => $this->get_datetime(),
-            'fname' => $this->get_first_name(),
-            'lname' => $this->get_last_name(),
-            'email' => $this->get_email(),
-            'phone' => $this->get_phone(),
-            'prices' => $this->get_price_selections(),
+            'datetime' => $this->datetime,
+            'fname' => $this->first_name,
+            'lname' => $this->last_name,
+            'email' => $this->email,
+            'phone' => $this->phone,
+	        'fields' => $this->tour_fields,
+	        'prices' => $this->price_selections,
 	        'resource_requirements' => [],
         );
 
         if (isset($this->resource_requirements)) {
             foreach ($this->resource_requirements as $resource_requirement) {
-	            $raw_object['resource_requirements'][] = $resource_requirement->to_raw_object();
+	            $raw['resource_requirements'][] = $resource_requirement->to_raw_object();
             }
         }
 
         if(is_numeric($this->promo_key)) {
-		    $raw_object['promo_key'] = $this->promo_key;
+		    $raw['promo_key'] = $this->promo_key;
 	    }
 
 	    if(!empty($this->promo_code)) {
-		    $raw_object['promo_code'] = $this->promo_code;
+		    $raw['promo_code'] = $this->promo_code;
 	    }
 
         if (!empty($this->return_url)) {
-            $raw_object['return_url'] = $this->return_url;
+            $raw['return_url'] = $this->return_url;
         }
 
         if (!empty($this->pickup_key)) {
-            $raw_object['pickup_key'] = $this->pickup_key;
-        }
-
-        if (!empty($this->fields)) {
-        	$raw_object['fields'] = $this->fields;
+            $raw['pickup_key'] = $this->pickup_key;
         }
 
         if (!empty($this->comment)) {
-            $raw_object['comment'] = $this->comment;
+            $raw['comment'] = $this->comment;
         }
 
         if (!empty($this->itinerary_key)) {
-            $raw_object['itinerary_key'] = $this->itinerary_key;
+            $raw['itinerary_key'] = $this->itinerary_key;
         }
 
         if (!empty($this->capacity_hold_key)) {
-            $raw_object['capacity_hold_key'] = $this->capacity_hold_key;
+            $raw['capacity_hold_key'] = $this->capacity_hold_key;
         }
 
 	    if (!empty($this->voucher_key)) {
-		    $raw_object['voucher_key'] = $this->voucher_key;
+		    $raw['voucher_key'] = $this->voucher_key;
 	    }
 
 	    if (!empty($this->obl_id)) {
-		    $raw_object['obl_id'] = $this->obl_id;
+		    $raw['obl_id'] = $this->obl_id;
 	    }
 
-        return $raw_object;
+        return $raw;
     }
 
 

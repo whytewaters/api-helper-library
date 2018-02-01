@@ -274,7 +274,7 @@ class Tour
 	 *
 	 * @return null|Price
 	 */
-    public function get_price($price_type_key)
+    public function get_price_by_price_type_key($price_type_key)
     {
         foreach ($this->prices as $price) {
         	if ($price->get_price_type_key() == $price_type_key) {
@@ -285,6 +285,22 @@ class Tour
         return null;
     }
 
+
+	/**
+	 * @param string $price_key
+	 *
+	 * @return null|Price
+	 */
+	public function get_price_by_price_key($price_key)
+	{
+		foreach ($this->prices as $price) {
+			if ($price->get_price_key() == $price_key) {
+				return $price;
+			}
+		}
+
+		return null;
+	}
 
     /**
      * @return Field[]

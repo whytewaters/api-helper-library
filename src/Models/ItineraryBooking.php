@@ -61,7 +61,7 @@ class ItineraryBooking
         $raw_bookings = array();
 
         foreach ($this->bookings as $booking) {
-            $raw_bookings[] = $booking->to_raw_object();
+            $raw_bookings[] = $booking->to_raw();
         }
 
         return array(
