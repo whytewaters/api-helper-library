@@ -25,6 +25,7 @@ class Booking
     private $promo_code;
     private $pickup_time;
     private $pickup_point;
+	private $pickup_location;
     private $comment;
     private $total;
     private $total_disc;
@@ -207,12 +208,21 @@ class Booking
     }
 
     /**
-     * @param mixed $pickup_point
+     * @param string|null $pickup_point
      */
-    protected function set_pickup_point($pickup_point)
+	protected function set_pickup_point($pickup_point)
     {
         $this->pickup_point = $pickup_point;
     }
+
+
+	/**
+	 * @param string|null $pickup_location
+	 */
+	public function set_pickup_location($pickup_location) {
+		$this->pickup_location = $pickup_location;
+	}
+
 
     /**
      * @return mixed
@@ -559,6 +569,14 @@ class Booking
         if (!empty($this->pickup_key)) {
             $raw['pickup_key'] = $this->pickup_key;
         }
+
+	    if (!empty($this->pickup_location)) {
+		    $raw['pickup_location'] = $this->pickup_location;
+	    }
+
+	    if (!empty($this->pickup_notes)) {
+		    $raw['pickup_key'] = $this->pickup_key;
+	    }
 
         if (!empty($this->comment)) {
             $raw['comment'] = $this->comment;
