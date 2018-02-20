@@ -10,7 +10,6 @@ class Obl
     private $theme;
     private $tour_keys = array();
     private $url_banner_img;
-    private $url_complete;
     private $url_website;
     private $url_facebook;
     private $is_latipay_payment_gateway;
@@ -96,11 +95,11 @@ class Obl
 	private $analytics_js_custom_body_script;
 
 
+
     /**
      * @return string
      */
-    public function get_id()
-    {
+    public function get_id() {
         return $this->id;
     }
 
@@ -108,8 +107,7 @@ class Obl
     /**
      * @param string $obl_id
      */
-    public function set_id($obl_id)
-    {
+    public function set_id($obl_id) {
         $this->id = $obl_id;
     }
 
@@ -117,8 +115,7 @@ class Obl
     /**
      * @param string $title
      */
-    public function set_browser_title($title)
-    {
+    public function set_browser_title($title) {
         $this->browser_title = $title;
     }
 
@@ -127,8 +124,7 @@ class Obl
      * @param string|null $append
      * @return string
      */
-    public function get_browser_title($append = null)
-    {
+    public function get_browser_title($append = null) {
         if (!empty($this->browser_title)) {
             $browser_title = $this->browser_title;
 
@@ -146,8 +142,7 @@ class Obl
     /**
      * @return string
      */
-    public function get_style_css()
-    {
+    public function get_style_css() {
         return $this->style_css;
     }
 
@@ -155,17 +150,7 @@ class Obl
     /**
      * @return string
      */
-    public function get_url_complete()
-    {
-        return $this->url_complete;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function get_url_banner_img()
-    {
+    public function get_url_banner_img() {
         return $this->url_banner_img;
     }
 
@@ -173,8 +158,7 @@ class Obl
     /**
      * @param string $url_banner_img
      */
-    public function set_url_banner_img($url_banner_img)
-    {
+    public function set_url_banner_img($url_banner_img) {
         $this->url_banner_img = $url_banner_img;
     }
 
@@ -182,8 +166,7 @@ class Obl
     /**
      * @return string
      */
-    public function get_url_spinner_img()
-    {
+    public function get_url_spinner_img() {
         return $this->url_spinner_img;
     }
 
@@ -191,8 +174,7 @@ class Obl
     /**
      * @param string $url_spinner_img
      */
-    public function set_url_spinner_img($url_spinner_img)
-    {
+    public function set_url_spinner_img($url_spinner_img) {
         $this->url_spinner_img = $url_spinner_img;
     }
 
@@ -200,8 +182,7 @@ class Obl
     /**
      * @param string $url_background_img
      */
-    public function set_url_background_img($url_background_img)
-    {
+    public function set_url_background_img($url_background_img) {
         $this->url_background_img = $url_background_img;
     }
 
@@ -209,8 +190,7 @@ class Obl
     /**
      * @return string
      */
-    public function get_url_background_img()
-    {
+    public function get_url_background_img() {
         return $this->url_background_img;
     }
 
@@ -218,8 +198,7 @@ class Obl
     /**
      * @return string
      */
-    public function get_url_website()
-    {
+    public function get_url_website() {
         return $this->url_website;
     }
 
@@ -227,8 +206,7 @@ class Obl
     /**
      * @param string $url_website
      */
-    public function set_url_website($url_website)
-    {
+    public function set_url_website($url_website) {
         $this->url_website = $url_website;
     }
 
@@ -236,8 +214,7 @@ class Obl
     /**
      * @return string[]
      */
-    public function get_tour_keys()
-    {
+    public function get_tour_keys() {
         return $this->tour_keys;
     }
 
@@ -245,8 +222,7 @@ class Obl
     /**
      * @return string
      */
-    public function get_supplier_key()
-    {
+    public function get_supplier_key() {
         return $this->supplier_key;
     }
 
@@ -254,8 +230,7 @@ class Obl
     /**
      * @return string
      */
-    public function get_theme()
-    {
+    public function get_theme() {
         return $this->theme;
     }
 
@@ -263,8 +238,7 @@ class Obl
     /**
      * @return string
      */
-    public function get_is_latipay_payment_gateway()
-    {
+    public function get_is_latipay_payment_gateway() {
         return $this->is_latipay_payment_gateway;
     }
 
@@ -272,8 +246,7 @@ class Obl
     /**
      * @return string
      */
-    public function get_operator_status_msg()
-    {
+    public function get_operator_status_msg() {
         return $this->operator_status_msg;
     }
 
@@ -281,8 +254,7 @@ class Obl
     /**
      * @return string
      */
-    public function get_operator_email()
-    {
+    public function get_operator_email() {
         return $this->operator_email;
     }
 
@@ -290,8 +262,7 @@ class Obl
     /**
      * @return string
      */
-    public function get_operator_phone()
-    {
+    public function get_operator_phone() {
         return $this->operator_phone;
     }
 
@@ -299,8 +270,7 @@ class Obl
     /**
      * @return string
      */
-    public function get_operator_phone_free()
-    {
+    public function get_operator_phone_free() {
         return $this->operator_phone_free;
     }
 
@@ -308,8 +278,7 @@ class Obl
     /**
      * @return string
      */
-    public function get_operator_name()
-    {
+    public function get_operator_name() {
         return $this->operator_name;
     }
 
@@ -317,8 +286,7 @@ class Obl
 	/**
 	 * @return string
 	 */
-	public function get_operator_currency_code()
-	{
+	public function get_operator_currency_code() {
 		return $this->operator_currency_code;
 	}
 
@@ -326,8 +294,7 @@ class Obl
     /**
      * @return bool
      */
-    public function get_is_mouseflow_tracking()
-    {
+    public function get_is_mouseflow_tracking() {
         return $this->is_mouseflow_tracking;
     }
 
@@ -335,8 +302,7 @@ class Obl
     /**
      * @return bool
      */
-    public function get_is_active()
-    {
+    public function get_is_active() {
         return $this->is_active;
     }
 
@@ -344,8 +310,7 @@ class Obl
 	/**
 	 * @return string|null
 	 */
-    public function get_url_facebook()
-    {
+    public function get_url_facebook() {
     	return $this->url_facebook;
     }
 
@@ -353,8 +318,7 @@ class Obl
     /**
      * @param string|null $url_facebook
      */
-    public function set_url_facebook($url_facebook)
-    {
+    public function set_url_facebook($url_facebook) {
         $this->url_facebook = $url_facebook;
     }
 
@@ -362,8 +326,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_url_operator_img()
-    {
+    public function get_url_operator_img() {
         return $this->url_operator_img;
     }
 
@@ -371,8 +334,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_body_bg()
-    {
+    public function get_color_body_bg() {
         return $this->color_body_bg;
     }
 
@@ -380,8 +342,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_body_text()
-    {
+    public function get_color_body_text() {
         return $this->color_body_text;
     }
 
@@ -389,8 +350,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_page_bg()
-    {
+    public function get_color_page_bg() {
         return $this->color_page_bg;
     }
 
@@ -398,8 +358,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_page_content_bg()
-    {
+    public function get_color_page_content_bg() {
         return $this->color_page_content_bg;
     }
 
@@ -407,8 +366,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_page_content_text()
-    {
+    public function get_color_page_content_text() {
         return $this->color_page_content_text;
     }
 
@@ -416,8 +374,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_page_heading_text()
-    {
+    public function get_color_page_heading_text() {
         return $this->color_page_heading_text;
     }
 
@@ -425,8 +382,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_page_line()
-    {
+    public function get_color_page_line() {
         return $this->color_page_line;
     }
 
@@ -434,8 +390,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_page_link_text()
-    {
+    public function get_color_page_link_text() {
         return $this->color_page_link_text;
     }
 
@@ -443,8 +398,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_page_link_bg()
-    {
+    public function get_color_page_link_bg() {
         return $this->color_page_link_bg;
     }
 
@@ -452,8 +406,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_page_link_hover_text()
-    {
+    public function get_color_page_link_hover_text() {
         return $this->color_page_link_hover_text;
     }
 
@@ -461,8 +414,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_page_link_hover_bg()
-    {
+    public function get_color_page_link_hover_bg() {
         return $this->color_page_link_hover_bg;
     }
 
@@ -470,8 +422,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_grid_bg()
-    {
+    public function get_color_grid_bg() {
         return $this->color_grid_bg;
     }
 
@@ -479,8 +430,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_grid_text()
-    {
+    public function get_color_grid_text() {
         return $this->color_grid_text;
     }
 
@@ -488,8 +438,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_navbar_bg()
-    {
+    public function get_color_navbar_bg() {
         return $this->color_navbar_bg;
     }
 
@@ -497,8 +446,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_navbar_content_bg()
-    {
+    public function get_color_navbar_content_bg() {
         return $this->color_navbar_content_bg;
     }
 
@@ -506,8 +454,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_navbar_next_text()
-    {
+    public function get_color_navbar_next_text() {
         return $this->color_navbar_next_text;
     }
 
@@ -515,8 +462,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_navbar_prev_text()
-    {
+    public function get_color_navbar_prev_text() {
         return $this->color_navbar_prev_text;
     }
 
@@ -524,8 +470,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_navbar_prev_bg()
-    {
+    public function get_color_navbar_prev_bg() {
         return $this->color_navbar_prev_bg;
     }
 
@@ -533,8 +478,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_navbar_prev_hover_text()
-    {
+    public function get_color_navbar_prev_hover_text() {
         return $this->color_navbar_prev_hover_text;
     }
 
@@ -542,8 +486,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_navbar_prev_hover_bg()
-    {
+    public function get_color_navbar_prev_hover_bg() {
         return $this->color_navbar_prev_hover_bg;
     }
 
@@ -551,8 +494,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_navbar_curr_text()
-    {
+    public function get_color_navbar_curr_text() {
         return $this->color_navbar_curr_text;
     }
 
@@ -560,8 +502,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_navbar_curr_bg()
-    {
+    public function get_color_navbar_curr_bg() {
         return $this->color_navbar_curr_bg;
     }
 
@@ -569,8 +510,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_navbar_curr_hover_text()
-    {
+    public function get_color_navbar_curr_hover_text() {
         return $this->color_navbar_curr_hover_text;
     }
 
@@ -578,8 +518,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_navbar_curr_hover_bg()
-    {
+    public function get_color_navbar_curr_hover_bg() {
         return $this->color_navbar_curr_hover_bg;
     }
 
@@ -587,8 +526,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_button_default_bg()
-    {
+    public function get_color_button_default_bg() {
         return $this->color_button_default_bg;
     }
 
@@ -596,8 +534,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_button_default_text()
-    {
+    public function get_color_button_default_text() {
         return $this->color_button_default_text;
     }
 
@@ -605,16 +542,14 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_button_default_hover_bg()
-    {
+    public function get_color_button_default_hover_bg() {
         return $this->color_button_default_hover_bg;
     }
 
     /**
      * @return string|null
      */
-    public function get_color_button_default_hover_text()
-    {
+    public function get_color_button_default_hover_text() {
         return $this->color_button_default_hover_text;
     }
 
@@ -622,8 +557,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_button_primary_bg()
-    {
+    public function get_color_button_primary_bg() {
         return $this->color_button_primary_bg;
     }
 
@@ -631,8 +565,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_button_primary_text()
-    {
+    public function get_color_button_primary_text() {
         return $this->color_button_primary_text;
     }
 
@@ -640,8 +573,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_button_primary_hover_bg()
-    {
+    public function get_color_button_primary_hover_bg() {
         return $this->color_button_primary_hover_bg;
     }
 
@@ -649,8 +581,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_button_primary_hover_text()
-    {
+    public function get_color_button_primary_hover_text() {
         return $this->color_button_primary_hover_text;
     }
 
@@ -658,8 +589,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_button_gridnav_bg()
-    {
+    public function get_color_button_gridnav_bg() {
         return $this->color_button_gridnav_bg;
     }
 
@@ -667,8 +597,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_button_gridnav_text()
-    {
+    public function get_color_button_gridnav_text() {
         return $this->color_button_gridnav_text;
     }
 
@@ -676,8 +605,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_button_gridnav_hover_bg()
-    {
+    public function get_color_button_gridnav_hover_bg() {
         return $this->color_button_gridnav_hover_bg;
     }
 
@@ -685,8 +613,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_button_gridnav_hover_text()
-    {
+    public function get_color_button_gridnav_hover_text() {
         return $this->color_button_gridnav_hover_text;
     }
 
@@ -694,8 +621,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_button_booknow_bg()
-    {
+    public function get_color_button_booknow_bg() {
         return $this->color_button_booknow_bg;
     }
 
@@ -703,8 +629,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_button_booknow_text()
-    {
+    public function get_color_button_booknow_text() {
         return $this->color_button_booknow_text;
     }
 
@@ -712,8 +637,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_button_booknow_hover_bg()
-    {
+    public function get_color_button_booknow_hover_bg() {
         return $this->color_button_booknow_hover_bg;
     }
 
@@ -721,8 +645,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_button_booknow_hover_text()
-    {
+    public function get_color_button_booknow_hover_text() {
         return $this->color_button_booknow_hover_text;
     }
     
@@ -730,8 +653,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_activity_block_bg()
-    {
+    public function get_color_activity_block_bg() {
         return $this->color_activity_block_bg;
     }
 
@@ -739,8 +661,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_activity_block_text()
-    {
+    public function get_color_activity_block_text() {
         return $this->color_activity_block_text;
     }
 
@@ -748,8 +669,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_page_header_bg()
-    {
+    public function get_color_page_header_bg() {
         return $this->color_page_header_bg;
     }
 
@@ -757,8 +677,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_page_header_content_bg()
-    {
+    public function get_color_page_header_content_bg() {
         return $this->color_page_header_content_bg;
     }
 
@@ -766,8 +685,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_page_footer_bg()
-    {
+    public function get_color_page_footer_bg() {
         return $this->color_page_footer_bg;
     }
 
@@ -775,8 +693,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_page_footer_content_bg()
-    {
+    public function get_color_page_footer_content_bg() {
         return $this->color_page_footer_content_bg;
     }
 
@@ -784,8 +701,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_grid_head_bg()
-    {
+    public function get_color_grid_head_bg() {
         return $this->color_grid_head_bg;
     }
 
@@ -793,8 +709,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_grid_head_text()
-    {
+    public function get_color_grid_head_text() {
         return $this->color_grid_head_text;
     }
 
@@ -802,8 +717,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_grid_hover_bg()
-    {
+    public function get_color_grid_hover_bg() {
         return $this->color_grid_hover_bg;
     }
 
@@ -811,8 +725,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_grid_hover_text()
-    {
+    public function get_color_grid_hover_text() {
         return $this->color_grid_hover_text;
     }
 
@@ -820,8 +733,7 @@ class Obl
     /**
      * @return string|null
      */
-    public function get_color_mobile_theme()
-    {
+    public function get_color_mobile_theme() {
         return $this->color_mobile_theme;
     }
 
@@ -829,8 +741,7 @@ class Obl
     /**
      * @return bool
      */
-    public function has_promo_codes()
-    {
+    public function has_promo_codes() {
         return $this->has_promo_codes;
     }
 
@@ -838,8 +749,7 @@ class Obl
     /**
      * @return bool
      */
-    public function has_vouchers()
-    {
+    public function has_vouchers() {
         return $this->has_vouchers;
     }
 
@@ -847,8 +757,7 @@ class Obl
 	/**
 	 * @return string|null
 	 */
-	public function get_analytics_ga_rtbs_id()
-	{
+	public function get_analytics_ga_rtbs_id() {
 		return $this->analytics_ga_rtbs_id;
 	}
 
@@ -856,8 +765,7 @@ class Obl
 	/**
 	 * @return string|null
 	 */
-	public function get_analytics_ga_client_id()
-	{
+	public function get_analytics_ga_client_id() {
 		return $this->analytics_ga_client_id;
 	}
 
@@ -865,8 +773,7 @@ class Obl
 	/**
 	 * @return string|null
 	 */
-	public function get_analytics_ga_primary_tracking_domains()
-	{
+	public function get_analytics_ga_primary_tracking_domains() {
 		return $this->analytics_ga_primary_tracking_domains;
 	}
 
@@ -874,8 +781,7 @@ class Obl
 	/**
 	 * @return string|null
 	 */
-	public function get_analytics_js_completion_script()
-	{
+	public function get_analytics_js_completion_script() {
 		return $this->analytics_js_completion_script;
 	}
 
@@ -883,8 +789,7 @@ class Obl
 	/**
 	 * @return string|null
 	 */
-	public function get_analytics_gtm_code()
-	{
+	public function get_analytics_gtm_code() {
 		return $this->analytics_gtm_code;
 	}
 
@@ -892,8 +797,7 @@ class Obl
 	/**
 	 * @return string|null
 	 */
-	public function get_analytics_js_custom_header()
-	{
+	public function get_analytics_js_custom_header() {
 		return $this->analytics_js_custom_header;
 	}
 
@@ -901,9 +805,24 @@ class Obl
 	/**
 	 * @return string|null
 	 */
-	public function get_analytics_js_custom_body()
-	{
+	public function get_analytics_js_custom_body() {
 		return $this->analytics_js_custom_body;
+	}
+
+
+	/**
+	 * @return string|null
+	 */
+	public function get_voucher_completion_url() {
+		return $this->obl_voucher_completion_url;
+	}
+
+
+	/**
+	 * @return string|null
+	 */
+	public function get_booking_completion_url() {
+		return $this->obl_booking_completion_url;
 	}
 
 
@@ -911,8 +830,7 @@ class Obl
      * @param \stdClass $raw_obl
      * @return Obl
      */
-    public static function from_raw($raw_obl)
-    {
+    public static function from_raw($raw_obl) {
         $obl = new self();
 
         $obl->id = $raw_obl->obl_id;
@@ -923,11 +841,12 @@ class Obl
             $obl->theme = $raw_obl->theme;
         }
 
-        $obl->url_complete = $raw_obl->url_complete;
         $obl->url_website = $raw_obl->url_website;
         $obl->url_banner_img = $raw_obl->url_banner_img;
         $obl->tour_keys = $raw_obl->tour_keys;
         $obl->has_promo_codes = $raw_obl->has_promo_codes;
+	    $obl->obl_booking_completion_url = $raw_obl->obl_booking_completion_url;
+	    $obl->obl_voucher_completion_url = $raw_obl->obl_voucher_completion_url;
 
         if (property_exists($raw_obl, 'has_vouchers')) {
 		    $obl->has_vouchers = $raw_obl->has_vouchers;
