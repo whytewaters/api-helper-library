@@ -5,6 +5,7 @@ use Rtbs\ApiHelper\Exceptions\PromoNotFoundException;
 use Rtbs\ApiHelper\Models\Booking;
 use Rtbs\ApiHelper\Models\Category;
 use Rtbs\ApiHelper\Models\Customer;
+use Rtbs\ApiHelper\Models\Experience;
 use Rtbs\ApiHelper\Models\ExperienceSession;
 use Rtbs\ApiHelper\Models\ItineraryBooking;
 use Rtbs\ApiHelper\Models\Obl;
@@ -109,6 +110,23 @@ class BookingServiceImpl implements BookingService
 
         return $experience_sessions;
     }
+
+
+	/**
+	 * @param string $supplier_key
+	 * @return Experience[]
+	 */
+	public function get_experiences($supplier_key) {
+		$experiences = array();
+
+		$raw_experiences = $this->get_api_client()->api_experiences($supplier_key);
+
+		foreach ($raw_experiences as $raw_experience) {
+			$experiences[] = Experience::from_raw($raw_experience);
+		}
+
+		return $experiences;
+	}
 
 
     /**

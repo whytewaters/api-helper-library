@@ -440,4 +440,16 @@ class APIClient
 		return $response->booking;
 	}
 
+
+	/**
+	 * @param string $supplier_key
+	 * @return \stdClass
+	 * @throws ApiClientException
+	 */
+	public function api_experiences($supplier_key) {
+		$query_str = http_build_query(['supplier' => $supplier_key]);
+		$response = $this->call("/api/experiences?{$query_str}");
+		return $response->experiences;
+	}
+
 }
