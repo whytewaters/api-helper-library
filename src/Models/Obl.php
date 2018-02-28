@@ -5,6 +5,7 @@ class Obl
 {
     private $browser_title;
     private $id;
+    private $rn;
     private $style_css;
     private $supplier_key;
     private $theme;
@@ -103,6 +104,12 @@ class Obl
         return $this->id;
     }
 
+    /**
+     * @return string
+     */
+    public function get_rn() {
+        return $this->rn;
+    }
 
     /**
      * @param string $obl_id
@@ -834,6 +841,7 @@ class Obl
         $obl = new self();
 
         $obl->id = $raw_obl->obl_id;
+        $obl->rn = $raw_obl->obl_rn;
         $obl->browser_title = $raw_obl->browser_title;
         $obl->style_css = $raw_obl->style_css;
 
