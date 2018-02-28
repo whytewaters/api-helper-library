@@ -105,6 +105,10 @@ class APIClient
         return null;
     }
 
+    function api_oac_operators($obl_rn) {
+	    return $this->call("/api/oac-operators/$obl_rn");
+    }
+
 
     /**
      * @param string|string[] $keys

@@ -194,6 +194,9 @@ class BookingServiceImpl implements BookingService
         return Supplier::fromRaw($raw_supplier);
     }
 
+    public function get_oac_operators($obl_rn) {
+        return $this->get_api_client()->api_oac_operators($obl_rn);
+    }
 
     private function get_api_client()
     {

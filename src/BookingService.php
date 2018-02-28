@@ -55,4 +55,6 @@ interface BookingService
      * @return string
      */
     public function reserve_capacity($supplier_key, $tour_key, $trip_datetime, $pax);
+
+    public function get_oac_operators($obl_rn);
 }
