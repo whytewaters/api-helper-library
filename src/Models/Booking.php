@@ -626,6 +626,10 @@ class Booking
 	    $booking->set_comment($raw_booking->comment);
 	    $booking->set_total($raw_booking->total);
 
+	    if (property_exists($raw_booking, 'itinerary_key')) {
+		    $booking->itinerary_key = $raw_booking->itinerary_key;
+	    }
+
 	    if (property_exists($raw_booking, 'token')) {
 		    $booking->token = $raw_booking->token;
         }

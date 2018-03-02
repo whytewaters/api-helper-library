@@ -92,17 +92,17 @@ class BookingServiceImpl implements BookingService
      * @param ResourceRequirement[]|null $resource_requirements
      * @param bool $search_next_available
      * @param int $days
-     * @param array|null $exclude_capacityholds
+     * @param array|null $exclude_capacity_hold_keys
      * @return ExperienceSession[]
      */
-    public function get_experience_sessions($supplier_key, $experience_key, $date, $search_next_available = false, $days = 1, array $resource_requirements = null, $exclude_capacityholds = null)
+    public function get_experience_sessions($supplier_key, $experience_key, $date, $search_next_available = false, $days = 1, array $resource_requirements = null, $exclude_capacity_hold_keys = null)
     {
         if ($date instanceof \DateTimeInterface) {
             $date = $date->format('Y-m-d');
         }
 
         $experience_sessions = array();
-        $response = $this->get_api_client()->api_experience_sessions($supplier_key, $experience_key, $date, $search_next_available, $days, $resource_requirements, $exclude_capacityholds);
+        $response = $this->get_api_client()->api_experience_sessions($supplier_key, $experience_key, $date, $search_next_available, $days, $resource_requirements, $exclude_capacity_hold_keys);
 
         foreach($response->experience_sessions as $raw_experience_session) {
             $experience_sessions[] = ExperienceSession::from_raw($raw_experience_session);
@@ -300,13 +300,12 @@ class BookingServiceImpl implements BookingService
 	 * @param string $last_name
 	 * @param string $email
 	 * @param string $phone
-	 * @param string|null $obl_id
 	 *
 	 * @return Customer
 	 */
-    public function create_customer($first_name, $last_name, $email, $phone, $obl_id = null)
+    public function create_customer($first_name, $last_name, $email, $phone)
     {
-        $raw_customer = $this->get_api_client()->api_create_customer($first_name, $last_name, $email, $phone, $obl_id);
+        $raw_customer = $this->get_api_client()->api_create_customer($first_name, $last_name, $email, $phone);
 
         return Customer::from_raw($raw_customer->customer);
     }
@@ -316,9 +315,8 @@ class BookingServiceImpl implements BookingService
      * @param Customer $customer
      * @return \Rtbs\ApiHelper\Models\Itinerary
      */
-    public function create_itinerary(Customer $customer)
-    {
-        $raw_itinerary = $this->get_api_client()->api_create_itinerary($customer->get_customer_key());
+    public function create_itinerary(Customer $customer) {
+        $raw_itinerary = $this->get_api_client()->api_create_itinerary($customer->get_customer_key(), null);
 
         return Itinerary::from_raw($raw_itinerary->itinerary);
     }
@@ -386,15 +384,31 @@ class BookingServiceImpl implements BookingService
     }
 
 
-	public function booking_status($token)
-	{
+	public function booking_status($token) {
 		$raw_booking = $this->get_api_client()->api_booking_status($token);
 		return Booking::from_raw($raw_booking);
 	}
 
 
-    private static function getUserMessageForAPIException(\Exception $ex)
-    {
+	/**
+	 * @param string $token
+	 *
+	 * @return Booking[]
+	 */
+	public function itinerary_status($token) {
+		$raw_data = $this->get_api_client()->api_itinerary_status($token);
+
+		$bookings = [];
+
+		foreach ($raw_data->bookings as $raw_booking) {
+			$bookings[] = Booking::from_raw($raw_booking);
+		}
+
+		return $bookings;
+	}
+
+
+    private static function getUserMessageForAPIException(\Exception $ex) {
         return strtr($ex->getMessage(), array(
             'API call did not succeed: datetime past' => 'The chosen date and time has passed, please choose a later date',
             'API call did not succeed: Trip is closed' => 'The event is unavailable at the chosen date and time, please choose a different date',

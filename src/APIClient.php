@@ -12,6 +12,7 @@ class APIClient
     private $host;
     private $key;
     private $pwd;
+    private $obl_id;
     private $xdebug_key;
     private $xdebug_profile = false;
 
@@ -30,6 +31,10 @@ class APIClient
         if (isset($options['pwd'])) {
             $this->pwd = $options['pwd'];
         }
+
+	    if (isset($options['obl_id'])) {
+		    $this->obl_id = $options['obl_id'];
+	    }
     }
 
 
@@ -152,10 +157,10 @@ class APIClient
      * @param ResourceRequirement[]|null $resource_requirements
      * @param bool $search_next_available
      * @param int $days
-     * @param array|null $exclude_capacity_holds
+     * @param array|null $exclude_capacity_hold_keys
      * @return \stdClass
      */
-    function api_experience_sessions($supplier_key, $experience_key, $date, $search_next_available = false, $days = 1, array $resource_requirements = null, array $exclude_capacity_holds = null)
+    function api_experience_sessions($supplier_key, $experience_key, $date, $search_next_available = false, $days = 1, array $resource_requirements = null, array $exclude_capacity_hold_keys = null)
     {
         $data_resource_requirements = array();
 
@@ -169,7 +174,7 @@ class APIClient
             'date' => $date,
             'search_next_available' => ($search_next_available) ? 1 : 0,
             'days' => $days,
-            'exclude_capacity_holds' => $exclude_capacity_holds,
+            'exclude_capacity_holds' => $exclude_capacity_hold_keys,
             'resource_requirements' => $data_resource_requirements,
         );
 
@@ -214,7 +219,7 @@ class APIClient
 	    return $this->call('/api/remove-itinerary-booking', $opts);
     }
 
-    function api_pay_itinerary($itinerary_key, $return_url = null) {
+    function api_pay_itinerary($itinerary_key, $return_url = null, $obl_id = null) {
         $data = array(
             'itinerary_key' => $itinerary_key
         );
@@ -223,6 +228,10 @@ class APIClient
             $data['return_url'] = $return_url;
         }
 
+	    if ($obl_id) {
+		    $data['obl_id'] = $obl_id;
+	    }
+
         $opts = $this->build_opts($data);
 	    return $this->call('/api/pay-itinerary', $opts);
     }
@@ -230,7 +239,7 @@ class APIClient
     function api_create_itinerary($primary_customer_key, $additional_customer_keys = array()) {
         $data = array(
             'primary_customer_key' => $primary_customer_key,
-            'additional_customer_keys' => $additional_customer_keys
+            'additional_customer_keys' => $additional_customer_keys,
         );
 
         $opts = $this->build_opts($data);
@@ -255,22 +264,30 @@ class APIClient
 
         //add key
         $separator = strpos($endpoint, '?') === false ? '?' : '&';
-        $endpoint  .= $separator . 'apikey=' . $this->key;
+
+        $params = [
+	        'apikey' => $this->key
+        ];
+
+        // obl_id
+	    if ($this->obl_id) {
+		    $params['obl_id'] = $this->obl_id;
+	    }
 
         // tracer
         if (session_id()) {
-            $endpoint .= '&tracer=' . urlencode(session_id());
+	        $params['tracer'] = session_id();
         }
 
         if ($this->xdebug_key) {
-            $endpoint .= '&XDEBUG_SESSION_START=' . urlencode($this->xdebug_key);
+	        $params['XDEBUG_SESSION_START'] = $this->xdebug_key;
         }
 
 	    if ($this->xdebug_profile) {
-		    $endpoint .= '&XDEBUG_PROFILE=1';
+		    $params['XDEBUG_PROFILE'] = 1;
 	    }
 
-        $url = $this->host . $endpoint;
+        $url = $this->host . $endpoint . $separator . http_build_query($params);
 
         if ($opts == null) {
             $response_raw = file_get_contents($url);
@@ -302,13 +319,12 @@ class APIClient
     }
 
 
-    public function api_create_customer($first_name, $last_name, $email, $phone, $obl_id = null) {
+    public function api_create_customer($first_name, $last_name, $email, $phone) {
         $data = array(
             'fname' => $first_name,
             'lname' => $last_name,
             'email' => $email,
             'phone' => $phone,
-	        'obl_id' => $obl_id,
         );
 
         $opts = $this->build_opts($data);
@@ -433,11 +449,21 @@ class APIClient
 	 * @param string $token
 	 * @return \stdClass
 	 */
-	public function api_booking_status($token)
-	{
+	public function api_booking_status($token) {
 		$token = urlencode($token);
 		$response = $this->call("/api/booking/{$token}/status");
 		return $response->booking;
+	}
+
+
+	/**
+	 * @param string $token
+	 * @return Booking[]
+	 */
+	public function api_itinerary_status($token) {
+		$token = urlencode($token);
+		$response = $this->call("/api/itinerary/{$token}/status");
+		return $response->itinerary;
 	}
 
 

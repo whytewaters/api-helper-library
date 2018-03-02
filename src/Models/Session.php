@@ -83,8 +83,7 @@ class Session
 	/**
 	 * @return float|null
 	 */
-	public function get_min_price()
-	{
+	public function get_min_price() {
 		$min_price = null;
 
 		foreach ($this->prices as $price) {
