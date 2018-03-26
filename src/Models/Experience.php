@@ -7,13 +7,11 @@ class Experience {
     private $experience_short_name;
 
     private $tour_keys = array();
+    private $primary_tour_key;
 
 
     /** @var ResourceGroup[] */
-    private $non_exclusive_resource_groups = array();
-
-    /** @var ResourceGroup[] */
-    private $exclusive_resource_groups = array();
+    private $resource_groups = array();
 
 
 	/**
@@ -25,12 +23,20 @@ class Experience {
 
 
 	/**
-	 * TODO returns first tour key for this cut, needs to honor settings in RTBS
 	 * @return string
 	 */
     public function get_primary_tour_key() {
-	    return isset($this->tour_keys[0]) ? $this->tour_keys[0] : null;
+	    return $this->primary_tour_key;
     }
+
+
+	/**
+	 * @param string $primary_tour_key
+	 * @return string
+	 */
+	public function set_primary_tour_key($primary_tour_key) {
+		return $this->primary_tour_key = $primary_tour_key;
+	}
 
 
 	/**
@@ -83,29 +89,16 @@ class Experience {
     }
 
 
-    public function add_non_exclusive_resource_group(ResourceGroup $resource_group) {
-    	$this->non_exclusive_resource_groups[] = $resource_group;
+    public function add_resource_group(ResourceGroup $resource_group) {
+    	$this->resource_groups[] = $resource_group;
     }
 
 
-	public function add_exclusive_resource_group(ResourceGroup $resource_group) {
-		$this->exclusive_resource_groups[] = $resource_group;
-	}
-
-
 	/**
 	 * @return ResourceGroup[]
 	 */
-	public function get_exclusive_resource_groups() {
-		return $this->exclusive_resource_groups;
-	}
-
-
-	/**
-	 * @return ResourceGroup[]
-	 */
-	public function get_non_exclusive_resource_groups() {
-		return $this->non_exclusive_resource_groups;
+	public function get_resource_groups() {
+		return $this->resource_groups;
 	}
 
 
@@ -113,8 +106,7 @@ class Experience {
      * @param \stdClass $raw_experience
      * @return Tour
      */
-    public static function from_raw($raw_experience)
-    {
+    public static function from_raw($raw_experience) {
         $experience = new self();
 
 	    $experience->set_experience_key($raw_experience->experience_key);
@@ -122,16 +114,9 @@ class Experience {
 	    $experience->set_experience_short_name($raw_experience->experience_short_name);
 
         if (property_exists($raw_experience, 'resource_groups')) {
-
-	        if (property_exists($raw_experience->resource_groups, 'nonexclusive')) {
-		        foreach ($raw_experience->resource_groups->nonexclusive as $raw_resource_group) {
-			        $experience->add_non_exclusive_resource_group(ResourceGroup::from_raw($raw_resource_group));
-		        }
-	        }
-
-	        if (property_exists($raw_experience->resource_groups, 'exclusive')) {
-		        foreach ($raw_experience->resource_groups->exclusive as $raw_resource_group) {
-			        $experience->add_exclusive_resource_group(ResourceGroup::from_raw($raw_resource_group));
+	        if (property_exists($raw_experience, 'resource_groups')) {
+		        foreach ($raw_experience->resource_groups as $raw_resource_group) {
+			        $experience->add_resource_group(ResourceGroup::from_raw($raw_resource_group));
 		        }
 	        }
         }
@@ -140,6 +125,10 @@ class Experience {
 		    foreach ($raw_experience->tour_keys as $tour_key) {
 			    $experience->add_tour_key($tour_key);
 		    }
+	    }
+
+	    if (property_exists($raw_experience, 'primary_tour_key')) {
+		    $experience->set_primary_tour_key($raw_experience->primary_tour_key);
 	    }
 
         return $experience;

@@ -3,6 +3,10 @@
 class ResourceGroup {
     private $resource_group_rn;
 	private $activity_rn;
+	private $can_allocate = 0;
+	private $allocation_question;
+	private $unit_term;
+	private $max_qty;
 
 
 	/**
@@ -35,6 +39,70 @@ class ResourceGroup {
 
 
 	/**
+	 * @return int
+	 */
+	public function get_can_allocate() {
+		return $this->can_allocate;
+	}
+
+
+	/**
+	 * @param int $can_allocate
+	 */
+	public function set_can_allocate($can_allocate) {
+		$this->can_allocate = $can_allocate;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function get_allocation_question() {
+		return $this->allocation_question;
+	}
+
+
+	/**
+	 * @param string $allocation_question
+	 */
+	public function set_allocation_question($allocation_question) {
+		$this->allocation_question = $allocation_question;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function get_unit_term() {
+		return $this->unit_term;
+	}
+
+
+	/**
+	 * @param string $unit_term
+	 */
+	public function set_unit_term($unit_term) {
+		$this->unit_term = $unit_term;
+	}
+
+
+	/**
+	 * @return int
+	 */
+	public function get_max_qty() {
+		return $this->max_qty;
+	}
+
+
+	/**
+	 * @param string $max_qty
+	 */
+	public function set_max_qty($max_qty) {
+		$this->max_qty = $max_qty;
+	}
+
+
+	/**
 	 * @param \stdClass $raw_resource_group
 	 * @return ResourceGroup
 	 */
@@ -43,6 +111,10 @@ class ResourceGroup {
 
 		$resource_group->set_resource_group_rn($raw_resource_group->resource_group_rn);
 		$resource_group->set_activity_rn($raw_resource_group->activity_rn);
+		$resource_group->set_can_allocate($raw_resource_group->can_allocate);
+		$resource_group->set_allocation_question($raw_resource_group->allocation_question);
+		$resource_group->set_unit_term($raw_resource_group->unit_term);
+		$resource_group->set_max_qty($raw_resource_group->max_qty);
 
 		return $resource_group;
 	}
