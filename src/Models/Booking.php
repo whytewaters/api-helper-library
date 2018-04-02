@@ -42,6 +42,8 @@ class Booking
     private $voucher_key;
 	private $obl_id;
 	private $token;
+	private $photo_filepath;
+
 
 	/** @var ResourceRequirement[] $resource_requirements */
 	private $resource_requirements;
@@ -534,6 +536,14 @@ class Booking
 	}
 
 
+	/**
+	 * @param string $photo_filepath
+	 */
+	public function set_photo_filepath($photo_filepath) {
+		$this->photo_filepath = $photo_filepath;
+	}
+
+
     public function to_raw() {
         $raw = array(
             'tour_key' => $this->tour_key,
@@ -596,6 +606,11 @@ class Booking
 
 	    if (!empty($this->obl_id)) {
 		    $raw['obl_id'] = $this->obl_id;
+	    }
+
+	    // base 64 encode photo, used for rainbows end annual passes
+	    if (!empty($this->photo_filepath)) {
+		    $raw['photo_base64'] = base64_encode(file_get_contents($this->photo_filepath));
 	    }
 
         return $raw;
