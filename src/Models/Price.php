@@ -1,5 +1,7 @@
 <?php namespace Rtbs\ApiHelper\Models;
 
+use Carbon\Carbon;
+
 class Price {
 
 	const PRICE_CATEGORY_NAME_ADULT = 'Adult';
@@ -24,6 +26,12 @@ class Price {
     private $total_inc_disc;
 	private $max_qty;
 	private $min_qty;
+
+	/** @var Carbon $date_valid_from */
+	private $date_valid_from;
+
+	/** @var Carbon $date_valid_to */
+	private $date_valid_to;
 
 
     private $fields = array();
@@ -293,6 +301,57 @@ class Price {
 	}
 
 
+	/**
+	 * @return Carbon
+	 */
+	public function get_date_valid_from() {
+		return $this->date_valid_from;
+	}
+
+
+	/**
+	 * @param string|\DateTimeInterface|Carbon $date_valid_from
+	 */
+	public function set_date_valid_from($date_valid_from) {
+
+		if ($date_valid_from instanceof Carbon) {
+			$this->date_valid_from = $date_valid_from;
+		} else if ($date_valid_from instanceof \DateTimeInterface) {
+			$this->date_valid_from = new Carbon($date_valid_from);
+		} else {
+			// assume string
+			$this->date_valid_from = Carbon::parse($date_valid_from);
+		}
+
+		$this->date_valid_from->startOfDay();
+	}
+
+
+	/**
+	 * @return Carbon
+	 */
+	public function get_date_valid_to() {
+		return $this->date_valid_to;
+	}
+
+
+	/**
+	 * @param string|\DateTimeInterface|Carbon $date_valid_to
+	 */
+	public function set_date_valid_to($date_valid_to) {
+		if ($date_valid_to instanceof Carbon) {
+			$this->date_valid_to = $date_valid_to;
+		} else if ($date_valid_to instanceof \DateTimeInterface) {
+			$this->date_valid_to = new Carbon($date_valid_to);
+		} else {
+			// assume string
+			$this->date_valid_to = Carbon::parse($date_valid_to);
+		}
+
+		$this->date_valid_from->endOfDay();
+	}
+
+
     public static function from_raw($raw_price) {
         $price = new Price();
 
@@ -367,7 +426,15 @@ class Price {
         }
 
 	    if (property_exists($raw_price, 'total_inc_disc')) {
-        	$price->set_total_inc_disc($raw_price->total_inc_disc);
+		    $price->set_total_inc_disc($raw_price->total_inc_disc);
+	    }
+
+	    if (property_exists($raw_price, 'date_valid_from')) {
+		    $price->set_date_valid_from($raw_price->date_valid_from);
+	    }
+
+	    if (property_exists($raw_price, 'date_valid_to')) {
+		    $price->set_date_valid_to($raw_price->date_valid_to);
 	    }
 
 	    if (property_exists($raw_price, 'fields') && is_array($raw_price->fields)) {
