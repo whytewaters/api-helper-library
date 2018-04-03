@@ -95,6 +95,7 @@ class Obl
 	private $analytics_js_custom_header_script;
 	private $analytics_js_custom_body_script;
 
+    private $is_oac;
 
 
     /**
@@ -832,6 +833,14 @@ class Obl
 		return $this->obl_booking_completion_url;
 	}
 
+    /**
+     * @return boolean|null
+     */
+    public function is_oac() {
+        return $this->is_oac;
+    }
+
+
 
     /**
      * @param \stdClass $raw_obl
@@ -980,6 +989,8 @@ class Obl
 	    $obl->analytics_gtm_code = $raw_obl->obl_analytics_gtm_code;
 	    $obl->analytics_js_custom_header = $raw_obl->obl_analytics_js_custom_header;
 	    $obl->analytics_js_custom_body = $raw_obl->obl_analytics_js_custom_body;
+
+	    $obl->is_oac = $raw_obl->is_oac;
 
 	    if (!empty($raw_obl->supplier_key)) {
             $obl->supplier_key = $raw_obl->supplier_key;
