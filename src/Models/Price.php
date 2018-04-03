@@ -1,7 +1,6 @@
 <?php namespace Rtbs\ApiHelper\Models;
 
 class Price {
-	
 	const PRICE_CATEGORY_NAME_ADULT = 'Adult';
 	const PRICE_CATEGORY_NAME_CHILD = 'Child';
 	const PRICE_CATEGORY_NAME_INFANT = 'Infant';
@@ -193,7 +192,7 @@ class Price {
 	 * @return int
 	 */
 	public function get_min_qty() {
-		return $this->min_qty;
+		return (int) $this->min_qty;
 	}
 
 
@@ -206,10 +205,11 @@ class Price {
 
 
 	/**
+	 * TODO 99999 is a made up qty, this should really be done in the api itself
 	 * @return int
 	 */
 	public function get_max_qty() {
-		return $this->max_qty;
+		return (int) ($this->max_qty == 0) ? 99999 : $this->max_qty;
 	}
 
 
