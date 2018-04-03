@@ -348,7 +348,7 @@ class Price {
 			$this->date_valid_to = Carbon::parse($date_valid_to);
 		}
 
-		$this->date_valid_from->endOfDay();
+		$this->date_valid_to->endOfDay();
 	}
 
 
