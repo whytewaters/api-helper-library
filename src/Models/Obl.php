@@ -94,6 +94,7 @@ class Obl
 	private $analytics_gtm_code;
 	private $analytics_js_custom_header_script;
 	private $analytics_js_custom_body_script;
+	private $obl_booking_completion_url;
 
     private $is_oac;
 

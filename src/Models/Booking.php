@@ -42,6 +42,8 @@ class Booking
     private $voucher_key;
 	private $obl_id;
 	private $token;
+	private $photo_filepath;
+
 
 	/** @var ResourceRequirement[] $resource_requirements */
 	private $resource_requirements;
@@ -534,6 +536,14 @@ class Booking
 	}
 
 
+	/**
+	 * @param string $photo_filepath
+	 */
+	public function set_photo_filepath($photo_filepath) {
+		$this->photo_filepath = $photo_filepath;
+	}
+
+
     public function to_raw() {
         $raw = array(
             'tour_key' => $this->tour_key,
@@ -598,6 +608,11 @@ class Booking
 		    $raw['obl_id'] = $this->obl_id;
 	    }
 
+	    // base 64 encode photo, used for rainbows end annual passes
+	    if (!empty($this->photo_filepath)) {
+		    $raw['photo_base64'] = base64_encode(file_get_contents($this->photo_filepath));
+	    }
+
         return $raw;
     }
 
@@ -625,6 +640,10 @@ class Booking
 	    $booking->set_pickup_point($raw_booking->pickup_point);
 	    $booking->set_comment($raw_booking->comment);
 	    $booking->set_total($raw_booking->total);
+
+	    if (property_exists($raw_booking, 'itinerary_key')) {
+		    $booking->itinerary_key = $raw_booking->itinerary_key;
+	    }
 
 	    if (property_exists($raw_booking, 'token')) {
 		    $booking->token = $raw_booking->token;
