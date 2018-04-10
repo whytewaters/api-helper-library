@@ -1,8 +1,7 @@
 <?php namespace Rtbs\ApiHelper\Models;
 
 
-class Tour
-{
+class Tour {
     private $tour_key;
     private $name;
     private $info_date_range_notes = array();
@@ -27,12 +26,14 @@ class Tour
     /** @var Field[] */
     private $fields = array();
 
+
     /**
      * @return string
      */
     public function get_tour_key() {
         return $this->tour_key;
     }
+
 
     /**
      * @param string $tour_key
@@ -41,12 +42,14 @@ class Tour
         $this->tour_key = $tour_key;
     }
 
+
     /**
      * @return string
      */
     public function get_name() {
         return $this->name;
     }
+
 
     /**
      * @param string $name
@@ -55,13 +58,14 @@ class Tour
         $this->name = $name;
     }
 
+
     /**
      * @return string
      */
-    public function get_supplier_key()
-    {
+    public function get_supplier_key() {
         return $this->supplier_key;
     }
+
 
     /**
      * @param string $supplier_key
@@ -70,12 +74,14 @@ class Tour
         $this->supplier_key = $supplier_key;
     }
 
+
     /**
      * @return string
      */
     public function get_description() {
         return $this->description;
     }
+
 
     /**
      * @param string $description
@@ -84,12 +90,14 @@ class Tour
         $this->description = $description;
     }
 
+
     /**
      * @return string
      */
     public function get_info_directions() {
         return $this->info_directions;
     }
+
 
     /**
      * @param string $info_directions
@@ -170,12 +178,14 @@ class Tour
         return $this->info_bring;
     }
 
+
     /**
      * @param string $info_bring
      */
     public function set_info_bring($info_bring) {
         $this->info_bring = $info_bring;
     }
+
 
     /**
      * @return string
@@ -184,6 +194,7 @@ class Tour
         return $this->info_provided;
     }
 
+
     /**
      * @param string $info_provided
      */
@@ -191,11 +202,11 @@ class Tour
         $this->info_provided = $info_provided;
     }
 
+
     /**
      * @return string
      */
-    public function get_info_transport()
-    {
+    public function get_info_transport() {
         return $this->info_transport;
     }
 
@@ -203,8 +214,7 @@ class Tour
     /**
      * @param string $info_transport
      */
-    public function set_info_transport($info_transport)
-    {
+    public function set_info_transport($info_transport) {
         $this->info_transport = $info_transport;
     }
 
@@ -213,8 +223,7 @@ class Tour
      * @param string $default_img
      * @return string
      */
-    public function get_url_img($default_img)
-    {
+    public function get_url_img($default_img) {
         return ($this->url_img) ? $this->url_img : $default_img;
     }
 
@@ -222,8 +231,7 @@ class Tour
     /**
      * @param string $url_img
      */
-    public function set_url_img($url_img)
-    {
+    public function set_url_img($url_img) {
         $this->url_img = $url_img;
     }
 
@@ -231,8 +239,7 @@ class Tour
     /**
      * @return string
      */
-    public function get_terms_html()
-    {
+    public function get_terms_html() {
         return $this->terms_html;
     }
 
@@ -240,14 +247,12 @@ class Tour
     /**
      * @param string|null $terms_html
      */
-    public function set_terms_html($terms_html)
-    {
+    public function set_terms_html($terms_html) {
         $this->terms_html = $terms_html;
     }
 
 
-    public function add_info_date_range_note($info_date_range_note)
-    {
+    public function add_info_date_range_note($info_date_range_note) {
         $this->info_date_range_notes[] = $info_date_range_note;
     }
 
@@ -255,16 +260,15 @@ class Tour
     /**
      * @return array
      */
-    public function get_info_date_range_notes()
-    {
+    public function get_info_date_range_notes() {
         return $this->info_date_range_notes;
     }
+
 
     /**
      * @return Price[]
      */
-    public function get_prices()
-    {
+    public function get_prices() {
         return $this->prices;
     }
 
@@ -274,8 +278,7 @@ class Tour
 	 *
 	 * @return null|Price
 	 */
-    public function get_price_by_price_type_key($price_type_key)
-    {
+    public function get_price_by_price_type_key($price_type_key) {
         foreach ($this->prices as $price) {
         	if ($price->get_price_type_key() == $price_type_key) {
         		return $price;
@@ -291,8 +294,7 @@ class Tour
 	 *
 	 * @return null|Price
 	 */
-	public function get_price_by_price_key($price_key)
-	{
+	public function get_price_by_price_key($price_key) {
 		foreach ($this->prices as $price) {
 			if ($price->get_price_key() == $price_key) {
 				return $price;
@@ -302,19 +304,33 @@ class Tour
 		return null;
 	}
 
-    /**
-     * @return Field[]
-     */
-    public function get_fields() {
-        return $this->fields;
-    }
+
+	/**
+	 * @return Field[]
+	 */
+	public function get_fields() {
+		return $this->fields;
+	}
+
+
+	/**
+	 * @return Field|null
+	 */
+	public function get_field_by_tag($has_tag) {
+		foreach ($this->fields as $field) {
+			if ($field->has_tag($has_tag)) {
+				return $field;
+			}
+		}
+
+		return null;
+	}
 
 
     /**
      * @return bool
      */
-    public function is_show_obl()
-    {
+    public function is_show_obl() {
         return $this->is_show_obl;
     }
 

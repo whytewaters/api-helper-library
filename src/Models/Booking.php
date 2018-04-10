@@ -409,19 +409,23 @@ class Booking
     }
 
 
-    public function add_price_selection(Price $price, $quantity, $fields = null) {
+    public function add_price_selection(Price $qty, $quantity, $fields = null) {
         $this->price_selections[] = array(
             'price_key' => $price->get_price_key(),
-            'qty' => (int) $quantity,
+            'price_name' => $price->get_name(),
+            'rate' => $price->get_rate(),
+            'qty' => (int) $qty,
 	        'fields' => $fields,
         );
     }
 
 
-    public function add_price_selection_keys($price_key, $quantity, $fields = null) {
+    public function add_price_selection_keys($price_key, $qty, $fields = null, $price_name = null, $rate = null) {
         $this->price_selections[] = array(
             'price_key' => $price_key,
-            'qty' => (int) $quantity,
+	        'price_name' => $price_name,
+	        'rate' => $rate,
+            'qty' => (int) $qty,
 	        'fields' => $fields,
         );
     }
@@ -435,18 +439,46 @@ class Booking
 	/**
 	 * @return Price[]
 	 */
-    public function get_prices()
-    {
+    public function get_prices() {
         return $this->prices;
     }
 
 
+	/**
+	 * @param string $field_name
+	 * @param mixed $value
+	 */
     public function add_tour_field($field_name, $value) {
     	$this->tour_fields[] = array(
     		'name' => $field_name,
 		    'value' => $value,
 	    );
     }
+
+
+	/**
+	 * @param string $field_name
+	 *
+	 * @return string|null
+	 */
+    public function get_tour_field($field_name) {
+    	foreach ($this->tour_fields as $tour_field) {
+    		if ($tour_field['name'] === $field_name) {
+    			return $tour_field['value'];
+		    }
+	    }
+
+	    return null;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function gdd_tour_fields() {
+		return $this->tour_fields;
+	}
+
 
     /**
      * @return array
