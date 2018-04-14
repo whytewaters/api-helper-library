@@ -97,7 +97,8 @@ class Obl
 	private $obl_booking_completion_url;
 
     private $is_oac;
-
+    private $oac_primary_color;
+    private $oac_secondary_color;
 
     /**
      * @return string
@@ -841,7 +842,19 @@ class Obl
         return $this->is_oac;
     }
 
+    /**
+     * @return mixed
+     */
+    public function get_oac_primary_color() {
+        return $this->oac_primary_color;
+    }
 
+    /**
+     * @return mixed
+     */
+    public function get_oac_secondary_color() {
+        return $this->oac_secondary_color;
+    }
 
     /**
      * @param \stdClass $raw_obl
