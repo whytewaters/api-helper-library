@@ -1005,6 +1005,8 @@ class Obl
 	    $obl->analytics_js_custom_body = $raw_obl->obl_analytics_js_custom_body;
 
 	    $obl->is_oac = $raw_obl->is_oac;
+        $obl->oac_primary_color = $raw_obl->oac_primary_color;
+        $obl->oac_secondary_color = $raw_obl->oac_secondary_color;
 
 	    if (!empty($raw_obl->supplier_key)) {
             $obl->supplier_key = $raw_obl->supplier_key;
