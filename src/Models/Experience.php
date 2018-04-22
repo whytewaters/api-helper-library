@@ -102,6 +102,22 @@ class Experience {
 	}
 
 
+	/**
+	 * @param int $resource_group_rn
+	 *
+	 * @return ResourceGroup|null
+	 */
+	public function get_resource_group($resource_group_rn) {
+		foreach ($this->resource_groups as $resource_group) {
+			if ($resource_group->get_resource_group_rn() == $resource_group_rn) {
+				return $resource_group;
+			}
+		}
+
+		return null;
+	}
+
+
     /**
      * @param \stdClass $raw_experience
      * @return Tour

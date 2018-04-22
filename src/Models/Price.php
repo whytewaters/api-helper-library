@@ -23,6 +23,7 @@ class Price {
     private $total_inc_disc;
 	private $max_qty;
 	private $min_qty;
+	private $tags = [];
 
 
     private $fields = array();
@@ -286,6 +287,39 @@ class Price {
 
 
 	/**
+	 * @param string $tags
+	 */
+    public function set_tags($tags) {
+    	if ($tags == null) {
+    		$this->tags = [];
+	    } else {
+		    $this->tags = explode(' ', $tags);
+	    }
+    }
+
+
+	/**
+	 * @param string|array $tags
+	 */
+    public function has_tags($tags) {
+    	$tags = mb_strtoupper(trim($tags));
+    	if (!is_array($tags)) {
+    		$tags = explode(' ', $tags);
+	    }
+
+	    $num_matches = 0;
+
+    	foreach ($tags as $tag) {
+    		if (in_array($this->tags, strtoupper($tag))) {
+			    $num_matches++;
+		    }
+	    }
+
+	    return ($num_matches === count($tags));
+    }
+
+
+	/**
 	 * @return Field[]
 	 */
 	public function get_fields() {
@@ -369,6 +403,8 @@ class Price {
 	    if (property_exists($raw_price, 'total_inc_disc')) {
         	$price->set_total_inc_disc($raw_price->total_inc_disc);
 	    }
+
+	    $price->set_tags($raw_price->tags);
 
 	    if (property_exists($raw_price, 'fields') && is_array($raw_price->fields)) {
 		    foreach($raw_price->fields as $raw_field) {
