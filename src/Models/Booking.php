@@ -389,6 +389,11 @@ class Booking {
 	}
 
 
+    /**
+     * @param Price $qty
+     * @param int $quantity
+     * @param array|null $fields
+     */
 	public function add_price_selection(Price $qty, $quantity, $fields = null) {
 		$this->price_selections[] = array(
 			'price_key' => $price->get_price_key(),
@@ -400,6 +405,13 @@ class Booking {
 	}
 
 
+    /**
+     * @param string $price_key
+     * @param int $qty
+     * @param array|null $fields
+     * @param string|null $price_name
+     * @param float|null $rate
+     */
 	public function add_price_selection_keys($price_key, $qty, $fields = null, $price_name = null, $rate = null) {
 		$this->price_selections[] = array(
 			'price_key' => $price_key,
@@ -409,6 +421,18 @@ class Booking {
 			'fields' => $fields,
 		);
 	}
+
+
+    /**
+     * @param string $price_key
+     */
+    public function remove_price_selection_key($price_key) {
+
+        $this->price_selections = array_filter($this->price_selections, function ($price_selection) use ($price_key) {
+            return ($price_selection['price_key'] !== $price_key);
+        });
+        
+    }
 
 
 	protected function add_price(Price $price) {
