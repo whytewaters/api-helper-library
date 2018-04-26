@@ -27,12 +27,14 @@ class Tour {
     /** @var Field[] */
     private $fields = array();
 
+
     /**
      * @return string
      */
     public function get_tour_key() {
         return $this->tour_key;
     }
+
 
     /**
      * @param string $tour_key
@@ -41,12 +43,14 @@ class Tour {
         $this->tour_key = $tour_key;
     }
 
+
     /**
      * @return string
      */
     public function get_name() {
         return $this->name;
     }
+
 
     /**
      * @param string $name
@@ -55,12 +59,14 @@ class Tour {
         $this->name = $name;
     }
 
+
     /**
      * @return string
      */
     public function get_supplier_key() {
         return $this->supplier_key;
     }
+
 
     /**
      * @param string $supplier_key
@@ -69,12 +75,14 @@ class Tour {
         $this->supplier_key = $supplier_key;
     }
 
+
     /**
      * @return string
      */
     public function get_description() {
         return $this->description;
     }
+
 
     /**
      * @param string $description
@@ -83,12 +91,14 @@ class Tour {
         $this->description = $description;
     }
 
+
     /**
      * @return string
      */
     public function get_info_directions() {
         return $this->info_directions;
     }
+
 
     /**
      * @param string $info_directions
@@ -169,12 +179,14 @@ class Tour {
         return $this->info_bring;
     }
 
+
     /**
      * @param string $info_bring
      */
     public function set_info_bring($info_bring) {
         $this->info_bring = $info_bring;
     }
+
 
     /**
      * @return string
@@ -183,12 +195,14 @@ class Tour {
         return $this->info_provided;
     }
 
+
     /**
      * @param string $info_provided
      */
     public function set_info_provided($info_provided) {
         $this->info_provided = $info_provided;
     }
+
 
     /**
      * @return string
@@ -291,12 +305,27 @@ class Tour {
 		return null;
 	}
 
-    /**
-     * @return Field[]
-     */
-    public function get_fields() {
-        return $this->fields;
-    }
+
+	/**
+	 * @return Field[]
+	 */
+	public function get_fields() {
+		return $this->fields;
+	}
+
+
+	/**
+	 * @return Field|null
+	 */
+	public function get_field_by_tag($has_tag) {
+		foreach ($this->fields as $field) {
+			if ($field->has_tag($has_tag)) {
+				return $field;
+			}
+		}
+
+		return null;
+	}
 
 
     /**
