@@ -204,10 +204,10 @@ class Tour {
 
 
     /**
-     * @param string $default_img
+     * @param string|null $default_img
      * @return string
      */
-    public function get_url_img($default_img) {
+    public function get_url_img($default_img = null) {
         return ($this->url_img) ? $this->url_img : $default_img;
     }
 
