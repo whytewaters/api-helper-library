@@ -19,6 +19,9 @@ class Tour {
     private $is_show_obl;
     private $has_promo_codes;
     private $terms_html;
+    private $info_restrictions;
+    private $info_duration;
+    private $info_season;
 
     /** @var Price[] */
     private $prices = array();
@@ -204,6 +207,54 @@ class Tour {
 
 
     /**
+     * @return string
+     */
+    public function get_info_restrictions() {
+        return $this->info_restrictions;
+    }
+
+
+    /**
+     * @param string $info_transport
+     */
+    public function set_info_restrictions($info_restrictions) {
+        $this->info_restrictions = $info_restrictions;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function get_info_duration() {
+        return $this->info_duration;
+    }
+
+
+    /**
+     * @param string $info_duration
+     */
+    public function set_info_duration($info_duration) {
+        $this->info_duration = $info_duration;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function get_info_season() {
+        return $this->info_season;
+    }
+
+
+    /**
+     * @param string $info_season
+     */
+    public function set_info_season($info_season) {
+        $this->info_season = $info_season;
+    }
+
+
+    /**
      * @param string|null $default_img
      * @return string
      */
@@ -257,58 +308,58 @@ class Tour {
     }
 
 
-	/**
-	 * @param string $price_type_key
-	 *
-	 * @return null|Price
-	 */
+    /**
+     * @param string $price_type_key
+     *
+     * @return null|Price
+     */
     public function get_price_by_price_type_key($price_type_key) {
         foreach ($this->prices as $price) {
-        	if ($price->get_price_type_key() == $price_type_key) {
-        		return $price;
-	        }
+            if ($price->get_price_type_key() == $price_type_key) {
+                return $price;
+            }
         }
 
         return null;
     }
 
 
-	/**
-	 * @param string $price_key
-	 *
-	 * @return null|Price
-	 */
-	public function get_price_by_price_key($price_key) {
-		foreach ($this->prices as $price) {
-			if ($price->get_price_key() == $price_key) {
-				return $price;
-			}
-		}
+    /**
+     * @param string $price_key
+     *
+     * @return null|Price
+     */
+    public function get_price_by_price_key($price_key) {
+        foreach ($this->prices as $price) {
+            if ($price->get_price_key() == $price_key) {
+                return $price;
+            }
+        }
 
-		return null;
-	}
-
-
-	/**
-	 * @return Field[]
-	 */
-	public function get_fields() {
-		return $this->fields;
-	}
+        return null;
+    }
 
 
-	/**
-	 * @return Field|null
-	 */
-	public function get_field_by_tag($has_tag) {
-		foreach ($this->fields as $field) {
-			if ($field->has_tag($has_tag)) {
-				return $field;
-			}
-		}
+    /**
+     * @return Field[]
+     */
+    public function get_fields() {
+        return $this->fields;
+    }
 
-		return null;
-	}
+
+    /**
+     * @return Field|null
+     */
+    public function get_field_by_tag($has_tag) {
+        foreach ($this->fields as $field) {
+            if ($field->has_tag($has_tag)) {
+                return $field;
+            }
+        }
+
+        return null;
+    }
 
 
     /**
@@ -319,21 +370,19 @@ class Tour {
     }
 
 
-	/**
-	 * @return bool
-	 */
-	public function get_has_promo_codes()
-	{
-		return $this->has_promo_codes;
-	}
+    /**
+     * @return bool
+     */
+    public function get_has_promo_codes() {
+        return $this->has_promo_codes;
+    }
 
 
     /**
      * @param \stdClass $raw_tour
      * @return Tour
      */
-    public static function from_raw($raw_tour)
-    {
+    public static function from_raw($raw_tour) {
         $tour = new self();
 
         $tour->set_name($raw_tour->name);
@@ -354,7 +403,7 @@ class Tour {
         if (property_exists($raw_tour, 'directions_html')) {
             $tour->directions_html = $raw_tour->directions_html;
         }
-        
+
         if (property_exists($raw_tour, 'description_short_html')) {
             $tour->set_description_short_html($raw_tour->description_short_html);
         }
@@ -375,6 +424,18 @@ class Tour {
             $tour->set_info_transport($raw_tour->info_transport);
         }
 
+        if (property_exists($raw_tour, 'info_restrictions')) {
+            $tour->set_info_restrictions($raw_tour->info_restrictions);
+        }
+
+        if (property_exists($raw_tour, 'info_duration')) {
+            $tour->set_info_duration($raw_tour->info_duration);
+        }
+
+        if (property_exists($raw_tour, 'info_season')) {
+            $tour->set_info_season($raw_tour->info_season);
+        }
+
         if (property_exists($raw_tour, 'supplier_key')) {
             $tour->set_supplier_key($raw_tour->supplier_key);
         }
@@ -387,24 +448,24 @@ class Tour {
             $tour->is_show_obl = $raw_tour->is_show_obl;
         }
 
-	    if (property_exists($raw_tour, 'has_promo_codes')) {
-		    $tour->has_promo_codes = $raw_tour->has_promo_codes;
-	    }
+        if (property_exists($raw_tour, 'has_promo_codes')) {
+            $tour->has_promo_codes = $raw_tour->has_promo_codes;
+        }
 
         if (property_exists($raw_tour, 'info_date_range_notes') && is_array($raw_tour->info_date_range_notes)) {
-            foreach($raw_tour->info_date_range_notes as $raw_info_date_range_note) {
+            foreach ($raw_tour->info_date_range_notes as $raw_info_date_range_note) {
                 $tour->add_info_date_range_note(InfoDateRangeNote::from_raw($raw_info_date_range_note));
             }
         }
 
         if (property_exists($raw_tour, 'prices') && is_array($raw_tour->prices)) {
-            foreach($raw_tour->prices as $raw_price) {
+            foreach ($raw_tour->prices as $raw_price) {
                 $tour->prices[] = Price::from_raw($raw_price);
             }
         }
 
         if (property_exists($raw_tour, 'fields') && is_array($raw_tour->fields)) {
-            foreach($raw_tour->fields as $raw_field) {
+            foreach ($raw_tour->fields as $raw_field) {
                 $tour->fields[] = Field::from_raw($raw_field);
             }
         }
