@@ -71,6 +71,20 @@ class Session {
 	}
 
 
+    /**
+     * @param string $price_category_name
+     * @return Price|null
+     */
+    public function get_price_by_category_name($price_category_name) {
+        foreach ($this->prices as $price) {
+            if ($price->get_price_category_name() === $price_category_name) {
+                return $price;
+            }
+        }
+
+        return null;
+    }
+
 	/**
 	 * @param Price[] $prices
 	 */

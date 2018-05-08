@@ -22,6 +22,8 @@ class Tour {
     private $info_restrictions;
     private $info_duration;
     private $info_season;
+    private $sector_start;
+    private $sector_end;
 
     /** @var Price[] */
     private $prices = array();
@@ -379,6 +381,22 @@ class Tour {
 
 
     /**
+     * @return string
+     */
+    public function get_sector_start() {
+        return $this->sector_start;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function get_sector_end() {
+        return $this->sector_end;
+    }
+
+
+    /**
      * @param \stdClass $raw_tour
      * @return Tour
      */
@@ -450,6 +468,14 @@ class Tour {
 
         if (property_exists($raw_tour, 'has_promo_codes')) {
             $tour->has_promo_codes = $raw_tour->has_promo_codes;
+        }
+
+        if (property_exists($raw_tour, 'sector_start')) {
+            $tour->sector_start = $raw_tour->sector_start;
+        }
+
+        if (property_exists($raw_tour, 'sector_end')) {
+            $tour->sector_end = $raw_tour->sector_end;
         }
 
         if (property_exists($raw_tour, 'info_date_range_notes') && is_array($raw_tour->info_date_range_notes)) {

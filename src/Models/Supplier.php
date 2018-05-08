@@ -12,7 +12,9 @@ class Supplier {
     private $latlng;
     private $currency_code;
 
+    /** @var Tour[] $tours  */
     private $tours = array();
+
     private $tour_locations = array();
     private $media = array();
 
@@ -49,6 +51,19 @@ class Supplier {
      */
     public function get_tours() {
         return $this->tours;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function get_tour_keys() {
+        $tour_keys = [];
+
+        foreach($this->tours as $tour) {
+            $tour_keys[] = $tour->get_tour_key();
+        }
+
+        return $tour_keys;
     }
 
     /**
