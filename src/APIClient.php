@@ -249,7 +249,7 @@ class APIClient
 
 
     public function api_itinerary_tickets_url($token) {
-        return $this->host . '/api/itinerary/' . urlencode($token) . '/tickets?apikey=' . $this->key;
+        return $this->host . '/api/itinerary/' . urlencode($token) . '/tickets?' . http_build_query(['apikey' => $this->key, 'obl_id' => $this->obl_id]);
     }
 
     //Makes an api call.
