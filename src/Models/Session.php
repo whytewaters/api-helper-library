@@ -8,6 +8,7 @@ class Session {
 	private $min_pax;
 	private $open;
 	private $remaining;
+    private $resources_remaining;
 	private $state;
 	private $tour_key;
 
@@ -134,6 +135,14 @@ class Session {
 	}
 
 
+    /**
+     * @return mixed
+     */
+    public function get_resources_remaining() {
+        return $this->resources_remaining;
+    }
+
+
 	/**
 	 * @return int
 	 */
@@ -172,6 +181,10 @@ class Session {
 		if (property_exists($raw_session, 'max_pax')) {
 			$session->max_pax = $raw_session->max_pax;
 		}
+
+        if (property_exists($raw_session, 'resources_remaining')) {
+            $session->resources_remaining = $raw_session->resources_remaining;
+        }
 
 		foreach ($raw_session->prices as $raw_price) {
 			$session->prices[] = Price::from_raw($raw_price);

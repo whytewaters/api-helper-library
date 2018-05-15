@@ -277,6 +277,7 @@ class APIClient
 
         if ($this->xdebug_key) {
 	        $params['XDEBUG_SESSION_START'] = $this->xdebug_key;
+            $params['XDEBUG_PROFILE'] = 1;
         }
 
 	    if ($this->xdebug_profile) {
