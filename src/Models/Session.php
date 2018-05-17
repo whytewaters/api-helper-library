@@ -106,16 +106,37 @@ class Session {
 	 * @return float|null
 	 */
 	public function get_min_price() {
-		$min_price = null;
+		$adult_min_price = 999999;
+        $other_min_price = 999999;
 
 		foreach ($this->prices as $price) {
-			if ($price->get_price_category_name() == Price::PRICE_CATEGORY_NAME_ADULT && $price->get_passenger_count() > 0
-			    && ($min_price === null || $price->get_rate() < $min_price)) {
-				$min_price = $price->get_rate();
+		    if ($price->get_passenger_count() > 0) {
+		        switch ($price->get_price_category_name()) {
+                    case Price::PRICE_CATEGORY_NAME_ADULT:
+                        $adult_min_price = min($adult_min_price, $price->get_rate());
+                        break;
+
+                    case Price::PRICE_CATEGORY_NAME_EXTRA:
+                    case Price::PRICE_CATEGORY_NAME_FOC:
+                        // ignore these price types
+                        break;
+
+                    default:
+                        $other_min_price = min($other_min_price, $price->get_rate());
+                        break;
+                }
 			}
 		}
 
-		return $min_price;
+		if ($adult_min_price != 999999) {
+		    return $adult_min_price;
+        }
+
+        if ($other_min_price != 999999) {
+		    return $other_min_price;
+        }
+
+		return 0;
 	}
 
 
