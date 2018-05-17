@@ -26,13 +26,13 @@ class Price {
     private $total_inc_disc;
 	private $max_qty;
 	private $min_qty;
+	private $tags = [];
 
 	/** @var Carbon $date_valid_from */
 	private $date_valid_from;
 
 	/** @var Carbon $date_valid_to */
 	private $date_valid_to;
-
 
     private $fields = array();
 
@@ -294,6 +294,26 @@ class Price {
 
 
 	/**
+	 * @param string $tags
+	 */
+	public function set_tags($tags) {
+		if ($tags == null) {
+			$this->tags = [];
+		} else {
+			$this->tags = explode(' ', $tags);
+		}
+	}
+
+
+	/**
+	 * @param string $tags
+	 */
+	public function has_tag($has_tag) {
+		return in_array(strtoupper(trim($has_tag)), $this->tags);
+	}
+
+
+	/**
 	 * @return Field[]
 	 */
 	public function get_fields() {
@@ -427,6 +447,10 @@ class Price {
 
 	    if (property_exists($raw_price, 'total_inc_disc')) {
 		    $price->set_total_inc_disc($raw_price->total_inc_disc);
+	    }
+
+	    if (property_exists($raw_price, 'tags')) {
+		    $price->set_tags($raw_price->tags);
 	    }
 
 	    if (property_exists($raw_price, 'date_valid_from')) {
