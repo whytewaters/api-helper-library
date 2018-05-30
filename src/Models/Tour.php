@@ -2,6 +2,7 @@
 
 
 class Tour {
+
     private $tour_key;
     private $name;
     private $info_date_range_notes = array();

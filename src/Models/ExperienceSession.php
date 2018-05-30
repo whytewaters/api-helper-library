@@ -26,7 +26,35 @@ class ExperienceSession {
     }
 
 
-    /**
+	/**
+	 * @return Session
+	 */
+	public function get_primary_tour_session() {
+		foreach ($this->tour_sessions as $tour_session) {
+			if ($tour_session->is_primary()) {
+				return $tour_session;
+			}
+		}
+
+		return null;
+	}
+
+
+	/**
+	 * @return Session
+	 */
+	public function get_tour_session($tour_key) {
+		foreach ($this->tour_sessions as $tour_session) {
+			if ($tour_session->get_tour_key() === $tour_key) {
+				return $tour_session;
+			}
+		}
+
+		return null;
+	}
+
+
+	/**
      * If any of the tours is closed, then the experince should be closed too
      * @return bool
      */

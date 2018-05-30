@@ -11,6 +11,8 @@ class Session {
     private $resources_remaining;
 	private $state;
 	private $tour_key;
+	private $is_primary = false;
+	private $linked_pax_group = null;
 
 
 	/** @var Price[] $prices */
@@ -181,6 +183,22 @@ class Session {
 
 
 	/**
+	 * @return bool
+	 */
+	public function is_primary() {
+		return $this->is_primary;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function get_linked_pax_group() {
+		return $this->linked_pax_group;
+	}
+
+
+	/**
 	 * @param \stdClass $raw_session
 	 *
 	 * @return Session
@@ -206,6 +224,14 @@ class Session {
         if (property_exists($raw_session, 'resources_remaining')) {
             $session->resources_remaining = $raw_session->resources_remaining;
         }
+
+		if (property_exists($raw_session, 'is_primary')) {
+			$session->is_primary = $raw_session->is_primary;
+		}
+
+		if (property_exists($raw_session, 'linked_pax_group')) {
+			$session->linked_pax_group = $raw_session->linked_pax_group;
+		}
 
 		foreach ($raw_session->prices as $raw_price) {
 			$session->prices[] = Price::from_raw($raw_price);
