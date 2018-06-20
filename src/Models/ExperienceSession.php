@@ -105,6 +105,26 @@ class ExperienceSession {
 	}
 
 
+    /**
+     * Aggregate remaing pax from all tours
+     * @return int
+     */
+    public function get_resources_remaining() {
+
+        $pax_remaining = 999999;
+
+        foreach ($this->tour_sessions as $tour_session) {
+            if (!$tour_session->is_open()) {
+                return 0;
+            }
+
+            $pax_remaining = min($pax_remaining, $tour_session->get_resources_remaining());
+        }
+
+        return $pax_remaining;
+    }
+
+
 	/**
 	 * Aggregate max pax from all tours
 	 * @return int
@@ -118,7 +138,7 @@ class ExperienceSession {
 				return 0;
 			}
 
-			$max_pax = min($max_pax, $tour_session->get_max_pax());
+			$max_pax = min($max_pax, $tour_session->get_resources_remaining());
 		}
 
 		return $max_pax;
