@@ -26,7 +26,35 @@ class ExperienceSession {
     }
 
 
-    /**
+	/**
+	 * @return Session
+	 */
+	public function get_primary_tour_session() {
+		foreach ($this->tour_sessions as $tour_session) {
+			if ($tour_session->is_primary()) {
+				return $tour_session;
+			}
+		}
+
+		return null;
+	}
+
+
+	/**
+	 * @return Session
+	 */
+	public function get_tour_session($tour_key) {
+		foreach ($this->tour_sessions as $tour_session) {
+			if ($tour_session->get_tour_key() === $tour_key) {
+				return $tour_session;
+			}
+		}
+
+		return null;
+	}
+
+
+	/**
      * If any of the tours is closed, then the experince should be closed too
      * @return bool
      */
@@ -77,6 +105,26 @@ class ExperienceSession {
 	}
 
 
+    /**
+     * Aggregate remaing pax from all tours
+     * @return int
+     */
+    public function get_resources_remaining() {
+
+        $pax_remaining = 999999;
+
+        foreach ($this->tour_sessions as $tour_session) {
+            if (!$tour_session->is_open()) {
+                return 0;
+            }
+
+            $pax_remaining = min($pax_remaining, $tour_session->get_resources_remaining());
+        }
+
+        return $pax_remaining;
+    }
+
+
 	/**
 	 * Aggregate max pax from all tours
 	 * @return int
@@ -90,7 +138,7 @@ class ExperienceSession {
 				return 0;
 			}
 
-			$max_pax = min($max_pax, $tour_session->get_max_pax());
+			$max_pax = min($max_pax, $tour_session->get_resources_remaining());
 		}
 
 		return $max_pax;

@@ -11,6 +11,8 @@ class Session {
     private $resources_remaining;
 	private $state;
 	private $tour_key;
+	private $is_primary = false;
+	private $linked_pax_group = null;
 
 
 	/** @var Price[] $prices */
@@ -106,16 +108,37 @@ class Session {
 	 * @return float|null
 	 */
 	public function get_min_price() {
-		$min_price = null;
+		$adult_min_price = 999999;
+        $other_min_price = 999999;
 
 		foreach ($this->prices as $price) {
-			if ($price->get_price_category_name() == Price::PRICE_CATEGORY_NAME_ADULT && $price->get_passenger_count() > 0
-			    && ($min_price === null || $price->get_rate() < $min_price)) {
-				$min_price = $price->get_rate();
+		    if ($price->get_passenger_count() > 0) {
+		        switch ($price->get_price_category_name()) {
+                    case Price::PRICE_CATEGORY_NAME_ADULT:
+                        $adult_min_price = min($adult_min_price, $price->get_rate());
+                        break;
+
+                    case Price::PRICE_CATEGORY_NAME_EXTRA:
+                    case Price::PRICE_CATEGORY_NAME_FOC:
+                        // ignore these price types
+                        break;
+
+                    default:
+                        $other_min_price = min($other_min_price, $price->get_rate());
+                        break;
+                }
 			}
 		}
 
-		return $min_price;
+		if ($adult_min_price != 999999) {
+		    return $adult_min_price;
+        }
+
+        if ($other_min_price != 999999) {
+		    return $other_min_price;
+        }
+
+		return 0;
 	}
 
 
@@ -160,6 +183,22 @@ class Session {
 
 
 	/**
+	 * @return bool
+	 */
+	public function is_primary() {
+		return $this->is_primary;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function get_linked_pax_group() {
+		return $this->linked_pax_group;
+	}
+
+
+	/**
 	 * @param \stdClass $raw_session
 	 *
 	 * @return Session
@@ -185,6 +224,14 @@ class Session {
         if (property_exists($raw_session, 'resources_remaining')) {
             $session->resources_remaining = $raw_session->resources_remaining;
         }
+
+		if (property_exists($raw_session, 'is_primary')) {
+			$session->is_primary = $raw_session->is_primary;
+		}
+
+		if (property_exists($raw_session, 'linked_pax_group')) {
+			$session->linked_pax_group = $raw_session->linked_pax_group;
+		}
 
 		foreach ($raw_session->prices as $raw_price) {
 			$session->prices[] = Price::from_raw($raw_price);

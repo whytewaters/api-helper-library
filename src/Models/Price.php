@@ -7,6 +7,7 @@ class Price {
 	const PRICE_CATEGORY_NAME_ADULT = 'Adult';
 	const PRICE_CATEGORY_NAME_CHILD = 'Child';
 	const PRICE_CATEGORY_NAME_INFANT = 'Infant';
+    const PRICE_CATEGORY_NAME_FOC = 'FOC';
 	const PRICE_CATEGORY_NAME_EXTRA = 'Extra';
 	const PRICE_CATEGORY_NAME_OTHER = 'Other';
 
@@ -214,6 +215,7 @@ class Price {
 
 
 	/**
+	 * TODO 99999 is a made up qty, this should really be done in the api itself
 	 * @return int
 	 */
 	public function get_max_qty() {
