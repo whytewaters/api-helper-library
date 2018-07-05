@@ -18,6 +18,7 @@ class Field {
     private $is_listbox_choose_one = false;
     private $is_other_please_specify = false;
     private $tags;
+    private $field_key;
 
     /**
      * @return string
@@ -125,10 +126,24 @@ class Field {
     }
 
     /**
-     * @param $is_other_please_specify
+     * @param bool $is_other_please_specify
      */
     public function set_listbox_other_please_specify($is_other_please_specify) {
         $this->is_other_please_specify = (bool)$is_other_please_specify;
+    }
+
+    /**
+     * @return string
+     */
+    public function get_field_key() {
+        return $this->field_key;
+    }
+
+    /**
+     * @param string $field_key
+     */
+    public function set_field_key($field_key) {
+        $this->field_key = $field_key;
     }
 
     /**
@@ -168,6 +183,10 @@ class Field {
 
         if (property_exists($raw_field, 'is_listbox_other_please_specify')) {
             $field->set_listbox_other_please_specify($raw_field->is_listbox_other_please_specify);
+        }
+
+        if (property_exists($raw_field, 'field_key')) {
+            $field->set_field_key($raw_field->field_key);
         }
 
         return $field;
