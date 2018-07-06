@@ -93,6 +93,13 @@ class Field {
     /**
      * @return bool
      */
+    public function has_option($value) {
+        return in_array($value, $this->options);
+    }
+
+    /**
+     * @return bool
+     */
     public function is_required() {
         return $this->is_required;
     }
