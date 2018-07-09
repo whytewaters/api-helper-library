@@ -1,14 +1,12 @@
 <?php namespace Rtbs\ApiHelper\Models;
 
-
-class Obl
-{
+class Obl {
     private $browser_title;
     private $id;
     private $style_css;
     private $supplier_key;
     private $theme;
-    private $tour_keys = array();
+    private $tour_keys = [];
     private $url_banner_img;
     private $url_website;
     private $url_facebook;
@@ -45,12 +43,8 @@ class Obl
     private $color_navbar_next_text;
     private $color_navbar_prev_text;
     private $color_navbar_prev_bg;
-    private $color_navbar_prev_hover_text;
-    private $color_navbar_prev_hover_bg;
     private $color_navbar_curr_text;
     private $color_navbar_curr_bg;
-    private $color_navbar_curr_hover_text;
-    private $color_navbar_curr_hover_bg;
 
     private $color_button_default_bg;
     private $color_button_default_text;
@@ -69,6 +63,12 @@ class Obl
     private $color_button_booknow_hover_bg;
     private $color_button_booknow_hover_text;
 
+    private $color_button_plusminus_bg;
+    private $color_button_plusminus_text;
+    private $color_button_plusminus_hover_bg;
+    private $color_button_plusminus_hover_text;
+    private $color_navbar_next_bg;
+
     private $color_activity_block_bg;
     private $color_activity_block_text;
     private $color_page_header_bg;
@@ -85,17 +85,16 @@ class Obl
     private $has_promo_codes;
     private $has_vouchers;
 
-	private $analytics_ga_rtbs_id;
-	private $analytics_ga_client_id;
-	private $analytics_ga_primary_tracking_domains;
-	private $analytics_js_completion_script;
+    private $analytics_ga_rtbs_id;
+    private $analytics_ga_client_id;
+    private $analytics_ga_primary_tracking_domains;
+    private $analytics_js_completion_script;
 
-	private $analytics_gtm_code;
-	private $analytics_js_custom_header_script;
-	private $analytics_js_custom_body_script;
-	private $obl_booking_completion_url;
-
-
+    private $analytics_gtm_code;
+    private $analytics_js_custom_header_script;
+    private $analytics_js_custom_body_script;
+    private $obl_booking_completion_url;
+    private $robl_template;
 
     /**
      * @return string
@@ -104,7 +103,6 @@ class Obl
         return $this->id;
     }
 
-
     /**
      * @param string $obl_id
      */
@@ -112,14 +110,12 @@ class Obl
         $this->id = $obl_id;
     }
 
-
     /**
      * @param string $title
      */
     public function set_browser_title($title) {
         $this->browser_title = $title;
     }
-
 
     /**
      * @param string|null $append
@@ -139,14 +135,12 @@ class Obl
         return $browser_title;
     }
 
-
     /**
      * @return string
      */
     public function get_style_css() {
         return $this->style_css;
     }
-
 
     /**
      * @return string
@@ -155,14 +149,12 @@ class Obl
         return $this->url_banner_img;
     }
 
-
     /**
      * @param string $url_banner_img
      */
     public function set_url_banner_img($url_banner_img) {
         $this->url_banner_img = $url_banner_img;
     }
-
 
     /**
      * @return string
@@ -171,14 +163,12 @@ class Obl
         return $this->url_spinner_img;
     }
 
-
     /**
      * @param string $url_spinner_img
      */
     public function set_url_spinner_img($url_spinner_img) {
         $this->url_spinner_img = $url_spinner_img;
     }
-
 
     /**
      * @param string $url_background_img
@@ -187,14 +177,12 @@ class Obl
         $this->url_background_img = $url_background_img;
     }
 
-
     /**
      * @return string
      */
     public function get_url_background_img() {
         return $this->url_background_img;
     }
-
 
     /**
      * @return string
@@ -203,14 +191,12 @@ class Obl
         return $this->url_website;
     }
 
-
     /**
      * @param string $url_website
      */
     public function set_url_website($url_website) {
         $this->url_website = $url_website;
     }
-
 
     /**
      * @return string[]
@@ -219,14 +205,12 @@ class Obl
         return $this->tour_keys;
     }
 
-
     /**
      * @return string
      */
     public function get_supplier_key() {
         return $this->supplier_key;
     }
-
 
     /**
      * @return string
@@ -235,14 +219,12 @@ class Obl
         return $this->theme;
     }
 
-
     /**
      * @return string
      */
     public function get_is_latipay_payment_gateway() {
         return $this->is_latipay_payment_gateway;
     }
-
 
     /**
      * @return string
@@ -251,14 +233,12 @@ class Obl
         return $this->operator_status_msg;
     }
 
-
     /**
      * @return string
      */
     public function get_operator_email() {
         return $this->operator_email;
     }
-
 
     /**
      * @return string
@@ -267,14 +247,12 @@ class Obl
         return $this->operator_phone;
     }
 
-
     /**
      * @return string
      */
     public function get_operator_phone_free() {
         return $this->operator_phone_free;
     }
-
 
     /**
      * @return string
@@ -283,14 +261,12 @@ class Obl
         return $this->operator_name;
     }
 
-
-	/**
-	 * @return string
-	 */
-	public function get_operator_currency_code() {
-		return $this->operator_currency_code;
-	}
-
+    /**
+     * @return string
+     */
+    public function get_operator_currency_code() {
+        return $this->operator_currency_code;
+    }
 
     /**
      * @return bool
@@ -299,7 +275,6 @@ class Obl
         return $this->is_mouseflow_tracking;
     }
 
-
     /**
      * @return bool
      */
@@ -307,14 +282,12 @@ class Obl
         return $this->is_active;
     }
 
-
-	/**
-	 * @return string|null
-	 */
+    /**
+     * @return string|null
+     */
     public function get_url_facebook() {
-    	return $this->url_facebook;
+        return $this->url_facebook;
     }
-
 
     /**
      * @param string|null $url_facebook
@@ -323,14 +296,12 @@ class Obl
         $this->url_facebook = $url_facebook;
     }
 
-
     /**
      * @return string|null
      */
     public function get_url_operator_img() {
         return $this->url_operator_img;
     }
-
 
     /**
      * @return string|null
@@ -339,14 +310,12 @@ class Obl
         return $this->color_body_bg;
     }
 
-
     /**
      * @return string|null
      */
     public function get_color_body_text() {
         return $this->color_body_text;
     }
-
 
     /**
      * @return string|null
@@ -355,14 +324,12 @@ class Obl
         return $this->color_page_bg;
     }
 
-
     /**
      * @return string|null
      */
     public function get_color_page_content_bg() {
         return $this->color_page_content_bg;
     }
-
 
     /**
      * @return string|null
@@ -371,14 +338,12 @@ class Obl
         return $this->color_page_content_text;
     }
 
-
     /**
      * @return string|null
      */
     public function get_color_page_heading_text() {
         return $this->color_page_heading_text;
     }
-
 
     /**
      * @return string|null
@@ -387,14 +352,12 @@ class Obl
         return $this->color_page_line;
     }
 
-
     /**
      * @return string|null
      */
     public function get_color_page_link_text() {
         return $this->color_page_link_text;
     }
-
 
     /**
      * @return string|null
@@ -403,14 +366,12 @@ class Obl
         return $this->color_page_link_bg;
     }
 
-
     /**
      * @return string|null
      */
     public function get_color_page_link_hover_text() {
         return $this->color_page_link_hover_text;
     }
-
 
     /**
      * @return string|null
@@ -419,14 +380,12 @@ class Obl
         return $this->color_page_link_hover_bg;
     }
 
-
     /**
      * @return string|null
      */
     public function get_color_grid_bg() {
         return $this->color_grid_bg;
     }
-
 
     /**
      * @return string|null
@@ -435,14 +394,12 @@ class Obl
         return $this->color_grid_text;
     }
 
-
     /**
      * @return string|null
      */
     public function get_color_navbar_bg() {
         return $this->color_navbar_bg;
     }
-
 
     /**
      * @return string|null
@@ -451,14 +408,12 @@ class Obl
         return $this->color_navbar_content_bg;
     }
 
-
     /**
      * @return string|null
      */
     public function get_color_navbar_next_text() {
         return $this->color_navbar_next_text;
     }
-
 
     /**
      * @return string|null
@@ -467,30 +422,12 @@ class Obl
         return $this->color_navbar_prev_text;
     }
 
-
     /**
      * @return string|null
      */
     public function get_color_navbar_prev_bg() {
         return $this->color_navbar_prev_bg;
     }
-
-
-    /**
-     * @return string|null
-     */
-    public function get_color_navbar_prev_hover_text() {
-        return $this->color_navbar_prev_hover_text;
-    }
-
-
-    /**
-     * @return string|null
-     */
-    public function get_color_navbar_prev_hover_bg() {
-        return $this->color_navbar_prev_hover_bg;
-    }
-
 
     /**
      * @return string|null
@@ -499,30 +436,12 @@ class Obl
         return $this->color_navbar_curr_text;
     }
 
-
     /**
      * @return string|null
      */
     public function get_color_navbar_curr_bg() {
         return $this->color_navbar_curr_bg;
     }
-
-
-    /**
-     * @return string|null
-     */
-    public function get_color_navbar_curr_hover_text() {
-        return $this->color_navbar_curr_hover_text;
-    }
-
-
-    /**
-     * @return string|null
-     */
-    public function get_color_navbar_curr_hover_bg() {
-        return $this->color_navbar_curr_hover_bg;
-    }
-
 
     /**
      * @return string|null
@@ -531,14 +450,12 @@ class Obl
         return $this->color_button_default_bg;
     }
 
-
     /**
      * @return string|null
      */
     public function get_color_button_default_text() {
         return $this->color_button_default_text;
     }
-
 
     /**
      * @return string|null
@@ -554,14 +471,12 @@ class Obl
         return $this->color_button_default_hover_text;
     }
 
-
     /**
      * @return string|null
      */
     public function get_color_button_primary_bg() {
         return $this->color_button_primary_bg;
     }
-
 
     /**
      * @return string|null
@@ -570,14 +485,12 @@ class Obl
         return $this->color_button_primary_text;
     }
 
-
     /**
      * @return string|null
      */
     public function get_color_button_primary_hover_bg() {
         return $this->color_button_primary_hover_bg;
     }
-
 
     /**
      * @return string|null
@@ -586,14 +499,12 @@ class Obl
         return $this->color_button_primary_hover_text;
     }
 
-
     /**
      * @return string|null
      */
     public function get_color_button_gridnav_bg() {
         return $this->color_button_gridnav_bg;
     }
-
 
     /**
      * @return string|null
@@ -602,14 +513,12 @@ class Obl
         return $this->color_button_gridnav_text;
     }
 
-
     /**
      * @return string|null
      */
     public function get_color_button_gridnav_hover_bg() {
         return $this->color_button_gridnav_hover_bg;
     }
-
 
     /**
      * @return string|null
@@ -618,14 +527,12 @@ class Obl
         return $this->color_button_gridnav_hover_text;
     }
 
-
     /**
      * @return string|null
      */
     public function get_color_button_booknow_bg() {
         return $this->color_button_booknow_bg;
     }
-
 
     /**
      * @return string|null
@@ -634,7 +541,6 @@ class Obl
         return $this->color_button_booknow_text;
     }
 
-
     /**
      * @return string|null
      */
@@ -642,14 +548,12 @@ class Obl
         return $this->color_button_booknow_hover_bg;
     }
 
-
     /**
      * @return string|null
      */
     public function get_color_button_booknow_hover_text() {
         return $this->color_button_booknow_hover_text;
     }
-    
 
     /**
      * @return string|null
@@ -658,14 +562,12 @@ class Obl
         return $this->color_activity_block_bg;
     }
 
-
     /**
      * @return string|null
      */
     public function get_color_activity_block_text() {
         return $this->color_activity_block_text;
     }
-
 
     /**
      * @return string|null
@@ -674,14 +576,12 @@ class Obl
         return $this->color_page_header_bg;
     }
 
-
     /**
      * @return string|null
      */
     public function get_color_page_header_content_bg() {
         return $this->color_page_header_content_bg;
     }
-
 
     /**
      * @return string|null
@@ -690,14 +590,12 @@ class Obl
         return $this->color_page_footer_bg;
     }
 
-
     /**
      * @return string|null
      */
     public function get_color_page_footer_content_bg() {
         return $this->color_page_footer_content_bg;
     }
-
 
     /**
      * @return string|null
@@ -706,14 +604,12 @@ class Obl
         return $this->color_grid_head_bg;
     }
 
-
     /**
      * @return string|null
      */
     public function get_color_grid_head_text() {
         return $this->color_grid_head_text;
     }
-
 
     /**
      * @return string|null
@@ -722,14 +618,12 @@ class Obl
         return $this->color_grid_hover_bg;
     }
 
-
     /**
      * @return string|null
      */
     public function get_color_grid_hover_text() {
         return $this->color_grid_hover_text;
     }
-
 
     /**
      * @return string|null
@@ -738,14 +632,12 @@ class Obl
         return $this->color_mobile_theme;
     }
 
-
     /**
      * @return bool
      */
     public function has_promo_codes() {
         return $this->has_promo_codes;
     }
-
 
     /**
      * @return bool
@@ -754,78 +646,110 @@ class Obl
         return $this->has_vouchers;
     }
 
+    /**
+     * @return string|null
+     */
+    public function get_analytics_ga_rtbs_id() {
+        return $this->analytics_ga_rtbs_id;
+    }
 
-	/**
-	 * @return string|null
-	 */
-	public function get_analytics_ga_rtbs_id() {
-		return $this->analytics_ga_rtbs_id;
-	}
+    /**
+     * @return string|null
+     */
+    public function get_analytics_ga_client_id() {
+        return $this->analytics_ga_client_id;
+    }
 
+    /**
+     * @return string|null
+     */
+    public function get_analytics_ga_primary_tracking_domains() {
+        return $this->analytics_ga_primary_tracking_domains;
+    }
 
-	/**
-	 * @return string|null
-	 */
-	public function get_analytics_ga_client_id() {
-		return $this->analytics_ga_client_id;
-	}
+    /**
+     * @return string|null
+     */
+    public function get_analytics_js_completion_script() {
+        return $this->analytics_js_completion_script;
+    }
 
+    /**
+     * @return string|null
+     */
+    public function get_analytics_gtm_code() {
+        return $this->analytics_gtm_code;
+    }
 
-	/**
-	 * @return string|null
-	 */
-	public function get_analytics_ga_primary_tracking_domains() {
-		return $this->analytics_ga_primary_tracking_domains;
-	}
+    /**
+     * @return string|null
+     */
+    public function get_analytics_js_custom_header() {
+        return $this->analytics_js_custom_header;
+    }
 
+    /**
+     * @return string|null
+     */
+    public function get_analytics_js_custom_body() {
+        return $this->analytics_js_custom_body;
+    }
 
-	/**
-	 * @return string|null
-	 */
-	public function get_analytics_js_completion_script() {
-		return $this->analytics_js_completion_script;
-	}
+    /**
+     * @return string|null
+     */
+    public function get_voucher_completion_url() {
+        return $this->obl_voucher_completion_url;
+    }
 
+    /**
+     * @return string|null
+     */
+    public function get_booking_completion_url() {
+        return $this->obl_booking_completion_url;
+    }
 
-	/**
-	 * @return string|null
-	 */
-	public function get_analytics_gtm_code() {
-		return $this->analytics_gtm_code;
-	}
+    /**
+     * @return string|null
+     */
+    public function get_robl_template() {
+        return $this->robl_template;
+    }
 
+    /**
+     * @return string|null
+     */
+    public function get_color_button_plusminus_bg() {
+        return $this->color_button_plusminus_bg;
+    }
 
-	/**
-	 * @return string|null
-	 */
-	public function get_analytics_js_custom_header() {
-		return $this->analytics_js_custom_header;
-	}
+    /**
+     * @return string|null
+     */
+    public function get_color_button_plusminus_text() {
+        return $this->color_button_plusminus_text;
+    }
 
+    /**
+     * @return string|null
+     */
+    public function get_color_button_plusminus_hover_bg() {
+        return $this->color_button_plusminus_hover_bg;
+    }
 
-	/**
-	 * @return string|null
-	 */
-	public function get_analytics_js_custom_body() {
-		return $this->analytics_js_custom_body;
-	}
+    /**
+     * @return string|null
+     */
+    public function get_color_button_plusminus_hover_text() {
+        return $this->color_button_plusminus_hover_text;
+    }
 
-
-	/**
-	 * @return string|null
-	 */
-	public function get_voucher_completion_url() {
-		return $this->obl_voucher_completion_url;
-	}
-
-
-	/**
-	 * @return string|null
-	 */
-	public function get_booking_completion_url() {
-		return $this->obl_booking_completion_url;
-	}
-
+    /**
+     * @return string|null
+     */
+    public function get_color_navbar_next_bg() {
+        return $this->color_navbar_next_bg;
+    }
 
     /**
      * @param \stdClass $raw_obl
@@ -846,12 +770,12 @@ class Obl
         $obl->url_banner_img = $raw_obl->url_banner_img;
         $obl->tour_keys = $raw_obl->tour_keys;
         $obl->has_promo_codes = $raw_obl->has_promo_codes;
-	    $obl->obl_booking_completion_url = $raw_obl->obl_booking_completion_url;
-	    $obl->obl_voucher_completion_url = $raw_obl->obl_voucher_completion_url;
+        $obl->obl_booking_completion_url = $raw_obl->obl_booking_completion_url;
+        $obl->obl_voucher_completion_url = $raw_obl->obl_voucher_completion_url;
 
         if (property_exists($raw_obl, 'has_vouchers')) {
-		    $obl->has_vouchers = $raw_obl->has_vouchers;
-	    }
+            $obl->has_vouchers = $raw_obl->has_vouchers;
+        }
 
         if (property_exists($raw_obl, 'is_latipay_payment_gateway')) {
             $obl->is_latipay_payment_gateway = $raw_obl->is_latipay_payment_gateway;
@@ -869,15 +793,15 @@ class Obl
             $obl->operator_status_msg = $raw_obl->operator_status_msg;
         }
 
-	    $obl->operator_email = $raw_obl->operator_email;
-	    $obl->operator_phone = $raw_obl->operator_phone;
+        $obl->operator_email = $raw_obl->operator_email;
+        $obl->operator_phone = $raw_obl->operator_phone;
         $obl->operator_phone_free = $raw_obl->operator_phone_free;
         $obl->operator_name = $raw_obl->operator_name;
-	    $obl->operator_currency_code = $raw_obl->operator_currency_code;
+        $obl->operator_currency_code = $raw_obl->operator_currency_code;
 
-	    if (property_exists($raw_obl, 'url_facebook')) {
-		    $obl->url_facebook = $raw_obl->url_facebook;
-	    }
+        if (property_exists($raw_obl, 'url_facebook')) {
+            $obl->url_facebook = $raw_obl->url_facebook;
+        }
 
         if (property_exists($raw_obl, 'url_operator_img')) {
             $obl->url_operator_img = $raw_obl->url_operator_img;
@@ -890,7 +814,6 @@ class Obl
         if (property_exists($raw_obl, 'url_background_img')) {
             $obl->url_background_img = $raw_obl->url_background_img;
         }
-
 
         // colors
         $obl->color_body_bg = $raw_obl->obl_color_body_bg;
@@ -913,12 +836,8 @@ class Obl
         $obl->color_navbar_next_text = $raw_obl->obl_color_navbar_next_text;
         $obl->color_navbar_prev_text = $raw_obl->obl_color_navbar_prev_text;
         $obl->color_navbar_prev_bg = $raw_obl->obl_color_navbar_prev_bg;
-        $obl->color_navbar_prev_hover_text = $raw_obl->obl_color_navbar_prev_hover_text;
-        $obl->color_navbar_prev_hover_bg = $raw_obl->obl_color_navbar_prev_hover_bg;
         $obl->color_navbar_curr_text = $raw_obl->obl_color_navbar_curr_text;
         $obl->color_navbar_curr_bg = $raw_obl->obl_color_navbar_curr_bg;
-        $obl->color_navbar_curr_hover_text = $raw_obl->obl_color_navbar_curr_hover_text;
-        $obl->color_navbar_curr_hover_bg = $raw_obl->obl_color_navbar_curr_hover_bg;
 
         $obl->color_button_default_bg = $raw_obl->obl_color_button_default_bg;
         $obl->color_button_default_text = $raw_obl->obl_color_button_default_text;
@@ -933,23 +852,21 @@ class Obl
         $obl->color_button_gridnav_hover_bg = $raw_obl->obl_color_button_gridnav_hover_bg;
         $obl->color_button_gridnav_hover_text = $raw_obl->obl_color_button_gridnav_hover_text;
 
+        if (property_exists($raw_obl, 'obl_color_button_booknow_bg')) {
+            $obl->color_button_booknow_bg = $raw_obl->obl_color_button_booknow_bg;
+        }
 
+        if (property_exists($raw_obl, 'obl_color_button_booknow_text')) {
+            $obl->color_button_booknow_text = $raw_obl->obl_color_button_booknow_text;
+        }
 
-	    if (property_exists($raw_obl, 'obl_color_button_booknow_bg')) {
-		    $obl->color_button_booknow_bg = $raw_obl->obl_color_button_booknow_bg;
-	    }
+        if (property_exists($raw_obl, 'obl_color_button_booknow_hover_bg')) {
+            $obl->color_button_booknow_hover_bg = $raw_obl->obl_color_button_booknow_hover_bg;
+        }
 
-	    if (property_exists($raw_obl, 'obl_color_button_booknow_text')) {
-		    $obl->color_button_booknow_text = $raw_obl->obl_color_button_booknow_text;
-	    }
-
-	    if (property_exists($raw_obl, 'obl_color_button_booknow_hover_bg')) {
-		    $obl->color_button_booknow_hover_bg = $raw_obl->obl_color_button_booknow_hover_bg;
-	    }
-
-	    if (property_exists($raw_obl, 'obl_color_button_booknow_hover_text')) {
-		    $obl->color_button_booknow_hover_text = $raw_obl->obl_color_button_booknow_hover_text;
-	    }
+        if (property_exists($raw_obl, 'obl_color_button_booknow_hover_text')) {
+            $obl->color_button_booknow_hover_text = $raw_obl->obl_color_button_booknow_hover_text;
+        }
 
         $obl->color_activity_block_bg = $raw_obl->obl_color_activity_block_bg;
         $obl->color_activity_block_text = $raw_obl->obl_color_activity_block_text;
@@ -963,19 +880,43 @@ class Obl
         $obl->color_grid_head_text = $raw_obl->obl_color_grid_head_text;
         $obl->color_grid_hover_bg = $raw_obl->obl_color_grid_hover_bg;
         $obl->color_grid_hover_text = $raw_obl->obl_color_grid_hover_text;
-	    $obl->color_mobile_theme = $raw_obl->obl_color_mobile_theme;
+        $obl->color_mobile_theme = $raw_obl->obl_color_mobile_theme;
 
-	    $obl->analytics_ga_rtbs_id = $raw_obl->obl_analytics_ga_rtbs_id;
-	    $obl->analytics_ga_client_id = $raw_obl->obl_analytics_ga_client_id;
-	    $obl->analytics_ga_primary_tracking_domains = $raw_obl->obl_analytics_ga_primary_tracking_domains;
-	    $obl->analytics_js_completion_script = $raw_obl->obl_analytics_js_completion_script;
+        $obl->analytics_ga_rtbs_id = $raw_obl->obl_analytics_ga_rtbs_id;
+        $obl->analytics_ga_client_id = $raw_obl->obl_analytics_ga_client_id;
+        $obl->analytics_ga_primary_tracking_domains = $raw_obl->obl_analytics_ga_primary_tracking_domains;
+        $obl->analytics_js_completion_script = $raw_obl->obl_analytics_js_completion_script;
 
-	    $obl->analytics_gtm_code = $raw_obl->obl_analytics_gtm_code;
-	    $obl->analytics_js_custom_header = $raw_obl->obl_analytics_js_custom_header;
-	    $obl->analytics_js_custom_body = $raw_obl->obl_analytics_js_custom_body;
+        $obl->analytics_gtm_code = $raw_obl->obl_analytics_gtm_code;
+        $obl->analytics_js_custom_header = $raw_obl->obl_analytics_js_custom_header;
+        $obl->analytics_js_custom_body = $raw_obl->obl_analytics_js_custom_body;
 
-	    if (!empty($raw_obl->supplier_key)) {
+        if (!empty($raw_obl->supplier_key)) {
             $obl->supplier_key = $raw_obl->supplier_key;
+        }
+
+        if (property_exists($raw_obl, 'obl_robl_template')) {
+            $obl->robl_template = $raw_obl->obl_robl_template;
+        }
+
+        if (property_exists($raw_obl, 'obl_color_button_plusminus_bg')) {
+            $obl->color_button_plusminus_bg = $raw_obl->obl_color_button_plusminus_bg;
+        }
+
+        if (property_exists($raw_obl, 'obl_color_button_plusminus_text')) {
+            $obl->color_button_plusminus_text = $raw_obl->obl_color_button_plusminus_text;
+        }
+
+        if (property_exists($raw_obl, 'obl_color_button_plusminus_hover_bg')) {
+            $obl->color_button_plusminus_hover_bg = $raw_obl->obl_color_button_plusminus_hover_bg;
+        }
+
+        if (property_exists($raw_obl, 'obl_color_button_plusminus_hover_text')) {
+            $obl->color_button_plusminus_hover_text = $raw_obl->obl_color_button_plusminus_hover_text;
+        }
+
+        if (property_exists($raw_obl, 'obl_color_navbar_next_bg')) {
+            $obl->color_navbar_next_bg = $raw_obl->obl_color_navbar_next_bg;
         }
 
         return $obl;
