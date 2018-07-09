@@ -1,6 +1,12 @@
 <?php namespace Rtbs\ApiHelper\Models;
 
 class Obl {
+
+    const ROBL_TEMPLATE_DEFAULT = 'DEFAULT';
+    const ROBL_TEMPLATE_DEFAULT_EXTRAS = 'DEFAULT_EXTRAS';
+    const ROBL_TEMPLATE_RESOURCES = 'RESOURCES';
+    const ROBL_TEMPLATE_SECTORS = 'SECTORS';
+
     private $browser_title;
     private $id;
     private $style_css;
@@ -95,6 +101,15 @@ class Obl {
     private $analytics_js_custom_body_script;
     private $obl_booking_completion_url;
     private $robl_template;
+
+    /**
+     * @return bool
+     */
+    public function is_show_extras_page() {
+        return in_array($this->robl_template, array(
+            Obl::ROBL_TEMPLATE_DEFAULT_EXTRAS
+        ), true);
+    }
 
     /**
      * @return string
