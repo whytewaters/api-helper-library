@@ -390,11 +390,11 @@ class Booking {
 
 
     /**
-     * @param Price $qty
-     * @param int $quantity
+     * @param Price $price
+     * @param int $qty
      * @param array|null $fields
      */
-	public function add_price_selection(Price $qty, $quantity, $fields = null) {
+	public function add_price_selection(Price $price, $qty, $fields = null) {
 		$this->price_selections[] = array(
 			'price_key' => $price->get_price_key(),
 			'price_name' => $price->get_name(),
