@@ -100,7 +100,7 @@ class SessionsIndexed {
     public function get_next_available_session() {
         $date = $this->indexed_dates[0];
 
-        return first($this->indexed_sessions[$date]);
+        return current($this->indexed_sessions[$date]);
     }
 
 }
