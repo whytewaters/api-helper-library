@@ -94,13 +94,4 @@ class SessionsIndexed {
         return null;
     }
 
-    /**
-     * @return Session
-     */
-    public function get_next_available_session() {
-        $date = $this->indexed_dates[0];
-
-        return first($this->indexed_sessions[$date]);
-    }
-
 }
