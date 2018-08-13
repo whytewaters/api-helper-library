@@ -27,6 +27,14 @@ class Session {
 	}
 
 
+    /**
+     * @return \DateTime
+     */
+	public function get_datetime_obj() {
+        return \DateTime($this->datetime);
+    }
+
+
 	/**
 	 * @return string
 	 */
