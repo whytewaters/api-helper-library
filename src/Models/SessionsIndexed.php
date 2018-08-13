@@ -7,7 +7,6 @@ class SessionsIndexed {
     private $indexed_sessions = [];
     private $indexed_dates = [];
     private $indexed_times = [];
-    private $next_available_session;
 
     /**
      * SessionsIndexed constructor.
@@ -28,10 +27,6 @@ class SessionsIndexed {
             $this->indexed_times[$time] = $tour_session->get_time_str();
 
             $this->indexed_sessions[$date][$time] = $tour_session;
-
-            if (!$this->next_available_session && $tour_session->is_open()) {
-                $this->next_available_session = $tour_session;
-            }
         }
 
         $this->indexed_dates = array_keys($this->indexed_dates);
@@ -92,8 +87,8 @@ class SessionsIndexed {
      * @return \DateTime|null
      */
     public function get_next_available_date() {
-        if ($this->next_available_session) {
-            return $this->next_available_session->get_datetime_obj();
+        if (count($this->indexed_dates) > 0) {
+            return new \DateTime($this->indexed_dates[0]);
         }
 
         return null;
