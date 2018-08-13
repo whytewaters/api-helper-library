@@ -1,50 +1,44 @@
 <?php namespace Rtbs\ApiHelper\Models;
 
-
 class SessionAndAdvanceDates {
 
     /** @var Session[] $sessions */
-    private $sessions = array();
+    private $sessions = [];
 
-    private $advance_dates = array();
+    private $advance_dates = [];
 
     /**
      * @return Session[]
      */
-    public function get_sessions()
-    {
+    public function get_sessions() {
         return $this->sessions;
     }
 
     /**
      * @param Session $session
      */
-    public function add_session($session)
-    {
+    public function add_session($session) {
         $this->sessions[] = $session;
     }
 
     /**
      * @return array
      */
-    public function get_advance_dates()
-    {
+    public function get_advance_dates() {
         return $this->advance_dates;
     }
 
     /**
      * @param array $advance_dates
      */
-    public function set_advance_dates($advance_dates)
-    {
+    public function set_advance_dates($advance_dates) {
         $this->advance_dates = $advance_dates;
     }
 
     /**
      * @return string
      */
-    public function get_first_advance_date()
-    {
+    public function get_first_advance_date() {
         $earliest_advance_date = null;
 
         foreach ($this->advance_dates as $advance_date) {
@@ -66,7 +60,7 @@ class SessionAndAdvanceDates {
         $first_available_datetime = null;
 
         if (!empty($tour_keys) && !is_array($tour_keys)) {
-            $tour_keys = array($tour_keys);
+            $tour_keys = [$tour_keys];
         }
 
         foreach ($this->sessions as $session) {
@@ -87,6 +81,7 @@ class SessionAndAdvanceDates {
                 $first_available_datetime = $session->get_datetime();
             }
         }
+
         return $first_available_datetime;
     }
 

@@ -99,11 +99,4 @@ class SessionsIndexed {
         return null;
     }
 
-    /**
-     * @return Session
-     */
-    public function get_next_available_session() {
-        return $this->next_available_session;
-    }
-
 }
