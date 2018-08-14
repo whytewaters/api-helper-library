@@ -76,6 +76,22 @@ class SessionsIndexed {
     }
 
     /**
+     * @return bool
+     */
+    public function has_open_sessions() {
+
+        foreach ($this->indexed_sessions as $date => $sessions) {
+            foreach ($sessions as $time => $session) {
+                if ($session->is_open()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * @param \DateTimeInterface $datetime
      * @return bool
      */
