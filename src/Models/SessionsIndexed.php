@@ -7,14 +7,16 @@ class SessionsIndexed {
     private $indexed_sessions = [];
     private $indexed_dates = [];
     private $indexed_times = [];
+    private $advanced_date;
+    private $has_open_sessions = false;
 
     /**
      * SessionsIndexed constructor.
      * @param Session[] $tour_sessions
      */
-    public function __construct($tour_sessions) {
+    public function __construct(SessionAndAdvanceDates $sessions_and_advanced_dates) {
 
-        foreach ($tour_sessions as $tour_session) {
+        foreach ($sessions_and_advanced_dates->get_sessions() as $tour_session) {
             // index experience sessions based on the time of the first non-shuttle tour
             $dt = Carbon::parse($tour_session->get_datetime());
 
@@ -27,7 +29,13 @@ class SessionsIndexed {
             $this->indexed_times[$time] = $tour_session->get_time_str();
 
             $this->indexed_sessions[$date][$time] = $tour_session;
+
+            if ($tour_session->is_open()) {
+                $this->has_open_sessions = true;
+            }
         }
+
+        $this->advanced_date = Carbon::parse($sessions_and_advanced_dates->get_first_advance_date());
 
         $this->indexed_dates = array_keys($this->indexed_dates);
         asort($this->indexed_dates);
@@ -79,35 +87,18 @@ class SessionsIndexed {
      * @return bool
      */
     public function has_open_sessions() {
-
-        foreach ($this->indexed_sessions as $date => $sessions) {
-            foreach ($sessions as $time => $session) {
-                if ($session->is_open()) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        $this->has_open_sessions;
     }
 
     /**
-     * @param \DateTimeInterface $datetime
-     * @return bool
+     * @return Carbon|null
      */
-    public function is_advance_dates_only(\DateTimeInterface $datetime) {
-        return count($this->indexed_dates) > 0 && $this->indexed_dates[0] !== $datetime->format('Y-m-d');
-    }
-
-    /**
-     * @return \DateTime|null
-     */
-    public function get_next_available_date() {
+    public function get_next_scheduled_date() {
         if (count($this->indexed_dates) > 0) {
-            return new \DateTime($this->indexed_dates[0]);
+            return Carbon::parse($this->indexed_dates[0]);
         }
 
-        return null;
+        return $this->advanced_date;
     }
 
 }
