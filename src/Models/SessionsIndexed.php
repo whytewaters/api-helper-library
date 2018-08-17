@@ -35,7 +35,9 @@ class SessionsIndexed {
             }
         }
 
-        $this->advanced_date = Carbon::parse($sessions_and_advanced_dates->get_first_advance_date());
+        if ($sessions_and_advanced_dates->get_first_advance_date()) {
+            $this->advanced_date = Carbon::parse($sessions_and_advanced_dates->get_first_advance_date());
+        }
 
         $this->indexed_dates = array_keys($this->indexed_dates);
         asort($this->indexed_dates);
