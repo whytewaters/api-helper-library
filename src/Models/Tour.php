@@ -1,8 +1,6 @@
 <?php namespace Rtbs\ApiHelper\Models;
 
-
 class Tour {
-
     private $tour_key;
     private $name;
     private $info_date_range_notes = array();
@@ -15,7 +13,6 @@ class Tour {
     private $url_img;
     private $directions_html;
     private $description_short_html;
-    private $description_html;
     private $information_html;
     private $is_show_obl;
     private $has_promo_codes;
@@ -25,13 +22,13 @@ class Tour {
     private $info_season;
     private $sector_start;
     private $sector_end;
+    private $scheduled_times = array();
 
     /** @var Price[] */
     private $prices = array();
 
     /** @var Field[] */
     private $fields = array();
-
 
     /**
      * @return string
@@ -40,14 +37,12 @@ class Tour {
         return $this->tour_key;
     }
 
-
     /**
      * @param string $tour_key
      */
     public function set_tour_key($tour_key) {
         $this->tour_key = $tour_key;
     }
-
 
     /**
      * @return string
@@ -56,14 +51,12 @@ class Tour {
         return $this->name;
     }
 
-
     /**
      * @param string $name
      */
     public function set_name($name) {
         $this->name = $name;
     }
-
 
     /**
      * @return string
@@ -72,14 +65,12 @@ class Tour {
         return $this->supplier_key;
     }
 
-
     /**
      * @param string $supplier_key
      */
     public function set_supplier_key($supplier_key) {
         $this->supplier_key = $supplier_key;
     }
-
 
     /**
      * @return string
@@ -88,14 +79,12 @@ class Tour {
         return $this->description;
     }
 
-
     /**
      * @param string $description
      */
     public function set_description($description) {
         $this->description = $description;
     }
-
 
     /**
      * @return string
@@ -104,14 +93,12 @@ class Tour {
         return $this->info_directions;
     }
 
-
     /**
      * @param string $info_directions
      */
     public function set_info_directions($info_directions) {
         $this->info_directions = $info_directions;
     }
-
 
     /**
      * @return string
@@ -120,14 +107,12 @@ class Tour {
         return $this->directions_html;
     }
 
-
     /**
      * @param string $directions_html
      */
     public function set_directions_html($directions_html) {
         $this->directions_html = $directions_html;
     }
-
 
     /**
      * @return string
@@ -136,14 +121,12 @@ class Tour {
         return $this->description_short_html;
     }
 
-
     /**
      * @param string $description_short_html
      */
     public function set_description_short_html($description_short_html) {
         $this->description_short_html = $description_short_html;
     }
-
 
     /**
      * @return string
@@ -152,14 +135,12 @@ class Tour {
         return $this->information_html;
     }
 
-
     /**
      * @param string $information_html
      */
     public function set_information_html($information_html) {
         $this->information_html = $information_html;
     }
-
 
     /**
      * @return string
@@ -168,14 +149,12 @@ class Tour {
         return $this->info_bring;
     }
 
-
     /**
      * @param string $info_bring
      */
     public function set_info_bring($info_bring) {
         $this->info_bring = $info_bring;
     }
-
 
     /**
      * @return string
@@ -184,14 +163,12 @@ class Tour {
         return $this->info_provided;
     }
 
-
     /**
      * @param string $info_provided
      */
     public function set_info_provided($info_provided) {
         $this->info_provided = $info_provided;
     }
-
 
     /**
      * @return string
@@ -200,14 +177,12 @@ class Tour {
         return $this->info_transport;
     }
 
-
     /**
      * @param string $info_transport
      */
     public function set_info_transport($info_transport) {
         $this->info_transport = $info_transport;
     }
-
 
     /**
      * @return string
@@ -216,14 +191,12 @@ class Tour {
         return $this->info_restrictions;
     }
 
-
     /**
-     * @param string $info_transport
+     * @param string $info_restrictions
      */
     public function set_info_restrictions($info_restrictions) {
         $this->info_restrictions = $info_restrictions;
     }
-
 
     /**
      * @return string
@@ -232,14 +205,12 @@ class Tour {
         return $this->info_duration;
     }
 
-
     /**
      * @param string $info_duration
      */
     public function set_info_duration($info_duration) {
         $this->info_duration = $info_duration;
     }
-
 
     /**
      * @return string
@@ -248,7 +219,6 @@ class Tour {
         return $this->info_season;
     }
 
-
     /**
      * @param string $info_season
      */
@@ -256,15 +226,13 @@ class Tour {
         $this->info_season = $info_season;
     }
 
-
     /**
      * @param string|null $default_img
      * @return string
      */
     public function get_url_img($default_img = null) {
-        return ($this->url_img) ? $this->url_img : $default_img;
+        return $this->url_img ?: $default_img;
     }
-
 
     /**
      * @param string $url_img
@@ -273,14 +241,12 @@ class Tour {
         $this->url_img = $url_img;
     }
 
-
     /**
      * @return string
      */
     public function get_terms_html() {
         return $this->terms_html;
     }
-
 
     /**
      * @param string|null $terms_html
@@ -289,11 +255,9 @@ class Tour {
         $this->terms_html = $terms_html;
     }
 
-
     public function add_info_date_range_note($info_date_range_note) {
         $this->info_date_range_notes[] = $info_date_range_note;
     }
-
 
     /**
      * @return array
@@ -302,14 +266,12 @@ class Tour {
         return $this->info_date_range_notes;
     }
 
-
     /**
      * @return Price[]
      */
     public function get_prices() {
         return $this->prices;
     }
-
 
     /**
      * @param string $price_type_key
@@ -326,7 +288,6 @@ class Tour {
         return null;
     }
 
-
     /**
      * @param string $price_key
      *
@@ -342,7 +303,6 @@ class Tour {
         return null;
     }
 
-
     /**
      * @return Field[]
      */
@@ -350,8 +310,8 @@ class Tour {
         return $this->fields;
     }
 
-
     /**
+     * @param string $has_tag
      * @return Field|null
      */
     public function get_field_by_tag($has_tag) {
@@ -364,14 +324,12 @@ class Tour {
         return null;
     }
 
-
     /**
      * @return bool
      */
     public function is_show_obl() {
         return $this->is_show_obl;
     }
-
 
     /**
      * @return bool
@@ -380,14 +338,12 @@ class Tour {
         return $this->has_promo_codes;
     }
 
-
     /**
      * @return string
      */
     public function get_sector_start() {
         return $this->sector_start;
     }
-
 
     /**
      * @return string
@@ -396,6 +352,12 @@ class Tour {
         return $this->sector_end;
     }
 
+    /**
+     * @return string[]
+     */
+    public function get_scheduled_times() {
+        return $this->scheduled_times;
+    }
 
     /**
      * @param \stdClass $raw_tour
@@ -494,6 +456,12 @@ class Tour {
         if (property_exists($raw_tour, 'fields') && is_array($raw_tour->fields)) {
             foreach ($raw_tour->fields as $raw_field) {
                 $tour->fields[] = Field::from_raw($raw_field);
+            }
+        }
+
+        if (property_exists($raw_tour, 'scheduled_times') && is_array($raw_tour->scheduled_times)) {
+            foreach ($raw_tour->scheduled_times as $scheduled_time) {
+                $tour->scheduled_times[] = $scheduled_time;
             }
         }
 
