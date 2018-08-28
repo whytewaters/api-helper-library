@@ -6,6 +6,7 @@ class Obl {
     const ROBL_TEMPLATE_DEFAULT_EXTRAS = 'DEFAULT_EXTRAS';
     const ROBL_TEMPLATE_RESOURCES = 'RESOURCES';
     const ROBL_TEMPLATE_SECTORS = 'SECTORS';
+    const ROBL_TEMPLATE_DEFAULT_SESSIONS_DROPLIST = 'SESSIONS_DROPLIST';
 
     private $browser_title;
     private $id;
