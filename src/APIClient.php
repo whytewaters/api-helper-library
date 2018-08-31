@@ -302,7 +302,7 @@ class APIClient {
         }
 
         if (isset($response->success) && $response->success == false) {
-            $code = $response->code ?: null;
+            $code = !empty($response->code) ? $response->code : null;
             throw new ApiClientException($this->getUserMessageForAPIException($response->message), $code);
         }
 
