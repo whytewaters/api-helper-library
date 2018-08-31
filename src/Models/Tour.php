@@ -23,6 +23,7 @@ class Tour {
     private $sector_start;
     private $sector_end;
     private $scheduled_times = array();
+    private $pickups = array();
 
     /** @var Price[] */
     private $prices = array();
@@ -462,6 +463,12 @@ class Tour {
         if (property_exists($raw_tour, 'scheduled_times') && is_array($raw_tour->scheduled_times)) {
             foreach ($raw_tour->scheduled_times as $scheduled_time) {
                 $tour->scheduled_times[] = $scheduled_time;
+            }
+        }
+
+        if (property_exists($raw_tour, 'pickups') && is_array($raw_tour->pickups)) {
+            foreach ($raw_tour->pickups as $raw_pickup) {
+                $tour->pickups[] = Pickup::from_raw($raw_pickup);
             }
         }
 
