@@ -73,12 +73,6 @@ class APIClient {
         return $response->suppliers;
     }
 
-    public function api_suppliers2() {
-        $response = $this->call('/api/suppliers2');
-
-        return $response->suppliers;
-    }
-
     public function api_accommodation_locations($supplier_key) {
         $response = $this->call('/api/accommodation-locations/' . $supplier_key);
 
@@ -106,6 +100,17 @@ class APIClient {
     public function api_supplier($key) {
         $response = $this->call('/api/suppliers/' . $key);
         $suppliers = $response->suppliers;
+        if (isset($suppliers[0])) {
+            return $suppliers[0];
+        }
+
+        return null;
+    }
+
+    public function api_supplier2($supplier_key) {
+        $response = $this->call("/api/suppliers2/{$supplier_key}");
+        $suppliers = $response->suppliers;
+
         if (isset($suppliers[0])) {
             return $suppliers[0];
         }

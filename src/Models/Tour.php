@@ -275,6 +275,13 @@ class Tour {
     }
 
     /**
+     * @return Pickup[]
+     */
+    public function get_pickups() {
+        return $this->pickups;
+    }
+
+    /**
      * @param string $price_type_key
      *
      * @return null|Price
