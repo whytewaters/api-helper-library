@@ -54,6 +54,20 @@ class Supplier {
     }
 
     /**
+     * @param string $tour_key
+     * @return Tour|null
+     */
+    public function get_tour($tour_key) {
+        foreach ($this->tours as $tour) {
+            if ($tour->get_tour_key() === $tour_key) {
+                return $tour;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * @return string[]
      */
     public function get_tour_keys() {

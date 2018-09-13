@@ -5,9 +5,7 @@ use Rtbs\ApiHelper\Models\AccommodationBooking;
 use Rtbs\ApiHelper\Models\Booking;
 use Rtbs\ApiHelper\Models\ResourceRequirement;
 
-
-class APIClient
-{
+class APIClient {
 
     private $host;
     private $key;
@@ -16,9 +14,7 @@ class APIClient
     private $xdebug_key;
     private $xdebug_profile = false;
 
-
-    function __construct($options=array())
-    {
+    public function __construct($options = array()) {
         //override defaults
         if (isset($options['host'])) {
             $this->host = $options['host'];
@@ -32,123 +28,134 @@ class APIClient
             $this->pwd = $options['pwd'];
         }
 
-	    if (isset($options['obl_id'])) {
-		    $this->obl_id = $options['obl_id'];
-	    }
+        if (isset($options['obl_id'])) {
+            $this->obl_id = $options['obl_id'];
+        }
     }
-
 
     /**
      * @param string $xdebug_key such as PHPSTORM
      */
-    public function set_xdebug_key($xdebug_key)
-    {
+    public function set_xdebug_key($xdebug_key) {
         $this->xdebug_key = $xdebug_key;
     }
 
+    /**
+     * @param bool $xdebug_profile
+     */
+    public function set_xdebug_profile($xdebug_profile) {
+        $this->xdebug_profile = $xdebug_profile;
+    }
 
-	/**
-	 * @param bool $xdebug_profile
-	 */
-	public function set_xdebug_profile($xdebug_profile)
-	{
-		$this->xdebug_profile = $xdebug_profile;
-	}
-
-
-    function api_categories()
-    {
+    public function api_categories() {
         $response = $this->call('/api/categories');
+
         return $response->categories;
     }
 
-
-    function api_locations()
-    {
+    public function api_locations() {
         $response = $this->call('/api/locations');
+
         return $response->locations;
     }
 
     //Note! Locations are identified by name, not by key.
-    function api_location_suppliers($location_name) {
-        $location_name = strtr($location_name, array(' '=>'%20'));
-        $response = $this->call('/api/location/'.$location_name.'/suppliers');
+    public function api_location_suppliers($location_name) {
+        $location_name = strtr($location_name, array(' ' => '%20'));
+        $response = $this->call('/api/location/' . $location_name . '/suppliers');
+
         return $response->suppliers;
     }
 
-    function api_suppliers() {
+    public function api_suppliers() {
         $response = $this->call('/api/suppliers');
+
         return $response->suppliers;
     }
 
-    function api_accommodation_locations($supplier_key) {
-        $response = $this->call('/api/accommodation-locations/'.$supplier_key);
+    public function api_accommodation_locations($supplier_key) {
+        $response = $this->call('/api/accommodation-locations/' . $supplier_key);
+
         return $response->locations;
     }
 
-    function api_accommodation_provider_detail($provider_key) {
-        $response = $this->call('/api/accommodation-provider-detail/'.$provider_key);
+    public function api_accommodation_provider_detail($provider_key) {
+        $response = $this->call('/api/accommodation-provider-detail/' . $provider_key);
+
         return $response->provider;
     }
 
-    function api_accommodation_availability($provider_key, $check_in, $check_out) {
-        $response = $this->call('/api/accommodation-provider-availability/'.$provider_key.'/'.$check_in.'/'.$check_out);
+    public function api_accommodation_availability($provider_key, $check_in, $check_out) {
+        $response = $this->call('/api/accommodation-provider-availability/' . $provider_key . '/' . $check_in . '/' . $check_out);
+
         return $response->availability;
     }
 
-    function api_accommodation_providers($location_key, $check_in, $check_out) {
-        $response = $this->call('/api/accommodation-providers/'.$location_key.'/'.$check_in.'/'.$check_out);
+    public function api_accommodation_providers($location_key, $check_in, $check_out) {
+        $response = $this->call('/api/accommodation-providers/' . $location_key . '/' . $check_in . '/' . $check_out);
+
         return $response->providers;
     }
 
-    function api_supplier($key) {
-        $response = $this->call('/api/suppliers/'.$key);
+    public function api_supplier($key) {
+        $response = $this->call('/api/suppliers/' . $key);
         $suppliers = $response->suppliers;
         if (isset($suppliers[0])) {
             return $suppliers[0];
         }
+
         return null;
     }
 
+    public function api_supplier2($supplier_key) {
+        $response = $this->call("/api/suppliers2/{$supplier_key}");
+        $suppliers = $response->suppliers;
+
+        if (isset($suppliers[0])) {
+            return $suppliers[0];
+        }
+
+        return null;
+    }
 
     /**
      * @param string|string[] $keys
      * @return \stdClass
+     * @throws ApiClientException
      */
-    public function api_tours($keys)
-    {
+    public function api_tours($keys) {
         if (!is_array($keys)) {
             $keys = array($keys);
         }
 
-        $response = $this->call('/api/tours/' . implode(",", $keys));
+        $response = $this->call('/api/tours/' . implode(',', $keys));
+
         return $response->tours;
     }
-
 
     /**
      * @param string $supplier_key
      * @param string $voucher_code
      * @return \stdClass
+     * @throws ApiClientException
      */
-    public function api_voucher($supplier_key, $voucher_code)
-    {
-        $query_str = http_build_query(['supplier' => $supplier_key, 'voucher' => $voucher_code]);
+    public function api_voucher($supplier_key, $voucher_code) {
+        $query_str = http_build_query(array('supplier' => $supplier_key, 'voucher' => $voucher_code));
         $response = $this->call("/api/voucher?{$query_str}");
+
         return $response->voucher;
     }
 
-
     //NOTE! returns an object with potentially two properties: 'sessions' & 'advance_dates'
-    function api_sessions($supplier_key, $tour_keys, $date, $search_next_available = false, $days = 1, $exclude_capacityholds = null) {
-        $pattern = "/api/sessions?supplier=%s&tours=%s&date=%s&search_next_available=%d&days=%d&exclude_capacityholds=%s";
-        $tours = is_array($tour_keys) ? implode(",", $tour_keys) : $tour_keys;
-        $exclude_capacityholds = is_array($exclude_capacityholds) ? implode(",", $exclude_capacityholds) : $exclude_capacityholds;
-        $search_next_available = ($search_next_available) ? 1 : 0;
+    public function api_sessions($supplier_key, $tour_keys, $date, $search_next_available = false, $days = 1, $exclude_capacityholds = null) {
+        $pattern = '/api/sessions?supplier=%s&tours=%s&date=%s&search_next_available=%d&days=%d&exclude_capacityholds=%s';
+        $tours = is_array($tour_keys) ? implode(',', $tour_keys) : $tour_keys;
+        $exclude_capacityholds = is_array($exclude_capacityholds) ? implode(',', $exclude_capacityholds) : $exclude_capacityholds;
+        $search_next_available = $search_next_available ? 1 : 0;
         $request = sprintf($pattern, $supplier_key, $tours, $date, $search_next_available, $days, $exclude_capacityholds);
+
         return $this->call($request);
     }
-
 
     /**
      * @param string $supplier_key
@@ -159,69 +166,70 @@ class APIClient
      * @param int $days
      * @param array|null $exclude_capacity_hold_keys
      * @return \stdClass
+     * @throws ApiClientException
      */
-    function api_experience_sessions($supplier_key, $experience_key, $date, $search_next_available = false, $days = 1, array $resource_requirements = null, array $exclude_capacity_hold_keys = null)
-    {
+    public function api_experience_sessions($supplier_key, $experience_key, $date, $search_next_available = false, $days = 1, array $resource_requirements = null, array $exclude_capacity_hold_keys = null) {
         $data_resource_requirements = array();
 
         foreach ($resource_requirements as $requirement) {
-	        $data_resource_requirements[] = $requirement->to_raw_object();
+            $data_resource_requirements[] = $requirement->to_raw_object();
         }
 
-	    $data = array(
+        $data = array(
             'supplier' => $supplier_key,
             'experience_key' => $experience_key,
             'date' => $date,
-            'search_next_available' => ($search_next_available) ? 1 : 0,
+            'search_next_available' => $search_next_available ? 1 : 0,
             'days' => $days,
             'exclude_capacity_holds' => $exclude_capacity_hold_keys,
             'resource_requirements' => $data_resource_requirements,
         );
 
-	    $opts = $this->build_opts($data);
-	    return $this->call('/api/experience_sessions', $opts);
+        $opts = $this->build_opts($data);
+
+        return $this->call('/api/experience_sessions', $opts);
     }
 
-
-    function api_pickups($tour_key) {
-        $method = "/api/pickups?tour=".$tour_key;
+    public function api_pickups($tour_key) {
+        $method = '/api/pickups?tour=' . $tour_key;
         $response = $this->call($method);
+
         return $response->pickups;
     }
 
-
     // returns a payment URL for the booking
-    function api_booking(Booking $booking) {
+    public function api_booking(Booking $booking) {
         $data = $booking->to_raw();
 
         $opts = $this->build_opts($data);
-	    return $this->call('/api/booking', $opts);
+
+        return $this->call('/api/booking', $opts);
     }
 
-
-    function api_promo($promo_code, Booking $booking) {
+    public function api_promo($promo_code, Booking $booking) {
         $data = $booking->to_raw();
         $data['promo_code'] = $promo_code;
 
         $opts = $this->build_opts($data);
-	    return $this->call('/api/promo', $opts);
+
+        return $this->call('/api/promo', $opts);
     }
 
-
-    function api_remove_booking($booking_id, $itinerary_key, $booking_type) {
+    public function api_remove_booking($booking_id, $itinerary_key, $booking_type) {
         $data = array(
             'itinerary_key' => $itinerary_key,
             'booking_id' => $booking_id,
-            'booking_type' => $booking_type
+            'booking_type' => $booking_type,
         );
 
         $opts = $this->build_opts($data);
-	    return $this->call('/api/remove-itinerary-booking', $opts);
+
+        return $this->call('/api/remove-itinerary-booking', $opts);
     }
 
-    function api_pay_itinerary($itinerary_key, $return_url = null) {
+    public function api_pay_itinerary($itinerary_key, $return_url = null) {
         $data = array(
-            'itinerary_key' => $itinerary_key
+            'itinerary_key' => $itinerary_key,
         );
 
         if ($return_url) {
@@ -229,84 +237,82 @@ class APIClient
         }
 
         $opts = $this->build_opts($data);
-	    return $this->call('/api/pay-itinerary', $opts);
+
+        return $this->call('/api/pay-itinerary', $opts);
     }
 
-    function api_create_itinerary($primary_customer_key, $additional_customer_keys = array()) {
+    public function api_create_itinerary($primary_customer_key, $additional_customer_keys = array()) {
         $data = array(
             'primary_customer_key' => $primary_customer_key,
             'additional_customer_keys' => $additional_customer_keys,
         );
 
         $opts = $this->build_opts($data);
-	    return $this->call('/api/itinerary', $opts);
-    }
 
+        return $this->call('/api/itinerary', $opts);
+    }
 
     public function api_itinerary_tickets_html($token) {
         return file_get_contents($this->api_itinerary_tickets_url($token));
     }
 
-
     public function api_itinerary_tickets_url($token) {
-        return $this->host . '/api/itinerary/' . urlencode($token) . '/tickets?' . http_build_query(['apikey' => $this->key, 'obl_id' => $this->obl_id]);
+        return $this->host . '/api/itinerary/' . urlencode($token) . '/tickets?' . http_build_query(array('apikey' => $this->key, 'obl_id' => $this->obl_id));
     }
 
     //Makes an api call.
     protected function call($endpoint, $opts = null) {
-        if (substr($endpoint, 0,5) !== "/api/") {
-            throw new ApiClientException("All API requests must begin with /api/");
+        if (substr($endpoint, 0, 5) !== '/api/') {
+            throw new ApiClientException('All API requests must begin with /api/');
         }
 
         //add key
         $separator = strpos($endpoint, '?') === false ? '?' : '&';
 
-        $params = [
-	        'apikey' => $this->key
-        ];
+        $params = array(
+            'apikey' => $this->key,
+        );
 
         // obl_id
-	    if ($this->obl_id) {
-		    $params['obl_id'] = $this->obl_id;
-	    }
+        if ($this->obl_id) {
+            $params['obl_id'] = $this->obl_id;
+        }
 
         // tracer
         if (session_id()) {
-	        $params['tracer'] = session_id();
+            $params['tracer'] = session_id();
         }
 
         if ($this->xdebug_key) {
-	        $params['XDEBUG_SESSION_START'] = $this->xdebug_key;
+            $params['XDEBUG_SESSION_START'] = $this->xdebug_key;
             $params['XDEBUG_PROFILE'] = 1;
         }
 
-	    if ($this->xdebug_profile) {
-		    $params['XDEBUG_PROFILE'] = 1;
-	    }
+        if ($this->xdebug_profile) {
+            $params['XDEBUG_PROFILE'] = 1;
+        }
 
         $url = $this->host . $endpoint . $separator . http_build_query($params);
 
         if ($opts == null) {
             $response_raw = file_get_contents($url);
-        }
-        else {
+        } else {
             $context = stream_context_create($opts);
             $response_raw = file_get_contents($url, false, $context);
         }
 
         $response = json_decode($response_raw);
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new ApiClientException("Server response invalid JSON format: ". $response_raw);
+            throw new ApiClientException('Server response invalid JSON format: ' . $response_raw);
         }
 
         if (isset($response->success) && $response->success == false) {
-            $code = (!empty($response->code)) ? $response->code : null;
+            $code = !empty($response->code) ? $response->code : null;
             throw new ApiClientException($this->getUserMessageForAPIException($response->message), $code);
         }
 
         return $response;
     }
-
 
     private function getUserMessageForAPIException($err_msg) {
         return strtr($err_msg, array(
@@ -314,7 +320,6 @@ class APIClient
             'Trip is closed' => 'The tour is unavailable at the chosen date and time, please choose a different date',
         ));
     }
-
 
     public function api_create_customer($first_name, $last_name, $email, $phone) {
         $data = array(
@@ -325,33 +330,32 @@ class APIClient
         );
 
         $opts = $this->build_opts($data);
-        $response = $this->call('/api/customer', $opts);
-        return $response;
+
+        return $this->call('/api/customer', $opts);
     }
 
     public function api_accommodation_booking(AccommodationBooking $accommodation_booking) {
         $method = '/api/accommodation-booking';
         $data = get_object_vars($accommodation_booking);
-        $content = "data=".rawurlencode( json_encode($data) );
+        $content = 'data=' . rawurlencode(json_encode($data));
         $referrer = isset($_SERVER['SCRIPT_URI']) ? $_SERVER['SCRIPT_URI'] : 'Demonstration';
 
-        $opts=array(
+        $opts = array(
             'http' => array(
-                'method'  => 'POST',
-                'header'  => array(
-                    "Content-type: application/x-www-form-urlencoded",
-                    "Referer: " . $referrer ,
-                    "Connection: close",
-                    "Accept-language: en",
-                    "Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
+                'method' => 'POST',
+                'header' => array(
+                    'Content-type: application/x-www-form-urlencoded',
+                    'Referer: ' . $referrer,
+                    'Connection: close',
+                    'Accept-language: en',
+                    'Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
                 ),
                 'content' => $content,
             ),
         );
-        $response = $this->call($method, $opts);
-        return $response;
-    }
 
+        return $this->call($method, $opts);
+    }
 
     /**
      * @param string $supplier_key
@@ -360,9 +364,9 @@ class APIClient
      * @param int $pax
      * @param int $expiry_mins
      * @return mixed
+     * @throws ApiClientException
      */
-    public function api_reserve_capacity($supplier_key, $tour_key, $datetime, $pax, $expiry_mins = 10)
-    {
+    public function api_reserve_capacity($supplier_key, $tour_key, $datetime, $pax, $expiry_mins = 10) {
         if ($datetime instanceof \DateTimeInterface) {
             $datetime = $datetime->format('Y-m-d H:i:s');
         }
@@ -376,103 +380,100 @@ class APIClient
         );
 
         $opts = $this->build_opts($data);
-        $response = $this->call($method, $opts);
-        return $response;
-    }
 
+        return $this->call($method, $opts);
+    }
 
     /**
      * @param string $supplier_key
      * @param string $capacity_hold_key
      * @return mixed
+     * @throws ApiClientException
      */
-    public function api_release_capacity($supplier_key, $capacity_hold_key)
-    {
+    public function api_release_capacity($supplier_key, $capacity_hold_key) {
         $method = '/api/release-capacity?' . http_build_query(array('supplier' => $supplier_key));
         $data = array(
-            'capacity_hold_key' => $capacity_hold_key
+            'capacity_hold_key' => $capacity_hold_key,
         );
 
         $opts = $this->build_opts($data);
-        $response = $this->call($method, $opts);
-        return $response;
-    }
 
+        return $this->call($method, $opts);
+    }
 
     private function build_opts($data) {
 
-        $content = "data=" . rawurlencode(json_encode($data));
+        $content = 'data=' . rawurlencode(json_encode($data));
         $referrer = isset($_SERVER['SCRIPT_URI']) ? $_SERVER['SCRIPT_URI'] : 'Demonstration';
 
         return array(
             'http' => array(
                 'method' => 'POST',
                 'header' => array(
-                    "Content-type: application/x-www-form-urlencoded",
-                    "Referer: " . $referrer,
-                    "Connection: close",
-                    "Accept-language: en"
+                    'Content-type: application/x-www-form-urlencoded',
+                    'Referer: ' . $referrer,
+                    'Connection: close',
+                    'Accept-language: en',
                 ),
                 'content' => $content,
             ),
         );
     }
 
-
     /**
      * For Internal Use Only
      * @param string $obl_id
      * @return \stdClass
+     * @throws ApiClientException
      */
-    public function api_obl($obl_id)
-    {
+    public function api_obl($obl_id) {
         $response = $this->call("/api/obl/{$obl_id}");
+
         return $response->obl;
     }
 
-
-    public function api_ticket_url($token)
-    {
+    public function api_ticket_url($token) {
         return $this->host . '/api/ticket?token=' . urlencode($token);
     }
 
-
-    public function api_ticket_html($token)
-    {
+    public function api_ticket_html($token) {
         return file_get_contents($this->api_ticket_url($token));
     }
 
-	/**
-	 * @param string $token
-	 * @return \stdClass
-	 */
-	public function api_booking_status($token) {
-		$token = urlencode($token);
-		$response = $this->call("/api/booking/{$token}/status");
-		return $response->booking;
-	}
+    /**
+     * @param string $token
+     * @return \stdClass
+     * @throws ApiClientException
+     */
+    public function api_booking_status($token) {
+        $token = urlencode($token);
+        $response = $this->call("/api/booking/{$token}/status");
 
+        return $response->booking;
+    }
 
-	/**
-	 * @param string $token
-	 * @return Booking[]
-	 */
-	public function api_itinerary_status($token) {
-		$token = urlencode($token);
-		$response = $this->call("/api/itinerary/{$token}/status");
-		return $response->itinerary;
-	}
+    /**
+     * @param string $token
+     * @return Booking[]
+     * @throws ApiClientException
+     */
+    public function api_itinerary_status($token) {
+        $token = urlencode($token);
+        $response = $this->call("/api/itinerary/{$token}/status");
 
+        return $response->itinerary;
+    }
 
-	/**
-	 * @param string $supplier_key
-	 * @return \stdClass
-	 * @throws ApiClientException
-	 */
-	public function api_experiences($supplier_key) {
-		$query_str = http_build_query(['supplier' => $supplier_key]);
-		$response = $this->call("/api/experiences?{$query_str}");
-		return $response->experiences;
-	}
+    /**
+     * @param string $supplier_key
+     * @return \stdClass
+     * @throws ApiClientException
+     */
+    public function api_experiences($supplier_key) {
+        $query_str = http_build_query(array('supplier' => $supplier_key));
+        $response = $this->call("/api/experiences?{$query_str}");
+
+        return $response->experiences;
+    }
 
 }

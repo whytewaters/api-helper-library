@@ -2,6 +2,15 @@
 
 
 class Session {
+    const STATE_CODE_BEFORE_OPEN = 'BEFORE_OPEN';
+    const STATE_CODE_BLOCKED = 'BLOCKED';
+    const STATE_CODE_NOT_AVAILABLE = 'NOT_AVAILABLE';
+    const STATE_CODE_PAST_CUTOFF = 'PAST_CUTOFF';
+    const STATE_CODE_CALL = 'CALL';
+    const STATE_CODE_AVAILABLE = 'AVAILABLE';
+    const STATE_CODE_INSUFFICIENT_CAPACITY = 'INSUFFICIENT_CAPACITY';
+    const STATE_CODE_SOLD_OUT = 'SOLD_OUT';
+
 	private $datetime;
 	private $time_str;
 	private $max_pax;
@@ -10,9 +19,13 @@ class Session {
 	private $remaining;
     private $resources_remaining;
 	private $state;
+    private $state_code;
 	private $tour_key;
 	private $is_primary = false;
 	private $linked_pax_group = null;
+    private $capacity;
+    private $local_time;
+    private $local_date;
 
 
 	/** @var Price[] $prices */
@@ -149,6 +162,12 @@ class Session {
 		return ($this->has_prices()) ? $this->state : 'Not Available';
 	}
 
+    /**
+     * @return string
+     */
+    public function get_state_code() {
+        return $this->state_code;
+    }
 
 	/**
 	 * @return mixed
@@ -197,14 +216,33 @@ class Session {
 		return $this->linked_pax_group;
 	}
 
+    /**
+     * @return string
+     */
+    public function get_local_time() {
+        return $this->local_time;
+    }
+
+    /**
+     * @return string
+     */
+    public function get_local_date() {
+        return $this->local_date;
+    }
+
+    /**
+    * @return int
+    */
+    public function get_capacity() {
+        return (int) $this->capacity;
+    }
 
 	/**
 	 * @param \stdClass $raw_session
-	 *
 	 * @return Session
 	 */
 	public static function from_raw($raw_session) {
-		$session = new Session();
+		$session = new self();
 
 		$session->datetime = $raw_session->datetime;
 		$session->time_str = $raw_session->time_str;
@@ -232,6 +270,22 @@ class Session {
 		if (property_exists($raw_session, 'linked_pax_group')) {
 			$session->linked_pax_group = $raw_session->linked_pax_group;
 		}
+
+        if (property_exists($raw_session, 'local_time')) {
+            $session->local_time = $raw_session->local_time;
+        }
+
+        if (property_exists($raw_session, 'local_date')) {
+            $session->local_date = $raw_session->local_date;
+        }
+
+        if (property_exists($raw_session, 'capacity')) {
+            $session->capacity = $raw_session->capacity;
+        }
+
+        if (property_exists($raw_session, 'state_code')) {
+            $session->state_code = $raw_session->state_code;
+        }
 
 		foreach ($raw_session->prices as $raw_price) {
 			$session->prices[] = Price::from_raw($raw_price);
