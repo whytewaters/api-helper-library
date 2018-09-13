@@ -306,6 +306,12 @@ class Price {
 		}
 	}
 
+    /**
+     * @return array
+     */
+	public function get_tags() {
+	    return $this->tags;
+    }
 
 	/**
 	 * @param string $tags
