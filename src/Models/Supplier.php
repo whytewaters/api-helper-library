@@ -10,8 +10,8 @@ class Supplier {
     private $url;
     private $address;
     private $latlng;
-	private $currency_code;
-	private $timezone;
+    private $currency_code;
+    private $timezone;
 
     /** @var Tour[] $tours  */
     private $tours = array();
