@@ -72,7 +72,7 @@ class Supplier {
      * @return string[]
      */
     public function get_tour_keys() {
-        $tour_keys = [];
+        $tour_keys = array();
 
         foreach($this->tours as $tour) {
             $tour_keys[] = $tour->get_tour_key();
