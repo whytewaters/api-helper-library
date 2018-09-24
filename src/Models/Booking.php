@@ -1,8 +1,5 @@
 <?php namespace Rtbs\ApiHelper\Models;
 
-
-use Ramsey\Uuid\Uuid;
-
 class Booking {
 	private $uuid;
 	private $experience_key;
@@ -53,7 +50,7 @@ class Booking {
 
 	public function __construct() {
 		// uuid to identify the record internally
-		$this->uuid = Uuid::uuid4()->toString();
+		$this->uuid = uniqid('rtbs-apihelper', true);
 	}
 
 
