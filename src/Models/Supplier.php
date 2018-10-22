@@ -11,6 +11,7 @@ class Supplier {
     private $address;
     private $latlng;
     private $currency_code;
+    private $timezone;
 
     /** @var Tour[] $tours  */
     private $tours = array();
@@ -71,7 +72,7 @@ class Supplier {
      * @return string[]
      */
     public function get_tour_keys() {
-        $tour_keys = [];
+        $tour_keys = array();
 
         foreach($this->tours as $tour) {
             $tour_keys[] = $tour->get_tour_key();
@@ -171,6 +172,13 @@ class Supplier {
 		return $this->currency_code;
 	}
 
+	/**
+	 * @return string
+	 */
+	public function get_timezone() {
+		return $this->timezone;
+	}
+
 
 	/**
 	 * @return string
@@ -197,6 +205,13 @@ class Supplier {
         $this->currency_code = $currency_code;
     }
 
+
+	/**
+	 * @param string $timezone
+	 */
+	public function set_timezone($timezone) {
+		$this->timezone = $timezone;
+	}
     /**
      * @return Media[]
      */
@@ -228,7 +243,8 @@ class Supplier {
         $supplier->set_url(property_exists($raw_supplier, 'url') ? $raw_supplier->url : "");
         $supplier->set_address(property_exists($raw_supplier, 'address') ? $raw_supplier->address : "");
         $supplier->set_latlng(property_exists($raw_supplier, 'latlng') ? $raw_supplier->latlng : "");
-        $supplier->set_currency_code(property_exists($raw_supplier, 'currency_code') ? $raw_supplier->currency_code : "");
+	    $supplier->set_currency_code(property_exists($raw_supplier, 'currency_code') ? $raw_supplier->currency_code : "");
+	    $supplier->set_timezone(property_exists($raw_supplier, 'timezone') ? $raw_supplier->timezone : date_default_timezone_get());
 
         if(property_exists($raw_supplier, 'locations') && is_array($raw_supplier->locations)) {
             foreach($raw_supplier->locations as $raw_location) {
