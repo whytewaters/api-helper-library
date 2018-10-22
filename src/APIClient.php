@@ -1,6 +1,7 @@
 <?php namespace Rtbs\ApiHelper;
 
 use Rtbs\ApiHelper\Exceptions\ApiClientException;
+use Rtbs\ApiHelper\Exceptions\ApiClientNetworkException;
 use Rtbs\ApiHelper\Models\AccommodationBooking;
 use Rtbs\ApiHelper\Models\Booking;
 use Rtbs\ApiHelper\Models\ResourceRequirement;
@@ -294,11 +295,25 @@ class APIClient {
 
         $url = $this->host . $endpoint . $separator . http_build_query($params);
 
-        if ($opts == null) {
-            $response_raw = file_get_contents($url);
-        } else {
-            $context = stream_context_create($opts);
-            $response_raw = file_get_contents($url, false, $context);
+        // turns warning with file_get_contents into an exception
+        set_error_handler(
+            create_function(
+                '$severity, $message, $file, $line',
+                'throw new ErrorException($message, $severity, $severity, $file, $line);'
+            )
+        );
+
+        try {
+            if ($opts == null) {
+                $response_raw = file_get_contents($url);
+            } else {
+                $context = stream_context_create($opts);
+                $response_raw = file_get_contents($url, false, $context);
+            }
+        } catch (\Exception $ex) {
+            throw new ApiClientNetworkException($ex->getMessage(), $ex->getCode(), $ex);
+        } finally {
+            restore_error_handler();
         }
 
         $response = json_decode($response_raw);
