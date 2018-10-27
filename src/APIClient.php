@@ -263,7 +263,7 @@ class APIClient {
 
     //Makes an api call.
     protected function call($endpoint, $opts = null) {
-        if (substr($endpoint, 0, 5) !== '/api/') {
+        if (strpos($endpoint, '/api/') !== 0) {
             throw new ApiClientException('All API requests must begin with /api/');
         }
 
@@ -296,12 +296,9 @@ class APIClient {
         $url = $this->host . $endpoint . $separator . http_build_query($params);
 
         // turns warning with file_get_contents into an exception
-        set_error_handler(
-            create_function(
-                '$severity, $message, $file, $line',
-                'throw new ErrorException($message, $severity, $severity, $file, $line);'
-            )
-        );
+        set_error_handler(function($err_severity, $err_msg, $err_file, $err_line, array $err_context) {
+            throw new \ErrorException($err_msg, 0, $err_severity, $err_file, $err_line);
+        });
 
         try {
             if ($opts == null) {
