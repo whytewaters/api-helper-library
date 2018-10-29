@@ -463,6 +463,10 @@ class Booking {
 	 * @return string|null
 	 */
 	public function get_tour_field($field_name) {
+	    if ($this->tour_fields === null) {
+	        return null;
+        }
+
 		foreach ($this->tour_fields as $tour_field) {
 			if ($tour_field['name'] === $field_name) {
 				return $tour_field['value'];
@@ -476,7 +480,7 @@ class Booking {
 	/**
 	 * @return array
 	 */
-	public function gdd_tour_fields() {
+	public function add_tour_fields() {
 		return $this->tour_fields;
 	}
 
