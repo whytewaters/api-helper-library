@@ -480,9 +480,17 @@ class Booking {
 	/**
 	 * @return array
 	 */
-	public function add_tour_fields() {
+	public function get_tour_fields() {
 		return $this->tour_fields;
 	}
+
+
+    /**
+     * @return array
+     */
+    public function clear_tour_fields() {
+        return $this->tour_fields = array();
+    }
 
 
 	/**
@@ -586,8 +594,12 @@ class Booking {
 			'phone' => $this->phone,
 			'fields' => $this->tour_fields,
 			'prices' => $this->price_selections,
-			'resource_requirements' => [],
+			'resource_requirements' => array(),
 		);
+
+		if ($this->booking_id) {
+		    $raw['booking_id'] = $this->booking_id;
+        }
 
 		if (isset($this->resource_requirements)) {
 			foreach ($this->resource_requirements as $resource_requirement) {

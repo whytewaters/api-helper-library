@@ -207,6 +207,12 @@ class APIClient {
         return $this->call('/api/booking', $opts);
     }
 
+    public function api_booking_update(Booking $booking) {
+        $data = $booking->to_raw();
+        $opts = $this->build_opts($data);
+        return $this->call('/api/booking/update', $opts);
+    }
+
     public function api_promo($promo_code, Booking $booking) {
         $data = $booking->to_raw();
         $data['promo_code'] = $promo_code;
@@ -320,7 +326,13 @@ class APIClient {
 
         if (isset($response->success) && $response->success == false) {
             $code = !empty($response->code) ? $response->code : null;
-            throw new ApiClientException($this->getUserMessageForAPIException($response->message), $code);
+            $message = !empty($response->message) ? $response->message : null;
+
+            // handle case where msg is returned instead of message
+            if (!empty($response->msg)) {
+                $message = $response->msg;
+            }
+            throw new ApiClientException($this->getUserMessageForAPIException($message), $code);
         }
 
         return $response;
@@ -453,15 +465,37 @@ class APIClient {
     }
 
     /**
-     * @param string $token
+     * @param string $token_or_booking_id
      * @return \stdClass
      * @throws ApiClientException
      */
-    public function api_booking_status($token) {
-        $token = urlencode($token);
-        $response = $this->call("/api/booking/{$token}/status");
+    public function api_booking_status($token_or_booking_id) {
+        $token_or_booking_id = urlencode($token_or_booking_id);
+        $response = $this->call("/api/booking/{$token_or_booking_id}/status");
 
         return $response->booking;
+    }
+
+    /**
+     * @param string $token_or_booking_id
+     * @return \stdClass
+     * @throws ApiClientException
+     */
+    public function api_booking_used($token_or_booking_id) {
+        $token_or_booking_id = urlencode($token_or_booking_id);
+        return $this->call("/api/booking/{$token_or_booking_id}/used");
+    }
+
+    /**
+     * @param string $token_or_booking_id
+     * @return \stdClass
+     * @throws ApiClientException
+     */
+    public function api_booking_status2($token_or_booking_id) {
+        $token_or_booking_id = urlencode($token_or_booking_id);
+        $response = $this->call("/api/booking/{$token_or_booking_id}/status2");
+
+        return $response->data->booking;
     }
 
     /**

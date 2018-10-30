@@ -1,5 +1,6 @@
 <?php namespace Rtbs\ApiHelper;
 
+use Rtbs\ApiHelper\Exceptions\ApiClientException;
 use Rtbs\ApiHelper\Exceptions\ModelNotFoundException;
 use Rtbs\ApiHelper\Exceptions\PromoNotFoundException;
 use Rtbs\ApiHelper\Models\Booking;
@@ -232,11 +233,30 @@ class BookingServiceImpl implements BookingService {
     }
 
     /**
+     * @param $booking Booking
+     * @return Booking
+     */
+    public function update_booking(Booking $booking) {
+        $response = $this->get_api_client()->api_booking_update($booking);
+        return Booking::from_raw($response->booking);
+    }
+
+    /**
+     * @param string $booking_id
+     * @return Booking
+     * @throws ApiClientException
+     */
+    public function booking_used($booking_id) {
+        $response = $this->get_api_client()->api_booking_used($booking_id);
+        return Booking::from_raw($response->booking);
+    }
+
+    /**
      * @param ItineraryBooking $itinerary_booking
      * @return ItineraryBooking
      */
     public function make_itinerary_booking(ItineraryBooking $itinerary_booking) {
-        $response = $this->get_api_client()->api_book_itineray($itineray_booking);
+        $response = $this->get_api_client()->api_book_itineray($itinerary_booking);
 
         return ItineraryBooking::from_raw($response);
     }
@@ -360,8 +380,14 @@ class BookingServiceImpl implements BookingService {
         return $this->get_api_client()->api_ticket_html($token);
     }
 
-    public function booking_status($token) {
-        $raw_booking = $this->get_api_client()->api_booking_status($token);
+    public function booking_status($token_or_booking_id) {
+        $raw_booking = $this->get_api_client()->api_booking_status($token_or_booking_id);
+
+        return Booking::from_raw($raw_booking);
+    }
+
+    public function booking_status2($token_or_booking_id) {
+        $raw_booking = $this->get_api_client()->api_booking_status2($token_or_booking_id);
 
         return Booking::from_raw($raw_booking);
     }
