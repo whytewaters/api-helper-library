@@ -646,6 +646,11 @@ class Obl {
      * @return string|null
      */
     public function get_config($key, $default = null) {
+        if (!$this->config_json) {
+            return null;
+
+        }
+
         return array_key_exists($key, $this->config_json) ? $this->config_json[$key] : $default;
     }
 
@@ -787,7 +792,7 @@ class Obl {
         }
 
         if (property_exists($raw_obl, 'obl_config_json')) {
-            $obl->config_json = json_decode($raw_obl->obl_config_json, true);
+            $obl->config_json = json_decode((string) $raw_obl->obl_config_json, true);
         }
 
         return $obl;
