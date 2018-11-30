@@ -85,6 +85,18 @@ class Session {
 		return null;
 	}
 
+    /**
+     * @return bool
+     */
+    public function has_extras() {
+        foreach ($this->prices as $price) {
+            if ($price->get_price_category_name() === Price::PRICE_CATEGORY_NAME_EXTRA) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     /**
      * @param string $price_category_name
