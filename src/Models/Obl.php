@@ -791,7 +791,7 @@ class Obl {
             $obl->color_button_plusminus_hover_text = $raw_obl->obl_color_button_plusminus_hover_text;
         }
 
-        if (property_exists($raw_obl, 'obl_config_json')) {
+        if (property_exists($raw_obl, 'obl_config_json') && is_string($raw_obl->obl_config_json)) {
             $obl->config_json = json_decode((string) $raw_obl->obl_config_json, true);
         }
 
