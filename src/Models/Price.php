@@ -27,6 +27,7 @@ class Price {
     private $total_inc_disc;
 	private $max_qty;
 	private $min_qty;
+    private $min_qty_is_required;
 	private $tags = [];
 
 	/** @var Carbon $date_valid_from */
@@ -212,6 +213,22 @@ class Price {
 	public function set_min_qty($min_qty) {
 		$this->min_qty = $min_qty;
 	}
+
+
+    /**
+     * @return int
+     */
+    public function get_min_qty_is_required() {
+        return (int) $this->min_qty_is_required;
+    }
+
+
+    /**
+     * @param int $min_qty_is_required
+     */
+    public function set_min_qty_is_required($min_qty_is_required) {
+        $this->min_qty_is_required = $min_qty_is_required;
+    }
 
 
 	/**
@@ -436,6 +453,10 @@ class Price {
 	    if (property_exists($raw_price,'min_qty')) {
 		    $price->set_min_qty($raw_price->min_qty);
 	    }
+
+        if (property_exists($raw_price,'min_qty_is_required')) {
+            $price->set_min_qty_is_required($raw_price->min_qty_is_required);
+        }
 
         if (property_exists($raw_price, 'disc')) {
         	$price->set_disc($raw_price->disc);
