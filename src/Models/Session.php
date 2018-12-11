@@ -85,6 +85,21 @@ class Session {
 		return null;
 	}
 
+
+    /**
+     * @param string $price_key
+     * @return Price|null
+     */
+    public function get_price_by_price_key($price_key) {
+        foreach ($this->prices as $price) {
+            if ($price->get_price_key() == $price_key) {
+                return $price;
+            }
+        }
+
+        return null;
+    }
+
     /**
      * @return bool
      */
