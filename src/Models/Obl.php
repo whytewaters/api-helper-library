@@ -85,6 +85,7 @@ class Obl {
     private $analytics_js_custom_body_script;
     private $obl_booking_completion_url;
     private $robl_template;
+    private $config_json;
 
     /**
      * @return bool
@@ -640,6 +641,20 @@ class Obl {
     }
 
     /**
+     * @param string $key
+     * @param string|null $default
+     * @return string|null
+     */
+    public function get_config($key, $default = null) {
+        if (!$this->config_json) {
+            return null;
+
+        }
+
+        return array_key_exists($key, $this->config_json) ? $this->config_json[$key] : $default;
+    }
+
+    /**
      * @param \stdClass $raw_obl
      * @return Obl
      */
@@ -774,6 +789,10 @@ class Obl {
 
         if (property_exists($raw_obl, 'obl_color_button_plusminus_hover_text')) {
             $obl->color_button_plusminus_hover_text = $raw_obl->obl_color_button_plusminus_hover_text;
+        }
+
+        if (property_exists($raw_obl, 'obl_config_json') && is_string($raw_obl->obl_config_json)) {
+            $obl->config_json = json_decode((string) $raw_obl->obl_config_json, true);
         }
 
         return $obl;

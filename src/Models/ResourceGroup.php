@@ -130,11 +130,27 @@ class ResourceGroup {
 
 
 	/**
-	 * @param string $max_pax
+	 * @param int $max_pax
 	 */
 	public function set_max_pax($max_pax) {
 		$this->max_pax = $max_pax;
 	}
+
+
+    /**
+     * @return int
+     */
+    public function get_max_pax_per_resource() {
+        return $this->max_pax_per_resource;
+    }
+
+
+    /**
+     * @param int $max_pax_per_resource
+     */
+    public function set_max_pax_per_resource($max_pax_per_resource) {
+        $this->max_pax_per_resource = $max_pax_per_resource;
+    }
 
 
 	/**
@@ -169,6 +185,7 @@ class ResourceGroup {
 		$resource_group->set_unit_term($raw_resource_group->unit_term);
 		$resource_group->set_max_qty($raw_resource_group->max_qty);
 		$resource_group->set_max_pax($raw_resource_group->max_pax);
+		$resource_group->set_max_pax_per_resource($raw_resource_group->max_pax_per_resource);
 
 		return $resource_group;
 	}
