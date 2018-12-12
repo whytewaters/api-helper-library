@@ -6,10 +6,13 @@ class PriceSelection {
     private $price;
     private $qty;
     private $fields = array();
+    private $is_voucher = false;
 
-    public function __construct(Price $price, $qty) {
+    public function __construct(Price $price, $qty, $is_voucher = false) {
         $this->price = $price;
         $this->qty = (int)$qty;
+        $this->amount = $this->price->get_rate() * $this->qty;
+        $this->is_voucher = $is_voucher;
     }
 
     /**
@@ -23,6 +26,10 @@ class PriceSelection {
      * @return float
      */
     public function get_amount() {
+        if ($this->is_voucher) {
+            return 0;
+        }
+
         return $this->price->get_rate() * $this->qty;
     }
 

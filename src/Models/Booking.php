@@ -46,6 +46,9 @@ class Booking {
     private $token;
     private $photo_filepath;
 
+    /** @var Voucher $voucher */
+    private $voucher;
+
     /** @var Promo $promo */
     private $promo;
 
@@ -439,10 +442,11 @@ class Booking {
      * @param Price $price
      * @param int $qty
      * @param array|null $fields
+     * @param bool $is_voucher
      */
-    public function add_price_selection(Price $price, $qty) {
+    public function add_price_selection(Price $price, $qty, $is_voucher = false) {
 
-        $this->price_selections[$price->get_price_key()] = new PriceSelection($price, $qty);
+        $this->price_selections[$price->get_price_key()] = new PriceSelection($price, $qty, $is_voucher);
 
         $this->price_selection_keys[$price->get_price_key()] = array(
             'price_key' => $price->get_price_key(),
@@ -627,6 +631,22 @@ class Booking {
     public function set_voucher_key($voucher_key) {
         $this->voucher_key = $voucher_key;
     }
+
+    /**
+     * @param Voucher $voucher
+     */
+    public function set_voucher(Voucher $voucher) {
+        $this->voucher = $voucher;
+        $this->voucher_key = $voucher->get_voucher_key();
+    }
+
+    /**
+     * @param Voucher $voucher
+     */
+    public function get_voucher() {
+        return $voucher;
+    }
+
 
     /**
      * @param string $obl_id
