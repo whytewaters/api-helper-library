@@ -74,9 +74,9 @@ class ExperienceSession {
      * TODO need to review how this works, what if one tour is call for availability, how am i supposed to know what the lowest setting should be
      * @return string
      */
-    public function get_state() {
+    public function get_state($is_ignore_prices = false) {
         foreach ($this->tour_sessions as $tour_session) {
-            if (!$tour_session->is_open()) {
+            if (!$tour_session->is_open($is_ignore_prices)) {
                 return $tour_session->get_state();
             }
         }
