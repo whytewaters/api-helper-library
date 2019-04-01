@@ -59,15 +59,11 @@ class Session {
      * @return boolean
      */
     public function is_open($is_ignore_prices = false) {
-        if ($this->open) {
-            return true;
-        }
-
         if ($is_ignore_prices) {
-            return true;
+            return $this->open;
         }
 
-        return $this->has_prices();
+        return ($this->open && $this->has_prices());
     }
 
 
