@@ -173,6 +173,14 @@ class Field {
     }
 
     /**
+     * @param string $glue
+     * @return string
+     */
+    public function get_tags_as_string($glue = ' ') {
+        return implode($glue, $this->tags);
+    }
+
+    /**
      * @param \stdClass $raw_field
      * @return Field
      */
