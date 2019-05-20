@@ -423,6 +423,23 @@ class BookingServiceImpl implements BookingService {
         return $bookings;
     }
 
+    /**
+     * @param string $token
+     * @return Booking[]
+     */
+    public function itinerary_status2($token) {
+        $raw_data = $this->get_api_client()->api_itinerary_status($token);
+
+        $bookings = array();
+
+        foreach ($raw_data->bookings as $raw_booking) {
+            $bookings[] = Booking2::from_raw($raw_booking);
+        }
+
+        return $bookings;
+    }
+
+
     private static function getUserMessageForAPIException(\Exception $ex) {
         return strtr($ex->getMessage(), array(
             'API call did not succeed: datetime past' => 'The chosen date and time has passed, please choose a later date',
