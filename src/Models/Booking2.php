@@ -1,6 +1,6 @@
 <?php namespace Rtbs\ApiHelper\Models;
 
-class Booking2 {
+class Booking2 implements BookingInterface {
     private $uuid;
     private $experience_key;
     private $datetime;
