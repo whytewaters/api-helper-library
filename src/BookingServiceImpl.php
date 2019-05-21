@@ -4,6 +4,7 @@ use Rtbs\ApiHelper\Exceptions\ApiClientException;
 use Rtbs\ApiHelper\Exceptions\ModelNotFoundException;
 use Rtbs\ApiHelper\Exceptions\PromoNotFoundException;
 use Rtbs\ApiHelper\Models\Booking;
+use Rtbs\ApiHelper\Models\Booking2;
 use Rtbs\ApiHelper\Models\CapacityHold;
 use Rtbs\ApiHelper\Models\Category;
 use Rtbs\ApiHelper\Models\Customer;
@@ -219,7 +220,7 @@ class BookingServiceImpl implements BookingService {
     }
 
     /**
-     * @param $booking Booking
+     * @param \Booking $booking
      * @return string|Booking url
      */
     public function make_booking(Booking $booking) {
@@ -230,6 +231,20 @@ class BookingServiceImpl implements BookingService {
         }
 
         return Booking::from_raw($response->booking);
+    }
+
+    /**
+     * @param Booking2 $booking
+     * @return string|Booking url
+     */
+    public function make_booking2(Booking2 $booking) {
+        $response = $this->get_api_client()->api_booking($booking);
+
+        if (isset($response->url)) {
+            return $response->url;
+        }
+
+        return Booking2::from_raw($response->booking);
     }
 
     /**
@@ -407,6 +422,23 @@ class BookingServiceImpl implements BookingService {
 
         return $bookings;
     }
+
+    /**
+     * @param string $token
+     * @return Booking[]
+     */
+    public function itinerary_status2($token) {
+        $raw_data = $this->get_api_client()->api_itinerary_status($token);
+
+        $bookings = array();
+
+        foreach ($raw_data->bookings as $raw_booking) {
+            $bookings[] = Booking2::from_raw($raw_booking);
+        }
+
+        return $bookings;
+    }
+
 
     private static function getUserMessageForAPIException(\Exception $ex) {
         return strtr($ex->getMessage(), array(

@@ -4,6 +4,7 @@ use Rtbs\ApiHelper\Exceptions\ApiClientException;
 use Rtbs\ApiHelper\Exceptions\ApiClientNetworkException;
 use Rtbs\ApiHelper\Models\AccommodationBooking;
 use Rtbs\ApiHelper\Models\Booking;
+use Rtbs\ApiHelper\Models\BookingInterface;
 use Rtbs\ApiHelper\Models\ResourceRequirement;
 
 class APIClient {
@@ -199,7 +200,7 @@ class APIClient {
     }
 
     // returns a payment URL for the booking
-    public function api_booking(Booking $booking) {
+    public function api_booking(BookingInterface $booking) {
         $data = $booking->to_raw();
 
         $opts = $this->build_opts($data);

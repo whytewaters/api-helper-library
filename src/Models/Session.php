@@ -54,13 +54,17 @@ class Session {
 		return $this->tour_key;
 	}
 
+    /**
+     * @param bool $is_ignore_prices
+     * @return boolean
+     */
+    public function is_open($is_ignore_prices = false) {
+        if ($is_ignore_prices) {
+            return $this->open;
+        }
 
-	/**
-	 * @return boolean
-	 */
-	public function is_open() {
-		return ($this->open && $this->has_prices());
-	}
+        return ($this->open && $this->has_prices());
+    }
 
 
 	/**
