@@ -86,6 +86,8 @@ class Obl {
     private $obl_booking_completion_url;
     private $robl_template;
     private $config_json;
+    private $is_hide_from_price;
+    private $is_hide_places;
 
     /**
      * @return bool
@@ -641,6 +643,20 @@ class Obl {
     }
 
     /**
+     * @return bool
+     */
+    public function get_is_hide_from_price() {
+        return $this->is_hide_from_price;
+    }
+
+    /**
+     * @return bool
+     */
+    public function get_is_hide_places() {
+        return $this->is_hide_places;
+    }
+
+    /**
      * @param string $key
      * @param string|null $default
      * @return string|null
@@ -793,6 +809,14 @@ class Obl {
 
         if (property_exists($raw_obl, 'obl_config_json')) {
             $obl->config_json = json_decode(json_encode($raw_obl->obl_config_json), true);
+        }
+
+        if (property_exists($raw_obl, 'obl_is_hide_from_price')) {
+            $obl->is_hide_from_price = json_decode(json_encode($raw_obl->obl_is_hide_from_price), true);
+        }
+
+        if (property_exists($raw_obl, 'obl_is_hide_places')) {
+            $obl->is_hide_places = json_decode(json_encode($raw_obl->obl_is_hide_places), true);
         }
 
         return $obl;
