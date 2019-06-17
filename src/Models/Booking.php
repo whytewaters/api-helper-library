@@ -459,12 +459,12 @@ class Booking implements BookingInterface {
 
 	/**
 	 * @param string $field_name
-	 *
+	 * @param string $default_value
 	 * @return string|null
 	 */
-	public function get_tour_field($field_name) {
+	public function get_tour_field($field_name, $default_value = null) {
 	    if ($this->tour_fields === null) {
-	        return null;
+	        return $default_value;
         }
 
 		foreach ($this->tour_fields as $tour_field) {
@@ -473,7 +473,7 @@ class Booking implements BookingInterface {
 			}
 		}
 
-		return null;
+		return $default_value;
 	}
 
 
