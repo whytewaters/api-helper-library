@@ -3,11 +3,12 @@
 
 class CapacityHold {
 
-    private $capacity_hold_key;
-    private $expires;
-    private $tour_key;
-    private $trip_datetime;
-    private $pax_held;
+    protected $capacity_hold_key;
+    protected $expires;
+    protected $tour_key;
+    protected $trip_datetime;
+    protected $pax_held;
+    protected $hold_length_mins;
 
     /**
      * @param \stdClass $raw_capacity_hold
@@ -21,6 +22,7 @@ class CapacityHold {
         $capacity_hold->set_tour_key($raw_capacity_hold->tour_key);
         $capacity_hold->set_trip_datetime($raw_capacity_hold->trip_datetime);
         $capacity_hold->set_pax_held($raw_capacity_hold->pax_held);
+        $capacity_hold->set_hold_length_mins($raw_capacity_hold->hold_length_mins);
 
         return $capacity_hold;
     }
@@ -69,4 +71,13 @@ class CapacityHold {
     public function set_pax_held($pax_held) {
         $this->pax_held = $pax_held;
     }
+
+    public function get_hold_length_mins() {
+        return $this->hold_length_mins;
+    }
+
+    public function set_hold_length_mins($hold_length_mins) {
+        $this->hold_length_mins = $hold_length_mins;
+    }
+
 }
