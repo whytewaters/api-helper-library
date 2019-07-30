@@ -568,8 +568,13 @@ class Obl {
     /**
      * @return string|null
      */
-    public function get_analytics_js_completion_script() {
-        return $this->analytics_js_completion_script;
+    public function get_analytics_js_completion_script($bookind_id = '', $booking_total = 0) {
+        $script = $this->analytics_js_completion_script;
+
+        $script = str_replace('{{BOOKING_ID}}', $bookind_id, $script);
+        $script = str_replace('{{BOOKING_TOTAL}}', $booking_total, $script);
+
+        return $script;
     }
 
     /**
