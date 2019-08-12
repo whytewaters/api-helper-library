@@ -26,6 +26,7 @@ class Obl {
     private $operator_phone_free;
     private $operator_name;
     private $operator_currency_code;
+    private $operator_terms;
     private $url_operator_img;
     private $url_spinner_img;
     private $url_background_img;
@@ -676,6 +677,13 @@ class Obl {
     }
 
     /**
+     * @return string
+     */
+    public function get_operator_terms() {
+        return $this->operator_terms;
+    }
+
+    /**
      * @param \stdClass $raw_obl
      * @return Obl
      */
@@ -822,6 +830,10 @@ class Obl {
 
         if (property_exists($raw_obl, 'obl_is_hide_places')) {
             $obl->is_hide_places = json_decode(json_encode($raw_obl->obl_is_hide_places), true);
+        }
+
+        if (property_exists($raw_obl, 'operator_terms')) {
+            $obl->operator_terms = $raw_obl->operator_terms;
         }
 
         return $obl;
