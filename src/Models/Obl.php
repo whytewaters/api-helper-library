@@ -90,6 +90,9 @@ class Obl {
     private $is_hide_from_price;
     private $is_hide_places;
 
+    /** @var Tour[] $tours */
+    private $tours = [];
+
     /**
      * @return bool
      */
@@ -684,6 +687,13 @@ class Obl {
     }
 
     /**
+     * @return Tour[]
+     */
+    public function get_tours() {
+        return $this->tours;
+    }
+
+    /**
      * @param \stdClass $raw_obl
      * @return Obl
      */
@@ -825,15 +835,21 @@ class Obl {
         }
 
         if (property_exists($raw_obl, 'obl_is_hide_from_price')) {
-            $obl->is_hide_from_price = json_decode(json_encode($raw_obl->obl_is_hide_from_price), true);
+            $obl->is_hide_from_price = $raw_obl->obl_is_hide_from_price;
         }
 
         if (property_exists($raw_obl, 'obl_is_hide_places')) {
-            $obl->is_hide_places = json_decode(json_encode($raw_obl->obl_is_hide_places), true);
+            $obl->is_hide_places = $raw_obl->obl_is_hide_places;
         }
 
         if (property_exists($raw_obl, 'operator_terms')) {
             $obl->operator_terms = $raw_obl->operator_terms;
+        }
+
+        if (property_exists($raw_obl, 'tours')) {
+            foreach ($raw_obl->tours as $raw_tour) {
+                $obl->tours[] = Tour::from_raw($raw_tour);
+            }
         }
 
         return $obl;
