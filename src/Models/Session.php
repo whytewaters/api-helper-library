@@ -204,12 +204,8 @@ class Session {
      * @param bool $is_ignore_resources
 	 * @return int
 	 */
-	public function get_remaining($is_ignore_resources = false) {
+	public function get_remaining() {
 	    $remaining = $this->remaining;
-
-	    if ($is_ignore_resources) {
-	        return $remaining;
-        }
 
 	    if ($this->resources_remaining !== null && $this->resources_remaining < $remaining) {
 	        $remaining = $this->resources_remaining;
