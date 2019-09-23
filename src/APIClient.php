@@ -307,18 +307,26 @@ class APIClient {
             throw new \ErrorException($err_msg, 0, $err_severity, $err_file, $err_line);
         });
 
-        try {
-            if ($opts == null) {
-                $response_raw = file_get_contents($url);
-            } else {
-                $context = stream_context_create($opts);
-                $response_raw = file_get_contents($url, false, $context);
-            }
-        } catch (\Exception $ex) {
-            throw new ApiClientNetworkException($ex->getMessage(), $ex->getCode(), $ex);
-        } finally {
-            restore_error_handler();
-        }
+	    try {
+		    if (function_exists('curl_setopt')) {
+			    $ch = curl_init();
+			    curl_setopt($ch, CURLOPT_URL, $url);
+			    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			    $response_raw = curl_exec($ch);
+			    curl_close($ch);
+		    } elseif (ini_get('allow_url_fopen')) {
+			    if ($opts == null) {
+				    $response_raw = file_get_contents($url);
+			    } else {
+				    $context = stream_context_create($opts);
+				    $response_raw = file_get_contents($url, false, $context);
+			    }
+		    }
+	    } catch (\Exception $ex) {
+		    throw new ApiClientNetworkException($ex->getMessage(), $ex->getCode(), $ex);
+	    } finally {
+		    restore_error_handler();
+	    }
 
         $response = json_decode($response_raw);
         if (json_last_error() !== JSON_ERROR_NONE) {
