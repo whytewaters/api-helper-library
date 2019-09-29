@@ -308,19 +308,31 @@ class APIClient {
         });
 
 	    try {
-		    if (function_exists('curl_setopt')) {
-			    $ch = curl_init();
-			    curl_setopt($ch, CURLOPT_URL, $url);
-			    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			    $response_raw = curl_exec($ch);
-			    curl_close($ch);
-		    } elseif (ini_get('allow_url_fopen')) {
+		    //if url_fopen is available (for backwards compatibility)
+		    if (ini_get('allow_url_fopen')) {
 			    if ($opts == null) {
 				    $response_raw = file_get_contents($url);
 			    } else {
 				    $context = stream_context_create($opts);
 				    $response_raw = file_get_contents($url, false, $context);
 			    }
+		    } elseif (function_exists('curl_setopt')) {
+			    //if curl is available (in case url_fopen is unavailable)
+			    $ch = curl_init();
+			    curl_setopt($ch, CURLOPT_URL, $url);
+
+			    if ($opts) {
+				    foreach ($opts AS $k => $v) {
+					    curl_setopt($ch, $k, $v);
+				    }
+			    }
+
+			    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			    $response_raw = curl_exec($ch);
+			    curl_close($ch);
+		    } else {
+			    //throw ApiClientException if neither url_fopen or curl is available
+			    throw new ApiClientException('File Get Contents or Curl are required');
 		    }
 	    } catch (\Exception $ex) {
 		    throw new ApiClientNetworkException($ex->getMessage(), $ex->getCode(), $ex);
@@ -328,7 +340,8 @@ class APIClient {
 		    restore_error_handler();
 	    }
 
-        $response = json_decode($response_raw);
+
+	    $response = json_decode($response_raw);
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new ApiClientException('Server response invalid JSON format: ' . $response_raw);
         }
