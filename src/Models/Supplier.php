@@ -12,6 +12,7 @@ class Supplier {
     private $latlng;
     private $currency_code;
     private $timezone;
+    private $is_latipay_payment_gateway;
 
     /** @var Tour[] $tours  */
     private $tours = array();
@@ -231,6 +232,24 @@ class Supplier {
         $this->tours[] = $tour;
     }
 
+	/**
+	 * @return mixed
+	 */
+	public function get_is_latipay_payment_gateway()
+	{
+		return $this->is_latipay_payment_gateway;
+	}
+
+	/**
+	 * @param mixed $is_latipay_payment_gateway
+	 */
+	public function set_is_latipay_payment_gateway($is_latipay_payment_gateway)
+	{
+		$this->is_latipay_payment_gateway = $is_latipay_payment_gateway;
+	}
+    
+    
+    
     public static function fromRaw($raw_supplier) {
         $supplier = new Supplier();
 
@@ -245,6 +264,7 @@ class Supplier {
         $supplier->set_latlng(property_exists($raw_supplier, 'latlng') ? $raw_supplier->latlng : "");
 	    $supplier->set_currency_code(property_exists($raw_supplier, 'currency_code') ? $raw_supplier->currency_code : "");
 	    $supplier->set_timezone(property_exists($raw_supplier, 'timezone') ? $raw_supplier->timezone : date_default_timezone_get());
+	    $supplier->set_is_latipay_payment_gateway(property_exists($raw_supplier, 'is_latipay_payment_gateway') ? $raw_supplier->is_latipay_payment_gateway : false);
 
         if(property_exists($raw_supplier, 'locations') && is_array($raw_supplier->locations)) {
             foreach($raw_supplier->locations as $raw_location) {
