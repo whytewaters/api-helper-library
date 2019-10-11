@@ -6,6 +6,7 @@ use Rtbs\ApiHelper\Models\AccommodationBooking;
 use Rtbs\ApiHelper\Models\Booking;
 use Rtbs\ApiHelper\Models\BookingInterface;
 use Rtbs\ApiHelper\Models\ResourceRequirement;
+use Rtbs\ApiHelper\Models\TransportSessionRequest;
 
 class APIClient {
 
@@ -190,6 +191,28 @@ class APIClient {
         $opts = $this->build_opts($data);
 
         return $this->call('/api/experience_sessions', $opts);
+    }
+
+    /**
+     * @param TransportSessionRequest $request
+     * @return mixed
+     * @throws ApiClientException
+     * @throws ApiClientNetworkException
+     */
+    public function api_transport_sessions(TransportSessionRequest $request) {
+        $data = array(
+            'supplier' => $request->get_supplier_key(),
+            'date' => $request->get_date(),
+            'search_next_available' => $request->is_search_next_available() ? '1' : '0',
+            'days' => $request->get_days(),
+            'exclude_capacity_holds' => $request->get_exclude_capacity_hold_keys(),
+            'origin' => $request->get_origin(),
+            'destination' => $request->get_destination(),
+        );
+
+        $opts = $this->build_opts($data);
+
+        return $this->call('/api/transport-sessions', $opts);
     }
 
     public function api_pickups($tour_key) {
