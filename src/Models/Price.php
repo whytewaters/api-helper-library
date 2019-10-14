@@ -1,7 +1,5 @@
 <?php namespace Rtbs\ApiHelper\Models;
 
-use Carbon\Carbon;
-
 class Price {
 
 	const PRICE_CATEGORY_NAME_ADULT = 'Adult';
@@ -28,12 +26,12 @@ class Price {
 	private $max_qty;
 	private $min_qty;
     private $min_qty_is_required;
-	private $tags = [];
+	private $tags = array();
 
-	/** @var Carbon $date_valid_from */
+	/** @var \DateTimeInterface $date_valid_from */
 	private $date_valid_from;
 
-	/** @var Carbon $date_valid_to */
+	/** @var \DateTimeInterface $date_valid_to */
 	private $date_valid_to;
 
     private $fields = array();
@@ -347,53 +345,49 @@ class Price {
 
 
 	/**
-	 * @return Carbon
+	 * @return \DateTimeInterface
 	 */
 	public function get_date_valid_from() {
 		return $this->date_valid_from;
 	}
 
-
-	/**
-	 * @param string|\DateTimeInterface|Carbon $date_valid_from
-	 */
+    /**
+     * @param string|\DateTimeInterface $date_valid_from
+     * @throws \Exception
+     */
 	public function set_date_valid_from($date_valid_from) {
 
-		if ($date_valid_from instanceof Carbon) {
+		if ($date_valid_from instanceof \DateTimeInterface) {
 			$this->date_valid_from = $date_valid_from;
-		} else if ($date_valid_from instanceof \DateTimeInterface) {
-			$this->date_valid_from = new Carbon($date_valid_from);
 		} else {
 			// assume string
-			$this->date_valid_from = Carbon::parse($date_valid_from);
+			$this->date_valid_from = new \DateTime($date_valid_from);
 		}
 
-		$this->date_valid_from->startOfDay();
+		$this->date_valid_from->setTime(0,0,0);
 	}
 
 
 	/**
-	 * @return Carbon
+	 * @return \DateTimeInterface
 	 */
 	public function get_date_valid_to() {
 		return $this->date_valid_to;
 	}
 
-
-	/**
-	 * @param string|\DateTimeInterface|Carbon $date_valid_to
-	 */
+    /**
+     * @param string|\DateTimeInterface $date_valid_to
+     * @throws \Exception
+     */
 	public function set_date_valid_to($date_valid_to) {
-		if ($date_valid_to instanceof Carbon) {
+		if ($date_valid_to instanceof \DateTimeInterface) {
 			$this->date_valid_to = $date_valid_to;
-		} else if ($date_valid_to instanceof \DateTimeInterface) {
-			$this->date_valid_to = new Carbon($date_valid_to);
 		} else {
 			// assume string
-			$this->date_valid_to = Carbon::parse($date_valid_to);
+			$this->date_valid_to = new \DateTime($date_valid_to);
 		}
 
-		$this->date_valid_to->endOfDay();
+		$this->date_valid_to->setTime(23, 59, 59);
 	}
 
 
