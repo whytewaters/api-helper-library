@@ -43,6 +43,8 @@ class Booking implements BookingInterface {
 	private $token;
 	private $photo_filepath;
 
+    private $total_paid;
+    private $total_owing;
 
 	/** @var ResourceRequirement[] $resource_requirements */
 	private $resource_requirements;
@@ -459,12 +461,12 @@ class Booking implements BookingInterface {
 
 	/**
 	 * @param string $field_name
-	 *
+	 * @param string $default_value
 	 * @return string|null
 	 */
-	public function get_tour_field($field_name) {
+	public function get_tour_field($field_name, $default_value = null) {
 	    if ($this->tour_fields === null) {
-	        return null;
+	        return $default_value;
         }
 
 		foreach ($this->tour_fields as $tour_field) {
@@ -473,7 +475,7 @@ class Booking implements BookingInterface {
 			}
 		}
 
-		return null;
+		return $default_value;
 	}
 
 
@@ -694,6 +696,22 @@ class Booking implements BookingInterface {
 		foreach ($raw_booking->prices as $raw_price) {
 			$booking->add_price(Price::from_raw($raw_price));
 		}
+
+        if (property_exists($raw_booking, 'total_disc')) {
+            $booking->total_disc = $raw_booking->total_disc;
+        }
+
+        if (property_exists($raw_booking, 'total_inc_disc')) {
+            $booking->total_inc_disc = $raw_booking->total_inc_disc;
+        }
+
+        if (property_exists($raw_booking, 'total_paid')) {
+            $booking->total_paid = $raw_booking->total_paid;
+        }
+
+        if (property_exists($raw_booking, 'total_owing')) {
+            $booking->total_owing = $raw_booking->total_owing;
+        }
 
 		return $booking;
 	}

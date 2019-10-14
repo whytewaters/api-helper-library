@@ -26,6 +26,7 @@ class Obl {
     private $operator_phone_free;
     private $operator_name;
     private $operator_currency_code;
+    private $operator_terms;
     private $url_operator_img;
     private $url_spinner_img;
     private $url_background_img;
@@ -86,6 +87,11 @@ class Obl {
     private $obl_booking_completion_url;
     private $robl_template;
     private $config_json;
+    private $is_hide_from_price;
+    private $is_hide_places;
+
+    /** @var Tour[] $tours */
+    private $tours = [];
 
     /**
      * @return bool
@@ -566,8 +572,13 @@ class Obl {
     /**
      * @return string|null
      */
-    public function get_analytics_js_completion_script() {
-        return $this->analytics_js_completion_script;
+    public function get_analytics_js_completion_script($bookind_id = '', $booking_total = 0) {
+        $script = $this->analytics_js_completion_script;
+
+        $script = str_replace('{{BOOKING_ID}}', $bookind_id, $script);
+        $script = str_replace('{{BOOKING_TOTAL}}', $booking_total, $script);
+
+        return $script;
     }
 
     /**
@@ -641,6 +652,20 @@ class Obl {
     }
 
     /**
+     * @return bool
+     */
+    public function get_is_hide_from_price() {
+        return $this->is_hide_from_price;
+    }
+
+    /**
+     * @return bool
+     */
+    public function get_is_hide_places() {
+        return $this->is_hide_places;
+    }
+
+    /**
      * @param string $key
      * @param string|null $default
      * @return string|null
@@ -652,6 +677,20 @@ class Obl {
         }
 
         return array_key_exists($key, $this->config_json) ? $this->config_json[$key] : $default;
+    }
+
+    /**
+     * @return string
+     */
+    public function get_operator_terms() {
+        return $this->operator_terms;
+    }
+
+    /**
+     * @return Tour[]
+     */
+    public function get_tours() {
+        return $this->tours;
     }
 
     /**
@@ -793,6 +832,24 @@ class Obl {
 
         if (property_exists($raw_obl, 'obl_config_json')) {
             $obl->config_json = json_decode(json_encode($raw_obl->obl_config_json), true);
+        }
+
+        if (property_exists($raw_obl, 'obl_is_hide_from_price')) {
+            $obl->is_hide_from_price = $raw_obl->obl_is_hide_from_price;
+        }
+
+        if (property_exists($raw_obl, 'obl_is_hide_places')) {
+            $obl->is_hide_places = $raw_obl->obl_is_hide_places;
+        }
+
+        if (property_exists($raw_obl, 'operator_terms')) {
+            $obl->operator_terms = $raw_obl->operator_terms;
+        }
+
+        if (property_exists($raw_obl, 'tours')) {
+            foreach ($raw_obl->tours as $raw_tour) {
+                $obl->tours[] = Tour::from_raw($raw_tour);
+            }
         }
 
         return $obl;
