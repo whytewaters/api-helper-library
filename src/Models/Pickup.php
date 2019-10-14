@@ -8,6 +8,7 @@ class Pickup {
     private $lat;
     private $lng;
     private $is_user_editable;
+    private $order;
 
     /**
      * @return mixed
@@ -100,6 +101,13 @@ class Pickup {
         return $this->is_user_editable;
     }
 
+    /**
+     * @return int
+     */
+    public function get_order() {
+        return $this->order;
+    }
+
     public static function from_raw($raw_pickup) {
         $pickup = new self();
 
@@ -109,6 +117,10 @@ class Pickup {
         $pickup->set_minutes($raw_pickup->minutes);
         $pickup->set_pickup_key($raw_pickup->pickup_key);
         $pickup->set_place($raw_pickup->place);
+
+        if (property_exists($raw_pickup, 'pickup_order')) {
+            $pickup->order = $raw_pickup->pickup_order;
+        }
 
         if (property_exists($raw_pickup, 'is_user_editable')) {
             $pickup->is_user_editable = $raw_pickup->is_user_editable;
