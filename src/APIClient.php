@@ -307,20 +307,41 @@ class APIClient {
             throw new \ErrorException($err_msg, 0, $err_severity, $err_file, $err_line);
         });
 
-        try {
-            if ($opts == null) {
-                $response_raw = file_get_contents($url);
-            } else {
-                $context = stream_context_create($opts);
-                $response_raw = file_get_contents($url, false, $context);
-            }
-        } catch (\Exception $ex) {
-            throw new ApiClientNetworkException($ex->getMessage(), $ex->getCode(), $ex);
-        } finally {
-            restore_error_handler();
-        }
+	    try {
+		    //if url_fopen is available (for backwards compatibility)
+		    if (ini_get('allow_url_fopen')) {
+			    if ($opts == null) {
+				    $response_raw = file_get_contents($url);
+			    } else {
+				    $context = stream_context_create($opts);
+				    $response_raw = file_get_contents($url, false, $context);
+			    }
+		    } elseif (function_exists('curl_setopt')) {
+			    //if curl is available (in case url_fopen is unavailable)
+			    $ch = curl_init();
+			    curl_setopt($ch, CURLOPT_URL, $url);
 
-        $response = json_decode($response_raw);
+			    if ($opts) {
+				    foreach ($opts AS $k => $v) {
+					    curl_setopt($ch, $k, $v);
+				    }
+			    }
+
+			    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			    $response_raw = curl_exec($ch);
+			    curl_close($ch);
+		    } else {
+			    //throw ApiClientException if neither url_fopen or curl is available
+			    throw new ApiClientException('File Get Contents or Curl are required');
+		    }
+	    } catch (\Exception $ex) {
+		    throw new ApiClientNetworkException($ex->getMessage(), $ex->getCode(), $ex);
+	    } finally {
+		    restore_error_handler();
+	    }
+
+
+	    $response = json_decode($response_raw);
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new ApiClientException('Server response invalid JSON format: ' . $response_raw);
         }
@@ -427,22 +448,36 @@ class APIClient {
     }
 
     private function build_opts($data) {
-
-        $content = 'data=' . rawurlencode(json_encode($data));
-        $referrer = isset($_SERVER['SCRIPT_URI']) ? $_SERVER['SCRIPT_URI'] : 'Demonstration';
-
-        return array(
-            'http' => array(
-                'method' => 'POST',
-                'header' => array(
-                    'Content-type: application/x-www-form-urlencoded',
-                    'Referer: ' . $referrer,
-                    'Connection: close',
-                    'Accept-language: en',
-                ),
-                'content' => $content,
-            ),
-        );
+		//these variables don't change based on fopen or cURL, so define them once here
+	    $content = 'data=' . rawurlencode(json_encode($data));
+	    $referrer = isset($_SERVER['SCRIPT_URI']) ? $_SERVER['SCRIPT_URI'] : 'Demonstration';
+	    $headers = array(
+		    'Content-type: application/x-www-form-urlencoded',
+		    'Referer: ' . $referrer,
+		    'Connection: close',
+		    'Accept-language: en',
+	    );
+	    
+	    if (ini_get('allow_url_fopen')) {
+		    //is url_fopen is allowed, opts for file_get_contents
+		    return array(
+			    'http' => array(
+				    'method' => 'POST',
+				    'header' => $headers,
+				    'content' => $content,
+			    ),
+		    );
+	    } elseif (function_exists('curl_setopt')) {
+		    //is url_fopen is not allowed and cURL is available, opts for cURL
+		    return array(
+			    CURLOPT_POST => 1,
+			    CURLOPT_POSTFIELDS => $content,
+			    CURLOPT_HTTPHEADER => $headers
+		    );
+	    } else {
+		    //throw ApiClientException if neither url_fopen or curl is available
+		    throw new ApiClientException('File Get Contents or Curl are required');
+	    }
     }
 
     /**
