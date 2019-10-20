@@ -567,7 +567,7 @@ class APIClient {
 	 * @throws \Rtbs\ApiHelper\Exceptions\ApiClientNetworkException
 	 */
 	public function api_cancel_booking($booking_id) {
-		return $this->call('/api/booking/'.$booking_id.'/cancel');
+		return $this->call('/api/booking/'.urlencode($booking_id).'/cancel');
 	}
 
 }
