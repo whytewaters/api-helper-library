@@ -440,6 +440,20 @@ class BookingServiceImpl implements BookingService {
     }
 
 
+	/**
+	 * @param string $booking_id
+	 *
+	 * @return \Rtbs\ApiHelper\Models\Booking
+	 */
+	public function cancel_booking($booking_id) {
+		$raw_data = $this->get_api_client()->api_cancel_booking($booking_id);
+
+		$booking = Booking::from_raw($raw_data);
+
+		return $booking;
+	}
+
+
     private static function getUserMessageForAPIException(\Exception $ex) {
         return strtr($ex->getMessage(), array(
             'API call did not succeed: datetime past' => 'The chosen date and time has passed, please choose a later date',
