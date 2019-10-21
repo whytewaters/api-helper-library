@@ -343,42 +343,8 @@ class APIClient {
 
 	    $response = json_decode($response_raw);
 	    if (json_last_error() !== JSON_ERROR_NONE) {
-		    switch (json_last_error()) {
-			    case JSON_ERROR_DEPTH:
-				    $json_error = 'The maximum stack depth has been exceeded';
-				    break;
-			    case JSON_ERROR_STATE_MISMATCH:
-				    $json_error = 'Invalid or malformed JSON';
-				    break;
-			    case JSON_ERROR_CTRL_CHAR:
-				    $json_error = 'Control character error, possibly incorrectly encoded';
-				    break;
-			    case JSON_ERROR_SYNTAX:
-				    $json_error = 'Syntax error, malformed JSON';
-				    break;
-			    case JSON_ERROR_UTF8:
-				    $json_error = 'Malformed UTF-8 characters, possibly incorrectly encoded';
-				    break;
-			    case JSON_ERROR_RECURSION:
-				    $json_error = 'One or more recursive references in the value to be encoded';
-				    break;
-			    case JSON_ERROR_INF_OR_NAN:
-				    $json_error = 'One or more NAN or INF values in the value to be encoded';
-				    break;
-			    case JSON_ERROR_UNSUPPORTED_TYPE:
-				    $json_error = 'A value of a type that cannot be encoded was given';
-				    break;
-				//the below two options are future-proofing for PHP 7.0.0
-			    case JSON_ERROR_INVALID_PROPERTY_NAME:
-				    $json_error = 'A property name that cannot be encoded was given';
-				    break;
-			    case JSON_ERROR_UTF16:
-				    $json_error = 'Malformed UTF-16 characters, possibly incorrectly encoded';
-				    break;
-			    default:
-				    $json_error = 'Unknown error';
-				    break;
-		    }
+		    //json_last_error_msg() support was added in PHP 5.5.0, so minimum PHP 5.5.0
+		    $json_error = json_last_error_msg();
 
 		    throw new ApiClientException('Server response invalid JSON format: ' . $json_error . ': ' . $response_raw);
 	    }
