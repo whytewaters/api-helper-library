@@ -561,4 +561,16 @@ class APIClient {
         return $response->experiences;
     }
 
+
+	/**
+	 * @param string $booking_id
+	 *
+	 * @return mixed
+	 * @throws \Rtbs\ApiHelper\Exceptions\ApiClientException
+	 * @throws \Rtbs\ApiHelper\Exceptions\ApiClientNetworkException
+	 */
+	public function api_cancel_booking($booking_id) {
+		return $this->call('/api/booking/'.urlencode($booking_id).'/cancel');
+	}
+
 }
