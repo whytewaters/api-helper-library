@@ -342,9 +342,12 @@ class APIClient {
 
 
 	    $response = json_decode($response_raw);
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new ApiClientException('Server response invalid JSON format: ' . $response_raw);
-        }
+	    if (json_last_error() !== JSON_ERROR_NONE) {
+		    //json_last_error_msg() support was added in PHP 5.5.0, so minimum PHP 5.5.0
+		    $json_error = json_last_error_msg();
+
+		    throw new ApiClientException('Server response invalid JSON format: ' . $json_error . ': ' . $response_raw);
+	    }
 
         if (isset($response->success) && $response->success == false) {
             $code = !empty($response->code) ? $response->code : null;
