@@ -20,6 +20,8 @@ use Rtbs\ApiHelper\Models\Session;
 use Rtbs\ApiHelper\Models\SessionAndAdvanceDates;
 use Rtbs\ApiHelper\Models\Supplier;
 use Rtbs\ApiHelper\Models\Tour;
+use Rtbs\ApiHelper\Models\TransportSessionRequest;
+use Rtbs\ApiHelper\Models\TransportSession;
 use Rtbs\ApiHelper\Models\Voucher;
 
 class BookingServiceImpl implements BookingService {
@@ -76,6 +78,17 @@ class BookingServiceImpl implements BookingService {
         $sessions_and_advance_dates->set_advance_dates($response->advance_dates);
 
         return $sessions_and_advance_dates;
+    }
+
+    public function get_transport_sessions(TransportSessionRequest $request) {
+        $response = $this->get_api_client()->api_transport_sessions($request);
+
+        $transport_sessions = [];
+        foreach ($response->transport_sessions as $raw_transport_session) {
+            $transport_sessions[] = TransportSession::from_raw_session($raw_transport_session);
+        }
+
+        return $transport_sessions;
     }
 
     /**
@@ -438,6 +451,20 @@ class BookingServiceImpl implements BookingService {
 
         return $bookings;
     }
+
+
+	/**
+	 * @param string $booking_id
+	 *
+	 * @return \Rtbs\ApiHelper\Models\Booking
+	 */
+	public function cancel_booking($booking_id) {
+		$raw_data = $this->get_api_client()->api_cancel_booking($booking_id);
+
+		$booking = Booking::from_raw($raw_data);
+
+		return $booking;
+	}
 
 
     private static function getUserMessageForAPIException(\Exception $ex) {

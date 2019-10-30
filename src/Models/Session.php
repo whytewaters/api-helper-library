@@ -272,7 +272,8 @@ class Session {
 	 * @return Session
 	 */
 	public static function from_raw($raw_session) {
-		$session = new self();
+	    $classname = get_called_class();
+		$session = new $classname;
 
 		$session->datetime = $raw_session->datetime;
 		$session->time_str = $raw_session->time_str;

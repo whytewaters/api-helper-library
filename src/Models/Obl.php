@@ -93,6 +93,8 @@ class Obl {
     /** @var Tour[] $tours */
     private $tours = [];
 
+    private $routes;
+
     /**
      * @return bool
      */
@@ -694,6 +696,13 @@ class Obl {
     }
 
     /**
+     * @return mixed
+     */
+    public function get_routes() {
+        return $this->routes;
+    }
+
+    /**
      * @param \stdClass $raw_obl
      * @return Obl
      */
@@ -850,6 +859,10 @@ class Obl {
             foreach ($raw_obl->tours as $raw_tour) {
                 $obl->tours[] = Tour::from_raw($raw_tour);
             }
+        }
+
+        if (property_exists($raw_obl, 'routes')) {
+            $obl->routes = $raw_obl->routes;
         }
 
         return $obl;
