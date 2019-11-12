@@ -8,6 +8,8 @@ class Price {
     const PRICE_CATEGORY_NAME_FOC = 'FOC';
 	const PRICE_CATEGORY_NAME_EXTRA = 'Extra';
 	const PRICE_CATEGORY_NAME_OTHER = 'Other';
+    const PRICE_CATEGORY_NAME_GROUP = 'Group';
+    const PRICE_CATEGORY_NAME_FAMILY = 'Family';
 
     private $price_key;
     private $price_type_key;
