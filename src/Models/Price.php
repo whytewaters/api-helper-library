@@ -389,7 +389,10 @@ class Price {
 
 		$this->date_valid_to->setTime(23, 59, 59);
 	}
-
+	
+    public function is_valid_at(\DateTimeInterface $datetime) {
+        return ($datetime >= $this->date_valid_from && $datetime <= $this->date_valid_to);
+    }
 
     public static function from_raw($raw_price) {
         $price = new Price();
