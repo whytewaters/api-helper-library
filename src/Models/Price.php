@@ -31,11 +31,10 @@ class Price {
     private $tags = array();
     private $sort_order = 0;
 
-    /** @var \DateTimeInterface $date_valid_from */
-    private $date_valid_from;
-
-    /** @var \DateTimeInterface $date_valid_to */
-    private $date_valid_to;
+    private $date_valid_from_ymd;
+    private $date_valid_to_ymd;
+    private $time_valid_from_hms;
+    private $time_valid_to_hms;
 
     private $fields = array();
 
@@ -346,55 +345,49 @@ class Price {
         return $this->fields;
     }
 
-
     /**
-     * @return \DateTimeInterface
+     * @return string yyyy-mm-dd
      */
     public function get_date_valid_from() {
-        return $this->date_valid_from;
+        return $this->date_valid_from_ymd;
     }
 
     /**
-     * @param string|\DateTimeInterface $date_valid_from
-     * @throws \Exception
-     */
-    public function set_date_valid_from($date_valid_from) {
-
-        if ($date_valid_from instanceof \DateTimeInterface) {
-            $this->date_valid_from = $date_valid_from;
-        } else {
-            // assume string
-            $this->date_valid_from = new \DateTime($date_valid_from);
-        }
-
-        $this->date_valid_from->setTime(0,0,0);
-    }
-
-
-    /**
-     * @return \DateTimeInterface
+     * @return string yyyy-mm-dd
      */
     public function get_date_valid_to() {
-        return $this->date_valid_to;
+        return $this->date_valid_to_ymd;
     }
 
     /**
-     * @param string|\DateTimeInterface $date_valid_to
-     * @throws \Exception
+     * @return string hh:mm:ss
      */
-    public function set_date_valid_to($date_valid_to) {
-        if ($date_valid_to instanceof \DateTimeInterface) {
-            $this->date_valid_to = $date_valid_to;
-        } else {
-            // assume string
-            $this->date_valid_to = new \DateTime($date_valid_to);
-        }
-
-        $this->date_valid_to->setTime(23, 59, 59);
+    public function get_time_valid_from() {
+        return $this->time_valid_from_hms;
     }
 
-    public function is_valid_at(\DateTimeInterface $datetime) {
-        return ($datetime >= $this->date_valid_from && $datetime <= $this->date_valid_to);
+    /**
+     * @return string hh:mm:ss
+     */
+    public function get_time_valid_to() {
+        return $this->time_valid_to_hms;
+    }
+
+    public function is_valid_at(\DateTimeInterface $trip_datetime) {
+
+        $trip_date = $trip_datetime->format('Y-m-d');
+
+        if ($trip_date < $this->date_valid_from_ymd || $trip_date > $this->date_valid_to_ymd) {
+            return false;
+        }
+
+        $trip_time = $trip_datetime->format('H:m:s');
+
+        if ($trip_time < $this->time_valid_from_hms || $trip_time > $this->time_valid_to_hms) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -490,11 +483,19 @@ class Price {
         }
 
         if (property_exists($raw_price, 'date_valid_from')) {
-            $price->set_date_valid_from($raw_price->date_valid_from);
+            $price->date_valid_from_ymd = $raw_price->date_valid_from;
         }
 
         if (property_exists($raw_price, 'date_valid_to')) {
-            $price->set_date_valid_to($raw_price->date_valid_to);
+            $price->date_valid_to_ymd = $raw_price->date_valid_to;
+        }
+
+        if (property_exists($raw_price, 'price_time_from')) {
+            $price->time_valid_from_hms = $raw_price->price_time_from;
+        }
+
+        if (property_exists($raw_price, 'price_time_to')) {
+            $price->time_valid_to_hms = $raw_price->price_time_to;
         }
 
         if (property_exists($raw_price, 'fields') && is_array($raw_price->fields)) {
