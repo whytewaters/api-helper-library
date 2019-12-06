@@ -275,14 +275,21 @@ class Tour {
 
     /**
      * @param string $price_type_key
-     *
-     * @return null|Price
+     * @param \DateTimeInterface|null $as_at_date_time
+     * @return Price|null
      */
-    public function get_price_by_price_type_key($price_type_key) {
+    public function get_price_by_price_type_key($price_type_key, \DateTimeInterface $as_at_date_time = null) {
         foreach ($this->prices as $price) {
-            if ($price->get_price_type_key() == $price_type_key) {
-                return $price;
+
+            if ($price->get_price_type_key() != $price_type_key) {
+                continue;
             }
+
+            if ($as_at_date_time && !$price->is_valid_at($as_at_date_time)) {
+                continue;
+            }
+
+            return $price;
         }
 
         return null;
