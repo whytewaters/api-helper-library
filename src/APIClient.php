@@ -596,4 +596,15 @@ class APIClient {
 		return $this->call('/api/booking/'.urlencode($booking_id).'/cancel');
 	}
 
+    /**
+     * @param Booking $booking
+     * @return mixed
+     * @throws ApiClientException
+     * @throws ApiClientNetworkException
+     */
+    public function api_booking_fees(Booking $booking) {
+        $data = $booking->to_raw();
+        $opts = $this->build_opts($data);
+        return $this->call('/api/booking/fees', $opts);
+    }
 }

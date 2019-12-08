@@ -5,6 +5,7 @@ use Rtbs\ApiHelper\Exceptions\ModelNotFoundException;
 use Rtbs\ApiHelper\Exceptions\PromoNotFoundException;
 use Rtbs\ApiHelper\Models\Booking;
 use Rtbs\ApiHelper\Models\Booking2;
+use Rtbs\ApiHelper\Models\BookingFee;
 use Rtbs\ApiHelper\Models\CapacityHold;
 use Rtbs\ApiHelper\Models\Category;
 use Rtbs\ApiHelper\Models\Customer;
@@ -466,6 +467,20 @@ class BookingServiceImpl implements BookingService {
 		return $booking;
 	}
 
+    /**
+     * @param Booking $booking
+     * @return BookingFee[]
+     * @throws ApiClientException
+     * @throws Exceptions\ApiClientNetworkException
+     */
+    public function calculate_booking_fees(Booking $booking) {
+        $response = $this->get_api_client()->api_booking_fees($booking);
+        $booking_fees = [];
+        foreach ($response as $raw_booking_fee) {
+            $booking_fees[] = BookingFee::from_raw($raw_booking_fee);
+        }
+        return $booking_fees;
+    }
 
     private static function getUserMessageForAPIException(\Exception $ex) {
         return strtr($ex->getMessage(), array(
