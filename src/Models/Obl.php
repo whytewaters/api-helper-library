@@ -706,6 +706,13 @@ class Obl {
     }
 
     /**
+     * @return Fee[]
+     */
+    public function get_fees() {
+        return $this->fees;
+    }
+
+    /**
      * @param \stdClass $raw_obl
      * @return Obl
      */
