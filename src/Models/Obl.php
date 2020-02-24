@@ -95,6 +95,9 @@ class Obl {
 
     private $routes;
 
+    /** @var Fee[] $fees */
+    private $fees = [];
+
     /**
      * @return bool
      */
@@ -703,6 +706,13 @@ class Obl {
     }
 
     /**
+     * @return Fee[]
+     */
+    public function get_fees() {
+        return $this->fees;
+    }
+
+    /**
      * @param \stdClass $raw_obl
      * @return Obl
      */
@@ -863,6 +873,12 @@ class Obl {
 
         if (property_exists($raw_obl, 'routes')) {
             $obl->routes = $raw_obl->routes;
+        }
+
+        if (property_exists($raw_obl, 'fees')) {
+            foreach ($raw_obl->fees as $raw_fee) {
+                $obl->fees[] = Fee::from_raw($raw_fee);
+            }
         }
 
         return $obl;
