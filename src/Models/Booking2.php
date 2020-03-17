@@ -743,7 +743,7 @@ class Booking2 implements BookingInterface {
             'email' => $this->email,
             'phone' => $this->phone,
             'fields' => $this->tour_fields,
-            'prices' => $this->price_selection_keys,
+            'prices' => array_values($this->price_selection_keys),
             'resource_requirements' => array(),
         );
 
