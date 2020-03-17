@@ -6,6 +6,7 @@ use Rtbs\ApiHelper\Exceptions\PromoNotFoundException;
 use Rtbs\ApiHelper\Models\Booking;
 use Rtbs\ApiHelper\Models\Booking2;
 use Rtbs\ApiHelper\Models\BookingFee;
+use Rtbs\ApiHelper\Models\BookingInterface;
 use Rtbs\ApiHelper\Models\CapacityHold;
 use Rtbs\ApiHelper\Models\Category;
 use Rtbs\ApiHelper\Models\Customer;
@@ -292,12 +293,12 @@ class BookingServiceImpl implements BookingService {
 
     /**
      * @param string $promo_code
-     * @param Booking $booking
+     * @param BookingInterface $booking
      * @return Promo
      * @throws PromoNotFoundException
      * @throws \Exception
      */
-    public function apply_promo($promo_code, Booking $booking) {
+    public function apply_promo($promo_code, BookingInterface $booking) {
         try {
             $response = $this->get_api_client()->api_promo($promo_code, $booking);
         }
@@ -307,7 +308,7 @@ class BookingServiceImpl implements BookingService {
             }
 
             if ($ex->getMessage() === 'promo code invalid') {
-                throw new PromoNotFoundException('"Invalid Promo Code', 0, $ex);
+                throw new PromoNotFoundException('Invalid Promo Code', 0, $ex);
             }
 
             if ($ex->getMessage() === 'promo_code missing or invalid') {

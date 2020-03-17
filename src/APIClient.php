@@ -237,7 +237,7 @@ class APIClient {
         return $this->call('/api/booking/update', $opts);
     }
 
-    public function api_promo($promo_code, Booking $booking) {
+    public function api_promo($promo_code, BookingInterface $booking) {
         $data = $booking->to_raw();
         $data['promo_code'] = $promo_code;
 
