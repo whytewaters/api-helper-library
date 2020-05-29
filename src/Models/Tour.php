@@ -23,6 +23,7 @@ class Tour {
     private $sector_start;
     private $sector_end;
     private $scheduled_times = array();
+    private $label_from_price;
 
     /** @var Price[] */
     private $prices = array();
@@ -367,6 +368,13 @@ class Tour {
     }
 
     /**
+     * @return string
+     */
+    public function get_label_from_price() {
+        return $this->label_from_price;
+    }
+
+    /**
      * @param \stdClass $raw_tour
      * @return Tour
      */
@@ -470,6 +478,10 @@ class Tour {
             foreach ($raw_tour->scheduled_times as $scheduled_time) {
                 $tour->scheduled_times[] = $scheduled_time;
             }
+        }
+
+        if (property_exists($raw_tour, 'label_from_price')) {
+            $tour->label_from_price = $raw_tour->label_from_price;
         }
 
         return $tour;
