@@ -19,6 +19,7 @@ class Field {
     private $is_other_please_specify = false;
     private $tags;
     private $field_key;
+    private $is_hide_obl = false;
 
     /**
      * @return string
@@ -165,6 +166,20 @@ class Field {
     }
 
     /**
+     * @param bool $is_hide_obl
+     */
+    public function set_is_hide_obl($is_hide_obl) {
+        $this->is_hide_obl = (bool) $is_hide_obl;
+    }
+
+    /**
+     * @return bool
+     */
+    public function get_is_hide_obl() {
+        return $this->is_hide_obl;
+    }
+
+    /**
      * @param $has_tag
      * @return bool
      */
@@ -195,6 +210,7 @@ class Field {
         $field->set_is_required($raw_field->is_required);
         $field->set_is_listbox_choose_one($raw_field->is_listbox_choose_one);
         $field->set_tags($raw_field->tags);
+        $field->set_is_hide_obl($raw_field->is_hide_obl);
 
         if (property_exists($raw_field, 'is_listbox_other_please_specify')) {
             $field->set_listbox_other_please_specify($raw_field->is_listbox_other_please_specify);
