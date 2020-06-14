@@ -89,6 +89,7 @@ class Obl {
     private $config_json;
     private $is_hide_from_price;
     private $is_hide_places;
+    private $label_make_payment_button;
 
     /** @var Tour[] $tours */
     private $tours = [];
@@ -713,6 +714,13 @@ class Obl {
     }
 
     /**
+     * @return string|null
+     */
+    public function get_label_make_payment_button() {
+        return $this->label_make_payment_button;
+    }
+
+    /**
      * @param \stdClass $raw_obl
      * @return Obl
      */
@@ -879,6 +887,10 @@ class Obl {
             foreach ($raw_obl->fees as $raw_fee) {
                 $obl->fees[] = Fee::from_raw($raw_fee);
             }
+        }
+
+        if (property_exists($raw_obl, 'obl_label_make_payment_button')) {
+            $obl->label_make_payment_button = $raw_obl->obl_label_make_payment_button;
         }
 
         return $obl;
