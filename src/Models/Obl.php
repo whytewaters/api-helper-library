@@ -79,11 +79,13 @@ class Obl {
     private $analytics_ga_rtbs_id;
     private $analytics_ga_client_id;
     private $analytics_ga_primary_tracking_domains;
-    private $analytics_js_completion_script;
 
     private $analytics_gtm_code;
     private $analytics_js_custom_header_script;
     private $analytics_js_custom_body_script;
+    private $analytics_js_custom_completion;
+    private $analytics_js_custom_checkout;
+    
     private $obl_booking_completion_url;
     private $robl_template;
     private $config_json;
@@ -578,13 +580,20 @@ class Obl {
     /**
      * @return string|null
      */
-    public function get_analytics_js_completion_script($bookind_id = '', $booking_total = 0) {
-        $script = $this->analytics_js_completion_script;
+    public function get_analytics_js_custom_completion($bookind_id = '', $booking_total = 0) {
+        $script = $this->analytics_js_custom_completion;
 
         $script = str_replace('{{BOOKING_ID}}', $bookind_id, $script);
         $script = str_replace('{{BOOKING_TOTAL}}', $booking_total, $script);
 
         return $script;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function get_analytics_js_custom_checkout() {
+        return $this->analytics_js_custom_checkout;
     }
 
     /**
@@ -827,11 +836,12 @@ class Obl {
         $obl->analytics_ga_rtbs_id = $raw_obl->obl_analytics_ga_rtbs_id;
         $obl->analytics_ga_client_id = $raw_obl->obl_analytics_ga_client_id;
         $obl->analytics_ga_primary_tracking_domains = $raw_obl->obl_analytics_ga_primary_tracking_domains;
-        $obl->analytics_js_completion_script = $raw_obl->obl_analytics_js_completion_script;
-
+        
         $obl->analytics_gtm_code = $raw_obl->obl_analytics_gtm_code;
         $obl->analytics_js_custom_header = $raw_obl->obl_analytics_js_custom_header;
         $obl->analytics_js_custom_body = $raw_obl->obl_analytics_js_custom_body;
+        $obl->analytics_js_custom_completion = $raw_obl->obl_analytics_js_custom_completion;
+        $obl->analytics_js_custom_checkout = $raw_obl->obl_analytics_js_custom_checkout;
 
         if (!empty($raw_obl->supplier_key)) {
             $obl->supplier_key = $raw_obl->supplier_key;
