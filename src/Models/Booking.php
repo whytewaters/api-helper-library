@@ -35,6 +35,7 @@ class Booking implements BookingInterface {
 	private $price_fields;
 
 	private $return_url;
+    private $fail_url;
 	private $pickup_key;
 	private $itinerary_key;
 	private $capacity_hold_key;
@@ -509,6 +510,13 @@ class Booking implements BookingInterface {
 		$this->return_url = $return_url;
 	}
 
+    /**
+     * @param string $fail_url
+     */
+    public function set_fail_url($fail_url) {
+        $this->fail_url = $fail_url;
+    }
+
 	/**
 	 * @param string $pickup_key
 	 */
@@ -620,6 +628,10 @@ class Booking implements BookingInterface {
 		if (!empty($this->return_url)) {
 			$raw['return_url'] = $this->return_url;
 		}
+
+        if (!empty($this->fail_url)) {
+            $raw['fail_url'] = $this->fail_url;
+        }
 
 		if (!empty($this->pickup_key)) {
 			$raw['pickup_key'] = $this->pickup_key;
