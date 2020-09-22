@@ -136,6 +136,15 @@ class BookingServiceImpl implements BookingService {
     }
 
     /**
+     * @param string $code
+     * @return bool
+     */
+    public function api_private_validate_code($code) {
+        return $this->get_api_client()->api_private_validate_code($code);
+    }
+
+
+    /**
      * @return Supplier[]
      */
     public function get_suppliers() {

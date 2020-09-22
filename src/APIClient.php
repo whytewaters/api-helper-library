@@ -122,6 +122,21 @@ class APIClient {
     }
 
     /**
+     * NOTICE - private api, do not code against this as it may change unpredictably
+     *
+     * @param string $code
+     * @return bool
+     * @throws ApiClientException
+     * @throws ApiClientNetworkException
+     * @throws \ErrorException
+     */
+    public function api_private_validate_code($code) {
+        $response = $this->call("/api/private-validate-code?code=" . urlencode($code));
+
+        return (bool) $response->valid;
+    }
+
+    /**
      * @param string|string[] $keys
      * @return \stdClass
      * @throws ApiClientException
