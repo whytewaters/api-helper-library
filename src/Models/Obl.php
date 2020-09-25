@@ -93,6 +93,9 @@ class Obl {
     private $is_hide_places;
     private $label_make_payment_button;
 
+    private $obl_text_intro;
+    private $obl_text_completition;
+
     /** @var Tour[] $tours */
     private $tours = [];
 
@@ -730,6 +733,20 @@ class Obl {
     }
 
     /**
+     * @return string
+     */
+    public function get_text_intro() {
+        return $this->obl_text_intro;
+    }
+
+    /**
+     * @return string
+     */
+    public function get_text_completition() {
+        return $this->obl_text_completition;
+    }
+
+    /**
      * @param \stdClass $raw_obl
      * @return Obl
      */
@@ -901,6 +918,14 @@ class Obl {
 
         if (property_exists($raw_obl, 'obl_label_make_payment_button')) {
             $obl->label_make_payment_button = $raw_obl->obl_label_make_payment_button;
+        }
+
+        if (property_exists($raw_obl, 'obl_text_intro')) {
+            $obl->obl_text_intro = $raw_obl->obl_text_intro;
+        }
+
+        if (property_exists($raw_obl, 'obl_text_completition')) {
+            $obl->obl_text_completition = $raw_obl->obl_text_completition;
         }
 
         return $obl;
