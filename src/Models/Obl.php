@@ -94,7 +94,7 @@ class Obl {
     private $label_make_payment_button;
 
     private $obl_text_intro;
-    private $obl_text_completition;
+    private $obl_text_completion;
 
     /** @var Tour[] $tours */
     private $tours = [];
@@ -744,8 +744,8 @@ class Obl {
      * @param string $booking_email
      * @return string
      */
-    public function get_text_completition($booking_id = '', $booking_email = '') {
-        $text = $this->obl_text_completition;
+    public function get_text_completion($booking_id = '', $booking_email = '') {
+        $text = $this->obl_text_completion;
 
         $text = str_replace('{{BOOKING_ID}}', $booking_id, $text);
         $text = str_replace('{{BOOKING_EMAIL}}', $booking_email, $text);
@@ -931,8 +931,8 @@ class Obl {
             $obl->obl_text_intro = $raw_obl->obl_text_intro;
         }
 
-        if (property_exists($raw_obl, 'obl_text_completition')) {
-            $obl->obl_text_completition = $raw_obl->obl_text_completition;
+        if (property_exists($raw_obl, 'obl_text_completion')) {
+            $obl->obl_text_completion = $raw_obl->obl_text_completion;
         }
 
         return $obl;
