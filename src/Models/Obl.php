@@ -740,10 +740,17 @@ class Obl {
     }
 
     /**
+     * @param string $booking_id
+     * @param string $booking_email
      * @return string
      */
-    public function get_text_completition() {
-        return $this->obl_text_completition;
+    public function get_text_completition($booking_id = '', $booking_email = '') {
+        $text = $this->obl_text_completition;
+
+        $text = str_replace('{{BOOKING_ID}}', $booking_id, $text);
+        $text = str_replace('{{BOOKING_EMAIL}}', $booking_email, $text);
+
+        return $text;
     }
 
     /**
