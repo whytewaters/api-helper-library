@@ -465,7 +465,7 @@ class Booking2 implements BookingInterface {
      * @param float|null $rate
      */
     public function add_price_selection_keys($price_key, $qty, $fields = null, $price_name = null, $rate = null) {
-        $this->price_selection_keys[$price_key] = array(
+        $this->price_selection_keys[] = array(
             'price_key' => $price_key,
             'price_name' => $price_name,
             'rate' => $rate,
