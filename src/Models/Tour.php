@@ -24,6 +24,7 @@ class Tour {
     private $sector_end;
     private $scheduled_times = array();
     private $label_from_price;
+    private $hide_time_on_ticket = false;
 
     /** @var Price[] */
     private $prices = array();
@@ -342,6 +343,13 @@ class Tour {
     /**
      * @return bool
      */
+    public function is_hide_time_on_ticket() {
+        return $this->is_hide_time_on_ticket();
+    }
+
+    /**
+     * @return bool
+     */
     public function get_has_promo_codes() {
         return $this->has_promo_codes;
     }
@@ -398,6 +406,10 @@ class Tour {
 
         if (property_exists($raw_tour, 'directions_html')) {
             $tour->directions_html = $raw_tour->directions_html;
+        }
+
+        if (property_exists($raw_tour, 'hide_time_on_ticket')) {
+            $tour->hide_time_on_ticket = $raw_tour->hide_time_on_ticket;
         }
 
         if (property_exists($raw_tour, 'description_short_html')) {
