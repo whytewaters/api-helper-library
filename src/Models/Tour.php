@@ -344,7 +344,7 @@ class Tour {
      * @return bool
      */
     public function is_hide_time_on_ticket() {
-        return $this->is_hide_time_on_ticket();
+        return $this->hide_time_on_ticket;
     }
 
     /**
