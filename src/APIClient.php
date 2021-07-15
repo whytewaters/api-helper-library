@@ -352,12 +352,21 @@ class APIClient {
 				    $response_raw = file_get_contents($url);
 			    } else {
 				    $context = stream_context_create($opts);
+
+				    // 2021-07-16 disable ssl verification due to change in cacert for latest letsencrypt certs
+                    $opts['ssl']['verify_peer'] = false;
+                    $opts['ssl']['verify_peer_name'] = false;
+
 				    $response_raw = file_get_contents($url, false, $context);
 			    }
 		    } elseif (function_exists('curl_setopt')) {
 			    //if curl is available (in case url_fopen is unavailable)
 			    $ch = curl_init();
 			    curl_setopt($ch, CURLOPT_URL, $url);
+
+                // 2021-07-16 disable ssl verification due to change in cacert for latest letsencrypt certs
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 
 			    if ($opts) {
 				    foreach ($opts AS $k => $v) {
