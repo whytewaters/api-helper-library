@@ -376,8 +376,8 @@ class BookingServiceImpl implements BookingService {
      * @param Itinerary $itinerary
      * @return string payment_url
      */
-    public function pay_itinerary(Itinerary $itinerary, $return_url = null) {
-        $response = $this->get_api_client()->api_pay_itinerary($itinerary->get_itinerary_key(), $return_url);
+    public function pay_itinerary(Itinerary $itinerary, $return_url = null, $fail_url = null) {
+        $response = $this->get_api_client()->api_pay_itinerary($itinerary->get_itinerary_key(), $return_url, $fail_url);
 
         return $response->url;
     }

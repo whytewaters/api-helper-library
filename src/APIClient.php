@@ -273,13 +273,16 @@ class APIClient {
         return $this->call('/api/remove-itinerary-booking', $opts);
     }
 
-    public function api_pay_itinerary($itinerary_key, $return_url = null) {
+    public function api_pay_itinerary($itinerary_key, $return_url = null, $fail_url = null) {
         $data = array(
             'itinerary_key' => $itinerary_key,
         );
 
         if ($return_url) {
             $data['return_url'] = $return_url;
+        }
+		if ($fail_url) {
+            $data['fail_url'] = $fail_url;
         }
 
         $opts = $this->build_opts($data);
